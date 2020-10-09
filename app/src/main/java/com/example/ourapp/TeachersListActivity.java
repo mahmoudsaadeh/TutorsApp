@@ -19,6 +19,8 @@ public class TeachersListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers_list);
 
+        setTitle("TutorApp - Tutors List");
+
         ListView teachersListView = (ListView) findViewById(R.id.teachersListView);
 
         final ArrayList<String> teachersAL = new ArrayList<String>();

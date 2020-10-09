@@ -26,7 +26,7 @@ public class MainActivityLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Tutors App");
+        setTitle("TutorApp - Login");
 
         ImageView imageView = (ImageView) findViewById(R.id.logo);
         EditText username = (EditText) findViewById(R.id.usernameEditText);

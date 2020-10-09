@@ -12,10 +12,17 @@ import android.widget.TextView;
 
 public class MainActivitySignUp extends AppCompatActivity {
 
+    public void signupAsTeacher(View view){
+        Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_sign_up);
+
+        setTitle("TutorApp - Sign up");
 
         ImageView imageView = (ImageView) findViewById(R.id.logo);
         EditText username = (EditText) findViewById(R.id.usernameETSU);
