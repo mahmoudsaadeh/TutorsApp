@@ -42,6 +42,7 @@ public class TeachersListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(TeachersListActivity.this, teachersAL.get(position), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), TeacherInfoActivity.class);
+                intent.putExtra("Teacher", teachersAL.get(position) + "");
                 startActivity(intent);
             }
         });

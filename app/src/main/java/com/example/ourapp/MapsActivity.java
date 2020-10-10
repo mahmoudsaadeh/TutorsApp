@@ -2,7 +2,10 @@ package com.example.ourapp;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,6 +13,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -24,6 +31,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    public String getCityName(LatLng selectedLocation){
+        String addressLine = "";
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(selectedLocation.latitude, selectedLocation.longitude, 1);
+            addressLine = addresses.get(0).getAddressLine(0);
+            //Log.i("address line: ", addresses.get(0).getAddressLine(0) + "");
+            /*Log.i("Locality: ", addresses.get(0).getLocality() + "");
+            Log.i("country name: ", addresses.get(0).getCountryName() + "");
+            Log.i("Locale: ", addresses.get(0).getLocale() + "");*/
+            //return city;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return addressLine;
     }
 
     /**
@@ -49,7 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMapClick(LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
-                markerOptions.title("Your Location :) " + latLng.latitude + " : " + latLng.longitude);
+                markerOptions.title(getCityName(latLng));
                 mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                 mMap.addMarker(markerOptions);
