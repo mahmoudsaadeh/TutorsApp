@@ -121,7 +121,7 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="Salary in USD"
-                android:inputType="numberSigned" />
+                android:inputType="number" />
 
             <TextView
                 android:id="@+id/ratingTextView"

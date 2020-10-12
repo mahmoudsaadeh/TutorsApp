@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.example.ourapp"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -32,4 +32,15 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.ms-square:expandableTextView:0.1.4'
+
+    //recyclerview
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
+    //glide: library get images from internet
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    //circular imageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 }

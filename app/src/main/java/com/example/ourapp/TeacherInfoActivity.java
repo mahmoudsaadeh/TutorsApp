@@ -26,7 +26,8 @@ public class TeacherInfoActivity extends AppCompatActivity {
         EditText teacherSalary = (EditText) findViewById(R.id.editTextSalaryNumberSigned);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
-        teacherName.setText("Name: " + getIntent().getStringExtra("Teacher"));
+        //teacherName.setText("Name: " + getIntent().getStringExtra("Teacher"));
+        teacherName.setText("Name: Talal Dan");
         teacherAddress.setText("Address: Jounieh, Street 55, Lebanon");
         teacherSubject.setText("Subject: Math, physics, chemistry");
         teacherExperience.setText("Experience: BS in math and phy and chem - taught in 4 schools, 2 private and 2 public" +

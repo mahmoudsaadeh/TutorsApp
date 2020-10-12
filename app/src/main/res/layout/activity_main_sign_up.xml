@@ -14,7 +14,7 @@
         android:layout_marginTop="29dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_bg_removed" />
+        app:srcCompat="@drawable/logo_edited_removedbg" />
 
     <EditText
         android:id="@+id/passwordEditTextSU"
