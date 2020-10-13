@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class TeacherFormActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
@@ -64,6 +66,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.logoutMenuItem:
+                FirebaseAuth.getInstance().signOut();
                 Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                 startActivity(intent3);
                 break;

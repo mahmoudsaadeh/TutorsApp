@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class TermsAndConditions extends AppCompatActivity {
 
     @Override
@@ -38,6 +40,7 @@ public class TermsAndConditions extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.logoutMenuItem:
+                FirebaseAuth.getInstance().signOut();
                 Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                 startActivity(intent3);
                 break;

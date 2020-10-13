@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class TeacherInfoActivity extends AppCompatActivity {
 
     @Override
@@ -69,6 +71,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.logoutMenuItem:
+                FirebaseAuth.getInstance().signOut();
                 Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                 startActivity(intent3);
                 break;

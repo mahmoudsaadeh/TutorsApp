@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class TeachersListActivity extends AppCompatActivity {
@@ -87,6 +89,7 @@ public class TeachersListActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.logoutMenuItem:
+                FirebaseAuth.getInstance().signOut();
                 Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                 startActivity(intent3);
                 break;

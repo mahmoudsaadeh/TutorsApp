@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class TeacherEditInfoForm extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_edit_info_form);
+
+        setTitle("TutorApp - Edit Tutor Info Form");
     }
 
     @Override
@@ -35,6 +39,8 @@ public class TeacherEditInfoForm extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.logoutMenuItem:
+                //adding a verification if account was signed out successfully will make our code stronger
+                FirebaseAuth.getInstance().signOut();
                 Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                 startActivity(intent3);
                 break;

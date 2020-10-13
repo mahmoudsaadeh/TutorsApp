@@ -72,7 +72,7 @@ These terms and conditions are effective as of 2020-10-13."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
-                android:text="Contact Us"
+                android:text="Contact Us:"
                 android:textSize="24sp"
                 android:textStyle="bold|italic" />
 
