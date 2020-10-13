@@ -91,7 +91,8 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="Email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:onClick="emailTeacher"/>
 
             <EditText
                 android:id="@+id/teacherPhone11"
@@ -106,7 +107,8 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="Phone"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:onClick="callTeacher"/>
 
             <EditText
                 android:id="@+id/editTextSalaryNumberSigned"

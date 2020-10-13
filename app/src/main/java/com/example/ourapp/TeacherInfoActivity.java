@@ -3,10 +3,12 @@ package com.example.ourapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
         teacherExperience.setText("Experience: BS in math and phy and chem - taught in 4 schools, 2 private and 2 public" +
                 " - 5 yrs in teaching");
         teacherEmail.setText("Email: test@test.com");
+
         teacherPhoneNumber.setText("Phone Number: +961-78-888999");
         teacherSalary.setText("Salary: 50 USD / hr");
 
@@ -80,5 +83,19 @@ public class TeacherInfoActivity extends AppCompatActivity {
         return true;
         //return super.onOptionsItemSelected(item);
     }
-
+    public void callTeacher(View v){
+        EditText teacherPhoneNumber = (EditText) findViewById(R.id.teacherPhone11);
+        String phoneNumber=teacherPhoneNumber.getText().toString().substring(14);
+        Intent intent=new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+phoneNumber));
+        startActivity(intent);
+    }
+    public void emailTeacher(View v){
+        EditText teacherEmail = (EditText) findViewById(R.id.teacherEmail11);
+        String email=teacherEmail.getText().toString().substring(7);
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] { email });
+        intent.setType("message/rfc822");
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+    }
 }
