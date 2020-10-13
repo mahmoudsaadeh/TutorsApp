@@ -7,13 +7,17 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class TeacherEditInfoForm extends AppCompatActivity {
+public class PrivacyPolicy extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher_edit_info_form);
+        setContentView(R.layout.activity_privacy_policy);
+
+        setTitle("TutorApp - Privacy Policy");
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,5 +47,6 @@ public class TeacherEditInfoForm extends AppCompatActivity {
         return true;
         //return super.onOptionsItemSelected(item);
     }
+
 
 }

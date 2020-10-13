@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -63,6 +65,35 @@ public class TeachersListActivity extends AppCompatActivity {
 */
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.privacyPolicyMenuItem:
+                //create an activity and write some privacy policy
+                Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
+                startActivity(intent1);
+                break;
+            case R.id.termsCondsMenuItem:
+                //create an activity and write some terms and conditions
+                Intent intent2 = new Intent(getApplicationContext(), TermsAndConditions.class);
+                startActivity(intent2);
+                break;
+            case R.id.logoutMenuItem:
+                Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
+                startActivity(intent3);
+                break;
+        }
+
+        return true;
+        //return super.onOptionsItemSelected(item);
     }
 
     private void initializeImageBitmaps(){

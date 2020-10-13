@@ -11,7 +11,7 @@
         android:layout_width="210dp"
         android:layout_height="167dp"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_edited_removedbg" />
@@ -20,51 +20,30 @@
         android:id="@+id/passwordEditTextSU"
         android:layout_width="290dp"
         android:layout_height="42dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="7dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameETSU" />
-
-    <Button
-        android:id="@+id/signupAsStudentBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="46dp"
-        android:text="Sign up as student"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordET" />
-
-    <Button
-        android:id="@+id/signupAsTeacherBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="19dp"
-        android:onClick="signupAsTeacher"
-        android:text="Sign up as teacher"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupAsStudentBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/emailET" />
 
     <TextView
         android:id="@+id/loginLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="8dp"
         android:text="Already have an account? Login here."
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupAsTeacherBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
 
     <EditText
         android:id="@+id/usernameETSU"
         android:layout_width="290dp"
         android:layout_height="42dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
@@ -75,12 +54,67 @@
         android:id="@+id/confirmPasswordET"
         android:layout_width="290dp"
         android:layout_height="42dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Confirm Password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextSU" />
+
+    <EditText
+        android:id="@+id/emailET"
+        android:layout_width="290dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="7dp"
+        android:ems="10"
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameETSU" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:text="Sign Up"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="199dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="111dp"
+        android:layout_marginTop="7dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordET">
+
+        <RadioButton
+            android:id="@+id/radioButtonTeacher"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Tutor" />
+
+        <RadioButton
+            android:id="@+id/radioButtonStudent"
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:text="Student" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
