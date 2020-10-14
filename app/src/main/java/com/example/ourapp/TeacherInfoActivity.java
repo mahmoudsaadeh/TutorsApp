@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,9 +40,11 @@ public class TeacherInfoActivity extends AppCompatActivity {
         teacherSubject.setText("Subject: Math, physics, chemistry");
         teacherExperience.setText("Experience: BS in math and phy and chem - taught in 4 schools, 2 private and 2 public" +
                 " - 5 yrs in teaching");
-        teacherEmail.setText("Email: test@test.com");
+        teacherEmail.setText(Html.fromHtml("Email:<font color='purple'> test@test.com </font>"));
 
-        teacherPhoneNumber.setText("Phone Number: +961-78-888999");
+
+
+        teacherPhoneNumber.setText(Html.fromHtml("Phone Number:<font color='purple'> +961-78-888999</font>"));
         teacherSalary.setText("Salary: 50 USD / hr");
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
