@@ -1,5 +1,6 @@
 package com.example.ourapp;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,11 +13,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class TeacherFormActivity extends AppCompatActivity {
 
@@ -99,5 +108,47 @@ public class TeacherFormActivity extends AppCompatActivity {
             imageToUpload.setImageURI(selectedImage);
         }
     }
+    /*
+    public  void submitForm(View view){
 
+        FirebaseDatabase database= FirebaseDatabase.getInstance();
+        final DatabaseReference ref=database.getReference("Tutor");
+        EditText name = findViewById(R.id.teacherNameET);
+        EditText email = findViewById(R.id.teacherEmailET);
+        EditText age = findViewById(R.id.teacherAge);
+        EditText address = findViewById(R.id.teacherAddressET);
+        EditText subject = findViewById(R.id.teacherSubjectsET);
+        EditText salary = findViewById(R.id.teacherSalaryET);
+        EditText experience = findViewById(R.id.teacherExperienceET);
+        EditText phoneNumber = findViewById(R.id.teacherPhoneNumET);
+        ImageView photo=findViewById(R.id.teacherPhotoImageView);
+
+
+
+        String tName=name.getText().toString();
+        String tEmail=email.getText().toString();
+        String tAddress=address.getText().toString();
+        int tAge=Integer.parseInt(age.getText().toString());
+        float tSal=Float.parseFloat(salary.getText().toString());
+        String tExp=experience.getText().toString();
+        String tPhoneNum=phoneNumber.getText().toString();
+        final TutorClass tutor=new TutorClass(tName,tEmail,tAddress,tExp,0.0,0.0,tAge);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(tutor);
+            Toast.makeText(TeacherFormActivity.this,"You were successfully registered!",Toast.LENGTH_LONG).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+    }*/
 }

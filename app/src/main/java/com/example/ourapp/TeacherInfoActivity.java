@@ -35,10 +35,11 @@ public class TeacherInfoActivity extends AppCompatActivity {
         EditText teacherPhoneNumber = (EditText) findViewById(R.id.teacherPhone11);
         EditText teacherSalary = (EditText) findViewById(R.id.editTextSalaryNumberSigned);
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-
+        EditText teacherAge = (EditText) findViewById(R.id.teacherAge);
         //teacherName.setText("Name: " + getIntent().getStringExtra("Teacher"));
         teacherName.setText("Name: Talal Dan");
         teacherAddress.setText("Address: Jounieh, Street 55, Lebanon");
+        teacherAge.setText("Age: 31");
         teacherSubject.setText("Subject: Math, physics, chemistry");
         teacherExperience.setText("Experience: BS in math and phy and chem - taught in 4 schools, 2 private and 2 public" +
                 " - 5 yrs in teaching");
