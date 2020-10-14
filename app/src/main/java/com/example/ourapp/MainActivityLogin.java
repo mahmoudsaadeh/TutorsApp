@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,53 +80,64 @@ public class MainActivityLogin extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if(task.isSuccessful()) {
                     //Toast.makeText(MainActivityLogin.this, "login good", Toast.LENGTH_SHORT).show();
 
                     //returns false
                     /*boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
                     Log.d("isnewUser5? ", String.valueOf(isNew));*/
 
-                    //check is user is a tutor or student, and redirect to corresponding screen
-                    String currentuserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    //email verification
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    //if(user.isEmailVerified()) {
+                        //redirect user to profile
+                        //check is user is a tutor or student, and redirect to corresponding screen
+                        String currentuserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentuserId);
+                        databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentuserId);
 
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String userType = snapshot.child("userType").getValue().toString();
-                            if(userType.equalsIgnoreCase("student")){
-                                Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else if(userType.equalsIgnoreCase("tutor")){
-                                //here we should check if tutor has filled the info form previously,
-                                //then redirect her to TeacherEditInfoFrom
-                                //else, open the main form that is TeacherFormActivity
-                                //this check can be done by searching if there is any data
-                                //related to the current tutor id, if not, we should open main form
-                                //else, open the editing form..
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String userType = snapshot.child("userType").getValue().toString();
+                                if (userType.equalsIgnoreCase("student")) {
+                                    Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else if (userType.equalsIgnoreCase("tutor")) {
+                                    //here we should check if tutor has filled the info form previously,
+                                    //then redirect her to TeacherEditInfoFrom
+                                    //else, open the main form that is TeacherFormActivity
+                                    //this check can be done by searching if there is any data
+                                    //related to the current tutor id, if not, we should open main form
+                                    //else, open the editing form..
 
-                                //I will currently redirect tutor to main form until we make
-                                //a new class to get tutor info and save it to db
-                                Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
-                                startActivity(intent);
-                                finish();
-                                //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
+                                    //I will currently redirect tutor to main form until we make
+                                    //a new class to get tutor info and save it to db
+                                    Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                    //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
 
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    //}
+
+                   /* else{
+                        user.sendEmailVerification();
+                        Toast.makeText(MainActivityLogin.this, "Check your email to verify your account.", Toast.LENGTH_SHORT).show();
+                    }*/
 
                     progressBarLogin.setVisibility(View.INVISIBLE);
                 }
-                else{
+                else {
                     Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
                     progressBarLogin.setVisibility(View.INVISIBLE);
                 }
