@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Salary in USD"
-                android:inputType="numberSigned" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/teacherExperienceET"
@@ -130,8 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="25px"
-                android:text="Submit Form"
-               />
+                android:onClick="submitForm"
+                android:text="Submit Form" />
 
         </LinearLayout>
 

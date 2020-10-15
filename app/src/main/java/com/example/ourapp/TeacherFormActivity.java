@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,6 +43,19 @@ public class TeacherFormActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     ImageView imageToUpload;
     Uri selectedImage;
+
+    EditText name;
+    EditText email;
+    EditText age;
+    EditText address;
+    EditText subject;
+    EditText salary;
+    EditText experience;
+    EditText phoneNumber;
+
+    StorageReference ref;
+
+
     public void openGallery(View view) {
         //link to try to get images from gallery for api > 24 phones
         //https://stackoverflow.com/questions/2169649/get-pick-an-image-from-androids-built-in-gallery-app-programmatically
@@ -61,6 +77,15 @@ public class TeacherFormActivity extends AppCompatActivity {
         setTitle("TutorApp - Tutor Info Form");
 
         imageToUpload = (ImageView) findViewById(R.id.teacherPhotoImageView);
+
+        name = findViewById(R.id.teacherNameET);
+        email = findViewById(R.id.teacherEmailET);
+        age = findViewById(R.id.teacherAge);
+        address = findViewById(R.id.teacherAddressET);
+        subject = findViewById(R.id.teacherSubjectsET);
+        salary = findViewById(R.id.teacherSalaryET);
+        experience = findViewById(R.id.teacherExperienceET);
+        phoneNumber = findViewById(R.id.teacherPhoneNumET);
 
     }
 
@@ -122,37 +147,44 @@ public class TeacherFormActivity extends AppCompatActivity {
     }
     public String getFileExtension(Uri uri)
     {
-        ContentResolver cr=getContentResolver();
-        MimeTypeMap mime=MimeTypeMap.getSingleton();
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(uri));
 
     }
-    /*
-    public void uploadImage(ImageView image,Uri uri){
-        String userId=FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final StorageReference ref= FirebaseStorage.getInstance().getReference().child("Images").child(userId+"."+getFileExtension(uri));
+    
+    //hadi
+
+    public void uploadImage(ImageView image,Uri uri) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ref = FirebaseStorage.getInstance().getReference().child("Images").child(userId+"."+getFileExtension(uri));
+
         ref.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
                     @Override
                     public void onSuccess(Uri uri) {
-                    String url=uri.toString();
-                    Log.d("Downloadurl",url);
-                    Toast.makeText(TeacherFormActivity.this,"Image upload successful",Toast.LENGTH_SHORT.show());
+                        String url = uri.toString();
+                        Log.d("Downloadurl", url);
+                        Toast.makeText(TeacherFormActivity.this, "Image upload successful", Toast.LENGTH_SHORT).show();
                     }
-                }
+                });
             }
-        })
+        });
+    }
 
 
+    public  void submitForm (View view){
 
-    public  void submitForm(View view){
+        //FirebaseDatabase database= FirebaseDatabase.getInstance();
 
-        FirebaseDatabase database= FirebaseDatabase.getInstance();
-        final DatabaseReference ref=database.getReference("Tutor");
-        EditText name = findViewById(R.id.teacherNameET);
+        //final DatabaseReference databaseReference = database.getReference("Tutor");
+
+        DatabaseReference databaseReference;
+
+      /*  EditText name = findViewById(R.id.teacherNameET);
         EditText email = findViewById(R.id.teacherEmailET);
         EditText age = findViewById(R.id.teacherAge);
         EditText address = findViewById(R.id.teacherAddressET);
@@ -160,17 +192,21 @@ public class TeacherFormActivity extends AppCompatActivity {
         EditText salary = findViewById(R.id.teacherSalaryET);
         EditText experience = findViewById(R.id.teacherExperienceET);
         EditText phoneNumber = findViewById(R.id.teacherPhoneNumET);
-        ImageView photo=findViewById(R.id.teacherPhotoImageView);
+        ImageView photo = findViewById(R.id.teacherPhotoImageView);*/
 
 
 
-        String tName=name.getText().toString();
-        String tEmail=email.getText().toString();
-        String tAddress=address.getText().toString();
-        int tAge=Integer.parseInt(age.getText().toString());
-        float tSal=Float.parseFloat(salary.getText().toString());
+        String tName = name.getText().toString();
+        String tEmail = email.getText().toString();
+        String tAddress = address.getText().toString();
+        //int tAge=Integer.parseInt(age.getText().toString());
+        String tAge = age.getText().toString();
+        //float tSal=Float.parseFloat(salary.getText().toString());
+        String tSal = salary.getText().toString();
         String tExp=experience.getText().toString();
         String tPhoneNum=phoneNumber.getText().toString();
+        String subj = subject.getText().toString();
+
         if(tName.isEmpty()){
             name.setError("Full name is required!");
             name.requestFocus();
@@ -181,58 +217,84 @@ public class TeacherFormActivity extends AppCompatActivity {
             email.requestFocus();
             return;
         }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(tEmail).matches()){
+            email.setError("Please provide a correct email address!");
+            email.requestFocus();
+            return;
+        }
+
+        if(tAge.isEmpty()){
+            age.setError("Age is required!");
+            age.requestFocus();
+            return;
+        }
+
         if(tAddress.isEmpty()){
             address.setError("Address is required!");
             address.requestFocus();
             return;
         }
-        if(String.valueOf(tAge).isEmpty()){
-            age.setError("Age is required!");
-            age.requestFocus();
+
+        if(subj.isEmpty()){
+            subject.setError("Subject field is required!");
+            subject.requestFocus();
             return;
         }
-        if(String.valueOf(tSal).isEmpty()){
+
+        if(tSal.isEmpty()){
             salary.setError("Salary is required!");
             salary.requestFocus();
             return;
         }
-        if(tPhoneNum.isEmpty()){
-            phoneNumber.setError("Phone number is required!");
-            phoneNumber.requestFocus();
-            return;
-        }
+
         if(tExp.isEmpty()){
             experience.setError("Experience is required!");
             experience.requestFocus();
             return;
         }
 
+        if(tPhoneNum.isEmpty()){
+            phoneNumber.setError("Phone number is required!");
+            phoneNumber.requestFocus();
+            return;
+        }
 
-        final TutorClass tutor=new TutorClass(tName,tEmail,tAddress,tExp,0.0,0.0,tAge);
 
-        ref.addValueEventListener(new ValueEventListener() {
+
+
+        final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp,0.0,0.0, tAge, subj, tPhoneNum, tSal);
+
+        //mahmoud
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Tutor").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference.setValue(tutor);
+        Toast.makeText(this, "Data inserted!", Toast.LENGTH_SHORT).show();
+
+        //uploadImage(photo,selectedImage);
+
+
+        /*databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-            ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(tutor);
-            Toast.makeText(TeacherFormActivity.this,"You were successfully registered!",Toast.LENGTH_LONG).show();
+                //databaseReference.child(FirebaseAuth.getInstance()).setValue(tutor);
+                Toast.makeText(TeacherFormActivity.this,"You were successfully registered!",Toast.LENGTH_LONG).show();
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-
-
-    uploadImage(imageToUpload,selectedImage);
-    }*/
-
-
-
+        });*/
 
 
     }
+
+
+
+}//end class
+
+
+
 
 
 
