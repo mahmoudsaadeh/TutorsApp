@@ -266,9 +266,9 @@ public class TeacherFormActivity extends AppCompatActivity {
         final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp,0.0,0.0, tAge, subj, tPhoneNum, tSal);
 
         //mahmoud
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Tutor").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.setValue(tutor);
-        Toast.makeText(this, "Data inserted!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Data inserted successfully!", Toast.LENGTH_SHORT).show();
 
         //uploadImage(photo,selectedImage);
 
