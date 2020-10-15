@@ -157,7 +157,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     public void uploadImage(ImageView image,Uri uri) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ref = FirebaseStorage.getInstance().getReference().child("Images").child(userId+"."+getFileExtension(uri));
+        ref = FirebaseStorage.getInstance().getReference().child(userId).child("profilePhoto"+"."+getFileExtension(uri));
 
         ref.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -168,7 +168,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         String url = uri.toString();
                         Log.d("Downloadurl", url);
-                        Toast.makeText(TeacherFormActivity.this, "Image upload successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TeacherFormActivity.this, "Image upload successful!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -270,7 +270,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         databaseReference.setValue(tutor);
         Toast.makeText(this, "Data inserted successfully!", Toast.LENGTH_SHORT).show();
 
-        //uploadImage(photo,selectedImage);
+        uploadImage(imageToUpload,selectedImage);
 
 
         /*databaseReference.addValueEventListener(new ValueEventListener() {

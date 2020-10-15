@@ -2,10 +2,12 @@ package com.example.ourapp;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,7 +23,6 @@ import java.util.Locale;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +79,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                 mMap.addMarker(markerOptions);
+
+
             }
         });
     }
+
+
+    //hadi
+    /*
+    public void getLocation(View view){
+        double latitude=mMap.getMyLocation().getLatitude();
+        double longitude=mMap.getMyLocation().getLongitude();
+        Intent intent = new Intent(MapsActivity.this, TeacherFormActivity.class);
+        intent.putExtra("lat", latitude);
+        intent.putExtra("longt", longitude);
+        startActivity(intent);
+
+    }
+*/
 
 }
