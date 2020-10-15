@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +14,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.AuthResult;
@@ -26,12 +31,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class TeacherFormActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     ImageView imageToUpload;
-
+    Uri selectedImage;
     public void openGallery(View view) {
         //link to try to get images from gallery for api > 24 phones
         //https://stackoverflow.com/questions/2169649/get-pick-an-image-from-androids-built-in-gallery-app-programmatically
@@ -104,11 +112,42 @@ public class TeacherFormActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null){
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
             imageToUpload.setImageURI(selectedImage);
+
+
         }
+
+
+    }
+    public String getFileExtension(Uri uri)
+    {
+        ContentResolver cr=getContentResolver();
+        MimeTypeMap mime=MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(uri));
+
     }
     /*
+    public void uploadImage(ImageView image,Uri uri){
+        String userId=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final StorageReference ref= FirebaseStorage.getInstance().getReference().child("Images").child(userId+"."+getFileExtension(uri));
+        ref.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
+
+                    @Override
+                    public void onSuccess(Uri uri) {
+                    String url=uri.toString();
+                    Log.d("Downloadurl",url);
+                    Toast.makeText(TeacherFormActivity.this,"Image upload successful",Toast.LENGTH_SHORT.show());
+                    }
+                }
+            }
+        })
+
+
+
     public  void submitForm(View view){
 
         FirebaseDatabase database= FirebaseDatabase.getInstance();
@@ -132,6 +171,43 @@ public class TeacherFormActivity extends AppCompatActivity {
         float tSal=Float.parseFloat(salary.getText().toString());
         String tExp=experience.getText().toString();
         String tPhoneNum=phoneNumber.getText().toString();
+        if(tName.isEmpty()){
+            name.setError("Full name is required!");
+            name.requestFocus();
+            return;
+        }
+        if(tEmail.isEmpty()){
+            email.setError("Email is required!");
+            email.requestFocus();
+            return;
+        }
+        if(tAddress.isEmpty()){
+            address.setError("Address is required!");
+            address.requestFocus();
+            return;
+        }
+        if(String.valueOf(tAge).isEmpty()){
+            age.setError("Age is required!");
+            age.requestFocus();
+            return;
+        }
+        if(String.valueOf(tSal).isEmpty()){
+            salary.setError("Salary is required!");
+            salary.requestFocus();
+            return;
+        }
+        if(tPhoneNum.isEmpty()){
+            phoneNumber.setError("Phone number is required!");
+            phoneNumber.requestFocus();
+            return;
+        }
+        if(tExp.isEmpty()){
+            experience.setError("Experience is required!");
+            experience.requestFocus();
+            return;
+        }
+
+
         final TutorClass tutor=new TutorClass(tName,tEmail,tAddress,tExp,0.0,0.0,tAge);
 
         ref.addValueEventListener(new ValueEventListener() {
@@ -149,6 +225,15 @@ public class TeacherFormActivity extends AppCompatActivity {
         });
 
 
-
+    uploadImage(imageToUpload,selectedImage);
     }*/
-}
+
+
+
+
+
+    }
+
+
+
+
