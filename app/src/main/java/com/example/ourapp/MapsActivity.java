@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +24,11 @@ import java.util.Locale;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    LatLng chosenLocLatLon;
+    String chosenLocAddress = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return addressLine;
     }
 
+
+
+    public void getLocation(View view){
+        //Log.d("getLoc1","accessed");
+        if(chosenLocLatLon == null || chosenLocAddress.isEmpty()){
+            Toast.makeText(this, "Please choose a location!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            //Log.d("getLoc2","accessed");
+            Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+            intent.putExtra("Latitude", "" + chosenLocLatLon.latitude);
+            intent.putExtra("Longitude", "" + chosenLocLatLon.longitude);
+            intent.putExtra("AddressLine", "" + chosenLocAddress);
+            //Log.d("lat","" + chosenLocLatLon.latitude);
+            //Log.d("lon","" + chosenLocLatLon.longitude);
+            startActivity(intent);
+        }
+
+    }
+
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -66,7 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        //LatLng sydney = new LatLng(-34, 151);
         /*mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
 
@@ -76,10 +103,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
                 markerOptions.title(getCityName(latLng));
+
                 mMap.clear();
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                 mMap.addMarker(markerOptions);
 
+                //getLocation(latLng, getCityName(latLng));
+
+                chosenLocLatLon = latLng;
+                chosenLocAddress = getCityName(latLng);
 
             }
         });

@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -19,9 +22,11 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -53,7 +59,22 @@ public class TeacherFormActivity extends AppCompatActivity {
     EditText experience;
     EditText phoneNumber;
 
+    TextView chosenLocation;
+
     StorageReference ref;
+
+    String lat = "";
+    String lon = "";
+    String addressLine = "";
+
+    String tName;
+    String tEmail;
+    String tAddress;
+    String tAge;
+    String tSal;
+    String tExp;
+    String tPhoneNum;
+    String subj;
 
 
     public void openGallery(View view) {
@@ -68,6 +89,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
         startActivity(intent);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +109,20 @@ public class TeacherFormActivity extends AppCompatActivity {
         experience = findViewById(R.id.teacherExperienceET);
         phoneNumber = findViewById(R.id.teacherPhoneNumET);
 
+        chosenLocation = findViewById(R.id.yourChosenLocation);
+
+        Intent intent = getIntent();
+        lat = intent.getStringExtra("Latitude");
+        lon = intent.getStringExtra("Longitude");
+        addressLine = intent.getStringExtra("AddressLine");
+
+        if(addressLine != null || lat != null || lon != null){
+            chosenLocation.setText(addressLine);
+        }
+
+        /*Log.d("lat2", "" + lat);
+        Log.d("lon2", "" + lon);
+        Log.d("addr2", "" + addressLine);*/
     }
 
 
@@ -140,7 +176,7 @@ public class TeacherFormActivity extends AppCompatActivity {
             selectedImage = data.getData();
             imageToUpload.setImageURI(selectedImage);
 
-
+            uploadImage(selectedImage);
         }
 
 
@@ -158,20 +194,53 @@ public class TeacherFormActivity extends AppCompatActivity {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ref = FirebaseStorage.getInstance().getReference().child(userId).child("profilePhoto"+"."+getFileExtension(uri));
 
+        final ProgressDialog pd = new ProgressDialog(TeacherFormActivity.this);
+        pd.setTitle("Uploading image...");
+        pd.show();
+
+
+        ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                pd.dismiss();
+                Toast.makeText(TeacherFormActivity.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                pd.dismiss();
+                Toast.makeText(TeacherFormActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double progressPercentage = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                pd.setMessage("Progress: " + (int) progressPercentage + "%");
+            }
+        });
+/*
         ref.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-
                     @Override
                     public void onSuccess(Uri uri) {
                         String url = uri.toString();
                         Log.d("Downloadurl", url);
-                        Toast.makeText(TeacherFormActivity.this, "Image upload successful!", Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+                        //Toast.makeText(TeacherFormActivity.this, "Image upload successful!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                double progressPercentage = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                pd.setMessage("Progress: " + (int) progressPercentage + "%");
+            }
         });
+
+ */
     }
 
 
@@ -193,20 +262,25 @@ public class TeacherFormActivity extends AppCompatActivity {
         EditText phoneNumber = findViewById(R.id.teacherPhoneNumET);
         ImageView photo = findViewById(R.id.teacherPhotoImageView);*/
 
-        String tName = name.getText().toString();
-        String tEmail = email.getText().toString();
-        String tAddress = address.getText().toString();
-        String tAge = age.getText().toString();
-        String tSal = salary.getText().toString();
-        String tExp = experience.getText().toString();
-        String tPhoneNum = phoneNumber.getText().toString();
-        String subj = subject.getText().toString();
+        tName = name.getText().toString();
+        tEmail = email.getText().toString();
+        tAddress = address.getText().toString();
+        tAge = age.getText().toString();
+        tSal = salary.getText().toString();
+        tExp = experience.getText().toString();
+        tPhoneNum = phoneNumber.getText().toString();
+        subj = subject.getText().toString();
+
 
         if(tName.isEmpty()){
             name.setError("Full name is required!");
             name.requestFocus();
             return;
         }
+        else{
+
+        }
+
         if(tEmail.isEmpty()){
             email.setError("Email is required!");
             email.requestFocus();
@@ -255,23 +329,34 @@ public class TeacherFormActivity extends AppCompatActivity {
             return;
         }
 
+        if(selectedImage == null){
+            Toast.makeText(this, "You should select an profile photo before you submit!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+       /* else{
+            uploadImage(selectedImage);
+        }*/
+
+        if(addressLine == null || lat == null || lon == null){
+            Toast.makeText(this, "Location required", Toast.LENGTH_SHORT).show();
+            chosenLocation.setError("Location is required!");
+            chosenLocation.requestFocus();
+            return;
+        }
 
 
-
-        final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp,0.0,0.0, tAge, subj, tPhoneNum, tSal);
+        final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp, lat, lon, tAge, subj, tPhoneNum, tSal, addressLine);
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        databaseReference.setValue(tutor);
-
-        if(selectedImage == null){
-            Toast.makeText(this, "You should select an profile photo before you submit!", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            uploadImage(selectedImage);
-            Toast.makeText(this, "Data inserted successfully!", Toast.LENGTH_SHORT).show();
-        }
-
+        databaseReference.setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(TeacherFormActivity.this, "Data inserted successfully!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 

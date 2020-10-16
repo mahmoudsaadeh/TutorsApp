@@ -47,7 +47,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Age"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="3"
+                android:numeric="integer" />
 
             <EditText
                 android:id="@+id/teacherAddressET"
@@ -73,7 +75,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Salary in USD"
-                android:inputType="number" />
+                android:inputType="number"
+                android:numeric="decimal" />
 
             <EditText
                 android:id="@+id/teacherExperienceET"
@@ -90,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Phone Number"
-                android:inputType="numberSigned" />
+                android:inputType="numberSigned"
+                android:numeric="integer" />
 
             <TextView
                 android:id="@+id/uploadImageTextView"
@@ -114,8 +118,18 @@
                 android:id="@+id/chooseLocationTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="11px"
                 android:text="Select your location:"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/yourChosenLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="21px"
+                android:layout_marginTop="15px"
+                android:layout_marginBottom="11px"
+                android:text="Your Location" />
 
             <Button
                 android:id="@+id/goToMapButton"

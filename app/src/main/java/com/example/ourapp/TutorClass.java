@@ -2,12 +2,11 @@ package com.example.ourapp;
 
 
 public class TutorClass {
-    public String name,email,address,experience, subject, phoneNum, age, salary;
-    public double longitude,latitude;
+    public String name,email,address,experience, subject, phoneNum, age, salary, longitude,latitude, location;
 
     public TutorClass(){}
 
-    public TutorClass(String tName, String tEmail, String tAddress, String tExperience, double tLong, double tLat, String tAge, String subject, String phone, String salary){
+    public TutorClass(String tName, String tEmail, String tAddress, String tExperience, String tLat, String tLong, String location, String tAge, String subject, String phone, String salary){
         this.name=tName;
         this.email=tEmail;
         this.address=tAddress;
@@ -18,6 +17,7 @@ public class TutorClass {
         this.subject = subject;
         this.phoneNum = phone;
         this.salary = salary;
+        this.location = location;
     }
 }
 

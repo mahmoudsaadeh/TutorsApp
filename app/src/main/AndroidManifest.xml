@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ResetPasswordActivity"></activity>
+
+        <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".TermsAndConditions" />
         <activity android:name=".PrivacyPolicy" />
         <activity android:name=".TeacherEditInfoForm" />
@@ -41,7 +42,8 @@
         <activity android:name=".TeacherInfoActivity" />
         <activity android:name=".TeachersListActivity" />
         <activity android:name=".MainActivitySignUp" />
-        <activity android:name=".MainActivityLogin">
+        <activity android:name=".MainActivityLogin"/>
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
