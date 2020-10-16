@@ -153,9 +153,8 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     }
     
-    //hadi
 
-    public void uploadImage(ImageView image,Uri uri) {
+    public void uploadImage(Uri uri) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ref = FirebaseStorage.getInstance().getReference().child(userId).child("profilePhoto"+"."+getFileExtension(uri));
 
@@ -194,17 +193,13 @@ public class TeacherFormActivity extends AppCompatActivity {
         EditText phoneNumber = findViewById(R.id.teacherPhoneNumET);
         ImageView photo = findViewById(R.id.teacherPhotoImageView);*/
 
-
-
         String tName = name.getText().toString();
         String tEmail = email.getText().toString();
         String tAddress = address.getText().toString();
-        //int tAge=Integer.parseInt(age.getText().toString());
         String tAge = age.getText().toString();
-        //float tSal=Float.parseFloat(salary.getText().toString());
         String tSal = salary.getText().toString();
-        String tExp=experience.getText().toString();
-        String tPhoneNum=phoneNumber.getText().toString();
+        String tExp = experience.getText().toString();
+        String tPhoneNum = phoneNumber.getText().toString();
         String subj = subject.getText().toString();
 
         if(tName.isEmpty()){
@@ -265,26 +260,17 @@ public class TeacherFormActivity extends AppCompatActivity {
 
         final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp,0.0,0.0, tAge, subj, tPhoneNum, tSal);
 
-        //mahmoud
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.setValue(tutor);
-        Toast.makeText(this, "Data inserted successfully!", Toast.LENGTH_SHORT).show();
 
-        uploadImage(imageToUpload,selectedImage);
-
-
-        /*databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //databaseReference.child(FirebaseAuth.getInstance()).setValue(tutor);
-                Toast.makeText(TeacherFormActivity.this,"You were successfully registered!",Toast.LENGTH_LONG).show();
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
+        if(selectedImage == null){
+            Toast.makeText(this, "You should select an profile photo before you submit!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            uploadImage(selectedImage);
+            Toast.makeText(this, "Data inserted successfully!", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
