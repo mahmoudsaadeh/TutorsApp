@@ -4,14 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
+import android.se.omapi.Session;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivityLogin extends AppCompatActivity {
+public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
@@ -42,7 +42,33 @@ public class MainActivityLogin extends AppCompatActivity {
     TextView signupLink;
     TextView resetPassword;
 
+
     ProgressBar progressBarLogin;
+
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
+        int userID=sessionManagement.getSession();
+        if (userID==1){ //student
+            Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
+
+            startActivity(intent);
+            finish();
+        }
+        else if(userID==2){//tutor
+            Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+
+            startActivity(intent);
+            finish();
+             }
+
+
+    }
+
+
+
 
     public void login (View view) {
         //Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
@@ -67,6 +93,13 @@ public class MainActivityLogin extends AppCompatActivity {
 
         if(pass.isEmpty()){
             password.setError("Password is required!");
+            password.requestFocus();
+            return;
+        }
+
+        //not necessary
+        if(pass.length() < 6){
+            password.setError("Minimum password length is 6 characters!");
             password.requestFocus();
             return;
         }
@@ -97,7 +130,16 @@ public class MainActivityLogin extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 String userType = snapshot.child("userType").getValue().toString();
                                 if (userType.equalsIgnoreCase("student")) {
+
+                                    int id=1;
+
+                                    SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
+                                    sessionManagement.saveSession(id);
+
                                     Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
+
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                                     startActivity(intent);
                                     finish();
                                 } else if (userType.equalsIgnoreCase("tutor")) {
@@ -110,7 +152,19 @@ public class MainActivityLogin extends AppCompatActivity {
 
                                     //I will currently redirect tutor to main form until we make
                                     //a new class to get tutor info and save it to db
+
+
+                                    int id=2;
+
+                                    SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
+                                    sessionManagement.saveSession(id);
+
+
+
+
+
                                     Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
                                     finish();
                                     //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
@@ -159,6 +213,8 @@ public class MainActivityLogin extends AppCompatActivity {
 
         progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
 
+
+
         signupLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,24 +230,6 @@ public class MainActivityLogin extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        password.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    // Perform action on key press
-                    try {
-                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                    } catch (Exception e) {
-
-                    }
-                    return true;
-                }
-                return false;
             }
         });
 

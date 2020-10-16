@@ -51,6 +51,8 @@ public class PrivacyPolicy extends AppCompatActivity {
 
                 if(FirebaseAuth.getInstance().getCurrentUser() == null){
                     Log.d("signout","successful");
+                    SessionManagement sessionManagement=new SessionManagement(PrivacyPolicy.this);
+                    sessionManagement.removeSession();
                     Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent3);
