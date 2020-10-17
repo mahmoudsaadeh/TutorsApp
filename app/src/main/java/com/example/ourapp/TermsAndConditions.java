@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -55,6 +56,16 @@ public class TermsAndConditions extends AppCompatActivity {
                     sessionManagement.removeSession();
                     Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    try {
+                        SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
+                        sqLiteDatabase.execSQL("DELETE FROM tutorData");
+                        sqLiteDatabase.close();
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     startActivity(intent3);
                 }else{
                     Log.d("signout","failed");

@@ -3,6 +3,7 @@ package com.example.ourapp;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,7 +75,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             intent.putExtra("AddressLine", "" + chosenLocAddress);
             //Log.d("lat","" + chosenLocLatLon.latitude);
             //Log.d("lon","" + chosenLocLatLon.longitude);
+
+            Log.d("maps", "test1");
+
+            try {
+
+                SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
+
+                sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS tutorData (id VARCHAR, name VARCHAR, mail VARCHAR, age VARCHAR, address VARCHAR, subjects VARCHAR, salary VARCHAR, experience VARCHAR, phone VARCHAR, imgURI VARCHAR, location VARCHAR, longitude VARCHAR, latitude VARCHAR)");
+
+                sqLiteDatabase.execSQL("UPDATE tutorData SET location = '" + chosenLocAddress + "', longitude = '" + chosenLocLatLon.longitude
+                        + "', latitude = '" + chosenLocLatLon.latitude + "' WHERE id = '" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "'");
+
+                Log.d("maps", "test2");
+
+                sqLiteDatabase.close();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
             startActivity(intent);
+            finish();
         }
 
     }

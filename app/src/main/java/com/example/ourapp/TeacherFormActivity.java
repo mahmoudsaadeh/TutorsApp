@@ -9,6 +9,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -16,6 +18,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,6 +79,10 @@ public class TeacherFormActivity extends AppCompatActivity {
     String tPhoneNum;
     String subj;
 
+    //deleted TeacherEditInfoForm Activity
+    //will use if else statements to change TextView's texts in OnCreate
+
+
 
     public void openGallery(View view) {
         //link to try to get images from gallery for api > 24 phones
@@ -85,10 +92,86 @@ public class TeacherFormActivity extends AppCompatActivity {
         startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
     }
 
+
+
+
+    private boolean checkForTableExists(SQLiteDatabase db, String table){
+        String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+table+"'";
+        Cursor mCursor = db.rawQuery(sql, null);
+        if (mCursor.getCount() > 0) {
+            return true;
+        }
+        mCursor.close();
+        return false;
+    }
+
+
+
+
     public void goToMap(View view){
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+
+        try {
+
+            SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
+
+            boolean checkTableExist = checkForTableExists(sqLiteDatabase, "tutorData");
+
+            Log.d("gotomap","1");
+
+            if(checkTableExist){
+                //sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS tutorData (id VARCHAR, name VARCHAR, mail VARCHAR, age VARCHAR, address VARCHAR, subjects VARCHAR, salary VARCHAR, experience VARCHAR, phone VARCHAR, imgURI VARCHAR, location VARCHAR, longitude VARCHAR, latitude VARCHAR)");
+
+                Log.d("gotomap","1.5");
+
+                Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM tutorData WHERE id = '" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "' LIMIT 1", null);
+                if (cursor.getCount() > 0) {
+
+                    Log.d("gotomapp", "2");
+                    sqLiteDatabase.execSQL("UPDATE tutorData SET name = '" + name.getText().toString() + "', mail = '" +
+                            email.getText().toString() + "', age = '" + age.getText().toString() + "', address = '" +
+                            address.getText().toString() + "', subjects = '" + subject.getText().toString() + "', " +
+                            "salary = '" + salary.getText().toString() + "', experience = '" + experience.getText().toString() + "', " +
+                            "phone = '" + phoneNumber.getText().toString() + "', imgURI = '" + selectedImage + "'");
+                }
+                else{
+                    Log.d("gotomappz", "3");
+                    sqLiteDatabase.execSQL("INSERT INTO tutorData (id, name,mail,age,address,subjects,salary,experience,phone,imgURI) " +
+                            "VALUES ('" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "', '" + name.getText().toString() + "', '" +
+                            email.getText().toString() + "', '" + age.getText().toString() + "', '" +
+                            address.getText().toString() + "', '" + subject.getText().toString() + "', '" + salary.getText().toString() + "', '" +
+                            experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + selectedImage + "')");
+
+                }
+            }
+            else {
+                Log.d("gotomap","3");
+                sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS tutorData (id VARCHAR, name VARCHAR, mail VARCHAR, age VARCHAR, address VARCHAR, subjects VARCHAR, salary VARCHAR, experience VARCHAR, phone VARCHAR, imgURI VARCHAR, location VARCHAR, longitude VARCHAR, latitude VARCHAR)");
+
+                sqLiteDatabase.execSQL("INSERT INTO tutorData (id, name,mail,age,address,subjects,salary,experience,phone,imgURI) " +
+                        "VALUES ('" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "', '" + name.getText().toString() + "', '" +
+                        email.getText().toString() + "', '" + age.getText().toString() + "', '" +
+                        address.getText().toString() + "', '" + subject.getText().toString() + "', '" + salary.getText().toString() + "', '" +
+                        experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + selectedImage + "')");
+
+
+            }
+            sqLiteDatabase.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
         startActivity(intent);
+        finish();
     }
+
+
+
+
+
+
+
 
 
     @Override
@@ -96,7 +179,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_form);
 
-        setTitle("TutorApp - Tutor Info Form");
+        setTitle("TutorApp - " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + " Info Form");
 
         imageToUpload = (ImageView) findViewById(R.id.teacherPhotoImageView);
 
@@ -111,19 +194,92 @@ public class TeacherFormActivity extends AppCompatActivity {
 
         chosenLocation = findViewById(R.id.yourChosenLocation);
 
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         lat = intent.getStringExtra("Latitude");
         lon = intent.getStringExtra("Longitude");
         addressLine = intent.getStringExtra("AddressLine");
 
         if(addressLine != null || lat != null || lon != null){
             chosenLocation.setText(addressLine);
+        }*/
+
+        try {
+            SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
+
+            if(checkForTableExists(sqLiteDatabase, "tutorData")){
+                Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM tutorData WHERE id = '" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "' LIMIT 1", null);
+
+                Log.d("cursor1", "acccessed");
+                Log.d("getcount", String.valueOf(cursor.getCount()));
+
+                if (cursor.getCount() > 0) {
+
+                    Log.d("cursor2", "acccessed");
+
+                    int idIndex = cursor.getColumnIndex("id");
+                    int nameIndex = cursor.getColumnIndex("name");
+                    int mailIndex = cursor.getColumnIndex("mail");
+                    int ageIndex = cursor.getColumnIndex("age");
+                    int addressIndex = cursor.getColumnIndex("address");
+                    int subjectsIndex = cursor.getColumnIndex("subjects");
+                    int salaryIndex = cursor.getColumnIndex("salary");
+                    int experienceIndex = cursor.getColumnIndex("experience");
+                    int phoneIndex = cursor.getColumnIndex("phone");
+                    int imgUriIndex = cursor.getColumnIndex("imgURI");
+                    int locationIndex = cursor.getColumnIndex("location");
+                    int lonIndex = cursor.getColumnIndex("longitude");
+                    int latIndex = cursor.getColumnIndex("latitude");
+
+                    cursor.moveToFirst();
+
+                    Log.i("id", cursor.getString(idIndex));
+                    Log.i("name", cursor.getString(nameIndex));
+                    Log.i("mail", cursor.getString(mailIndex));
+                    Log.i("age", cursor.getString(ageIndex));
+                    Log.i("address", cursor.getString(addressIndex));
+                    Log.i("subjects", cursor.getString(subjectsIndex));
+                    Log.i("salary", cursor.getString(salaryIndex));
+                    Log.i("experience", cursor.getString(experienceIndex));
+                    Log.i("phone", cursor.getString(phoneIndex));
+                    Log.i("imgUri", cursor.getString(imgUriIndex));
+                    Log.i("location", cursor.getString(locationIndex));
+                    Log.i("lon", cursor.getString(lonIndex));
+                    Log.i("lat", cursor.getString(latIndex));
+
+                    name.setText(cursor.getString(nameIndex));
+                    email.setText(cursor.getString(mailIndex));
+                    age.setText(cursor.getString(ageIndex));
+                    address.setText(cursor.getString(addressIndex));
+                    subject.setText(cursor.getString(subjectsIndex));
+                    salary.setText(cursor.getString(salaryIndex));
+                    experience.setText(cursor.getString(experienceIndex));
+                    phoneNumber.setText(cursor.getString(phoneIndex));
+                    chosenLocation.setText(cursor.getString(locationIndex));
+
+                    //if(lat.equals("") && lon.equals("")) {
+                    lon = cursor.getColumnName(locationIndex);
+                    lat = cursor.getColumnName(latIndex);
+                    addressLine = cursor.getColumnName(locationIndex);
+                    //}
+            /*if(cursor.getString(imgUriIndex) != null){
+                selectedImage = Uri.parse(cursor.getString(imgUriIndex));
+                imageToUpload.setImageURI(selectedImage);
+            }*/
+
+                    cursor.close();
+                }
+            }
+            sqLiteDatabase.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
 
-        /*Log.d("lat2", "" + lat);
-        Log.d("lon2", "" + lon);
-        Log.d("addr2", "" + addressLine);*/
     }
+
+
+
+
 
 
 
@@ -145,7 +301,6 @@ public class TeacherFormActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.logoutMenuItem:
-                //Log.d("logout1","accessed");
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Log.d("checkuser","" + user.getEmail());
                 FirebaseAuth.getInstance().signOut();
@@ -156,6 +311,16 @@ public class TeacherFormActivity extends AppCompatActivity {
                     sessionManagement.removeSession();
                     Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    try {
+                        SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
+                        sqLiteDatabase.execSQL("DELETE FROM tutorData");
+                        sqLiteDatabase.close();
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     startActivity(intent3);
                 }else{
                     Log.d("signout","failed");
@@ -170,6 +335,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -178,11 +344,14 @@ public class TeacherFormActivity extends AppCompatActivity {
             selectedImage = data.getData();
             imageToUpload.setImageURI(selectedImage);
 
-            uploadImage(selectedImage);
+            //uploadImage(selectedImage);
         }
-
-
     }
+
+
+
+
+
     public String getFileExtension(Uri uri)
     {
         ContentResolver cr = getContentResolver();
@@ -190,7 +359,8 @@ public class TeacherFormActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cr.getType(uri));
 
     }
-    
+
+
 
     public void uploadImage(Uri uri) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -199,7 +369,6 @@ public class TeacherFormActivity extends AppCompatActivity {
         final ProgressDialog pd = new ProgressDialog(TeacherFormActivity.this);
         pd.setTitle("Uploading image...");
         pd.show();
-
 
         ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -216,53 +385,21 @@ public class TeacherFormActivity extends AppCompatActivity {
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progressPercentage = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                pd.setMessage("Progress: " + (int) progressPercentage + "%");
-            }
-        });
-/*
-        ref.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String url = uri.toString();
-                        Log.d("Downloadurl", url);
-                        pd.dismiss();
-                        //Toast.makeText(TeacherFormActivity.this, "Image upload successful!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progressPercentage = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                double progressPercentage = (100.0 * (snapshot.getBytesTransferred() * 1.0 / snapshot.getTotalByteCount()));
                 pd.setMessage("Progress: " + (int) progressPercentage + "%");
             }
         });
 
- */
     }
+
+
+
+
 
 
     public  void submitForm (View view){
 
-        //FirebaseDatabase database= FirebaseDatabase.getInstance();
-
-        //final DatabaseReference databaseReference = database.getReference("Tutor");
-
         DatabaseReference databaseReference;
-
-      /*  EditText name = findViewById(R.id.teacherNameET);
-        EditText email = findViewById(R.id.teacherEmailET);
-        EditText age = findViewById(R.id.teacherAge);
-        EditText address = findViewById(R.id.teacherAddressET);
-        EditText subject = findViewById(R.id.teacherSubjectsET);
-        EditText salary = findViewById(R.id.teacherSalaryET);
-        EditText experience = findViewById(R.id.teacherExperienceET);
-        EditText phoneNumber = findViewById(R.id.teacherPhoneNumET);
-        ImageView photo = findViewById(R.id.teacherPhotoImageView);*/
 
         tName = name.getText().toString();
         tEmail = email.getText().toString();
@@ -335,15 +472,16 @@ public class TeacherFormActivity extends AppCompatActivity {
             Toast.makeText(this, "You should select an profile photo before you submit!", Toast.LENGTH_SHORT).show();
             return;
         }
-       /* else{
-            uploadImage(selectedImage);
-        }*/
-
-        if(addressLine == null || lat == null || lon == null){
-            Toast.makeText(this, "Location required", Toast.LENGTH_SHORT).show();
-            chosenLocation.setError("Location is required!");
-            chosenLocation.requestFocus();
-            return;
+        else{
+            if(addressLine == null || lat == null || lon == null){
+                Toast.makeText(this, "Location required", Toast.LENGTH_SHORT).show();
+                chosenLocation.setError("Location is required!");
+                chosenLocation.requestFocus();
+                return;
+            }
+            else {
+                uploadImage(selectedImage);
+            }
         }
 
 

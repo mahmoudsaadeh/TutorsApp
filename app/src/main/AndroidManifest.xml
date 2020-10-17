@@ -22,7 +22,6 @@
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".TermsAndConditions" />
         <activity android:name=".PrivacyPolicy" />
-        <activity android:name=".TeacherEditInfoForm" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
