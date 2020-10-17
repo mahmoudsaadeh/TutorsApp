@@ -87,6 +87,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     public void goToMap(View view){
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+
         startActivity(intent);
     }
 
@@ -115,6 +116,8 @@ public class TeacherFormActivity extends AppCompatActivity {
         lat = intent.getStringExtra("Latitude");
         lon = intent.getStringExtra("Longitude");
         addressLine = intent.getStringExtra("AddressLine");
+
+
 
         if(addressLine != null || lat != null || lon != null){
             chosenLocation.setText(addressLine);
