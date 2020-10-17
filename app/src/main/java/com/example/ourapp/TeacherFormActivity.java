@@ -257,9 +257,9 @@ public class TeacherFormActivity extends AppCompatActivity {
                     chosenLocation.setText(cursor.getString(locationIndex));
 
                     //if(lat.equals("") && lon.equals("")) {
-                    lon = cursor.getColumnName(locationIndex);
-                    lat = cursor.getColumnName(latIndex);
-                    addressLine = cursor.getColumnName(locationIndex);
+                    lon = cursor.getString(lonIndex);
+                    lat = cursor.getString(latIndex);
+                    addressLine = cursor.getString(locationIndex);
                     //}
             /*if(cursor.getString(imgUriIndex) != null){
                 selectedImage = Uri.parse(cursor.getString(imgUriIndex));
@@ -484,8 +484,10 @@ public class TeacherFormActivity extends AppCompatActivity {
             }
         }
 
+        Log.d("latz", "submitForm: " + lat);
+        Log.d("lonz", "submitForm: " + lon);
 
-        final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp, lat, lon, tAge, subj, tPhoneNum, tSal, addressLine);
+        final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp, lat, lon, addressLine, tAge, subj, tPhoneNum, tSal);
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
