@@ -77,6 +77,15 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         /*Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
         startActivity(intent);*/
 
+        // hide keyboard if button is pressed
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+        }
+
+
+
         String email = username.getText().toString().trim();
         String pass = password.getText().toString().trim();
 
@@ -201,7 +210,14 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        try
+        {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){}
+
         setContentView(R.layout.activity_main);
 
         setTitle("TutorApp - Login");
