@@ -64,7 +64,8 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     TextView chosenLocation;
 
-    StorageReference ref;
+    StorageReference storageReference;
+    DatabaseReference databaseReference;
 
     String lat = "";
     String lon = "";
@@ -79,6 +80,10 @@ public class TeacherFormActivity extends AppCompatActivity {
     String tPhoneNum;
     String subj;
 
+    String imageUrl = "";
+
+
+    double progressPercentage;
     //deleted TeacherEditInfoForm Activity
     //will use if else statements to change TextView's texts in OnCreate
 
@@ -357,24 +362,42 @@ public class TeacherFormActivity extends AppCompatActivity {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(uri));
-
     }
 
 
 
     public void uploadImage(Uri uri) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ref = FirebaseStorage.getInstance().getReference().child(userId).child("profilePhoto"+"."+getFileExtension(uri));
+        storageReference = FirebaseStorage.getInstance().getReference().child(userId).child("profilePhoto"+"."+getFileExtension(uri));
 
         final ProgressDialog pd = new ProgressDialog(TeacherFormActivity.this);
         pd.setTitle("Uploading image...");
         pd.show();
 
-        ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 pd.dismiss();
                 Toast.makeText(TeacherFormActivity.this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
+
+                Log.i("test1","reached");
+                if (taskSnapshot.getMetadata() != null) {
+                    Log.i("test2","reached");
+                    if (taskSnapshot.getMetadata().getReference() != null) {
+                        Log.i("test3","reached");
+                        Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                        result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                imageUrl = uri.toString();
+                                Log.i("test4","reached");
+                                Log.i("imgurl","" + imageUrl);
+                            }
+                        });
+
+                    }
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -385,7 +408,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progressPercentage = (100.0 * (snapshot.getBytesTransferred() * 1.0 / snapshot.getTotalByteCount()));
+                progressPercentage = (100.0 * (snapshot.getBytesTransferred() * 1.0 / snapshot.getTotalByteCount()));
                 pd.setMessage("Progress: " + (int) progressPercentage + "%");
             }
         });
@@ -398,8 +421,6 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
     public  void submitForm (View view){
-
-        DatabaseReference databaseReference;
 
         tName = name.getText().toString();
         tEmail = email.getText().toString();
@@ -415,9 +436,6 @@ public class TeacherFormActivity extends AppCompatActivity {
             name.setError("Full name is required!");
             name.requestFocus();
             return;
-        }
-        else{
-
         }
 
         if(tEmail.isEmpty()){
@@ -487,8 +505,14 @@ public class TeacherFormActivity extends AppCompatActivity {
         Log.d("latz", "submitForm: " + lat);
         Log.d("lonz", "submitForm: " + lon);
 
-        final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp, lat, lon, addressLine, tAge, subj, tPhoneNum, tSal);
 
+        /*while (imageUrl.isEmpty()){
+            Log.i("waiting for image to upload","waiting");
+        }*/
+
+        final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp, lat, lon, addressLine, tAge, subj, tPhoneNum, tSal, imageUrl);
+
+        Log.i("imgURL2", "" + imageUrl);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         databaseReference.setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {

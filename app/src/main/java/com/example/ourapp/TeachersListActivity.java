@@ -1,12 +1,17 @@
 package com.example.ourapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,17 +21,37 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TeachersListActivity extends AppCompatActivity {
 
-    private static final String TAG = "TeachersListActivity";
+    //private static final String TAG = "TeachersListActivity";
 
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+
+    private ArrayList<String> tutorsIds = new ArrayList<>();
+
+    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,40 +60,43 @@ public class TeachersListActivity extends AppCompatActivity {
 
         setTitle("TutorApp - Tutors List");
 
-        Log.d(TAG, "onCreate: started");
+        //tutorsIds.clear();
 
-
-        initializeImageBitmaps();
-
-        /*ListView teachersListView = (ListView) findViewById(R.id.teachersListView);
-
-        final ArrayList<String> teachersAL = new ArrayList<String>();
-        for(int i=0;i<5;i++) {
-            teachersAL.add("Jumana");
-            teachersAL.add("Ahmad");
-            teachersAL.add("Talal");
-            teachersAL.add("Fadia");
-            teachersAL.add("Randa");
-        }
-
-        ArrayAdapter<String> teachersAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, teachersAL);
-
-        teachersListView.setAdapter(teachersAdapter);
-
-        teachersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("TutorFormInfo");
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(TeachersListActivity.this, teachersAL.get(position), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), TeacherInfoActivity.class);
-                intent.putExtra("Teacher", teachersAL.get(position) + "");
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int i = 1;
+                for(DataSnapshot postSnapshot : snapshot.getChildren()){
+                    tutorsIds.add(postSnapshot.getKey());
+                    Log.i("tutorsId" + i, postSnapshot.getKey());
+                    i++;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-*/
+
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something here
+                initializeImageBitmaps();
+            }
+        }, 2000);
+
 
 
     }
+
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,15 +133,22 @@ public class TeachersListActivity extends AppCompatActivity {
                     Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
                 }
 
+                tutorsIds.clear();
+
                 break;
         }
         return true;
         //return super.onOptionsItemSelected(item);
     }
 
-    private void initializeImageBitmaps(){
-        Log.d(TAG, "preparing bitmaps");
 
+
+
+
+
+    private void initializeImageBitmaps(){
+        Log.d("initializeBitmapFunc", "preparing bitmaps");
+/*
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
         mNames.add("Havasu Falls");
 
@@ -142,18 +177,94 @@ public class TeachersListActivity extends AppCompatActivity {
 
         mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
         mNames.add("Washington");
+*/
 
-        initRecyclerView();
+        Log.d("tutirIdAL size", tutorsIds.size() + "");
+/*
+        databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(0));
+        databaseReference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.i("childrenCount", "" + snapshot.getChildrenCount());//12
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+*/
+
+        for(int k = 0;k<tutorsIds.size();k++){
+            //databaseReference2 = FirebaseDatabase.getInstance().getReference().child(tutorsIds.get(0));
+            databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(k));
+            Log.d("loop1", "for loop 1");
+            databaseReference2.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Log.d("outsideLoop2", "outside loop2");
+                    int n=0;
+
+                    if(snapshot.hasChildren()){
+                        Log.d("hasChildren", "yes");
+                    }
+                    if(snapshot.exists()){
+                        Log.d("snapshot", "exists");
+                    }
+                    Log.d("childrenCount", "" + snapshot.getChildrenCount());//0
+
+
+                    mNames.add(snapshot.child("name").getValue().toString());
+                    mImageUrls.add(snapshot.child("imageUrl").getValue().toString());
+
+                    Log.i("tname" + n, mNames.get(n));
+                    Log.i("tnamez" + n, snapshot.child("name").getValue().toString());
+                    Log.i("turl" + n, mImageUrls.get(n));
+                    Log.i("turlz" + n, snapshot.child("imageUrl").getValue().toString());
+
+                    n++;
+
+                    /*for(DataSnapshot postSnapshot : snapshot.getChildren()){
+                        Log.d("loop2", "fot loop 2");
+
+                        mNames.add(postSnapshot.child("name").getValue().toString());
+                        mImageUrls.add(postSnapshot.child("imageUrl").getValue().toString());
+                        Log.i("tname" + n, mNames.get(n));
+                        Log.i("tnamez" + n, postSnapshot.child("name").getValue().toString());
+                        Log.i("turl" + n, mImageUrls.get(n));
+                        Log.i("turlz" + n, postSnapshot.child("imageUrl").getValue().toString());
+                    }*/
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something here
+                initRecyclerView();
+            }
+        }, 1500);
+
+        //initRecyclerView();
 
     }
 
     private void initRecyclerView(){
-        Log.d(TAG, "initRecyclerView: initializing staggered recyclerview.");
+        Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mNames,mImageUrls,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        //Log.d("AL size", tutorsIds.size() + "");
     }
 
 }
