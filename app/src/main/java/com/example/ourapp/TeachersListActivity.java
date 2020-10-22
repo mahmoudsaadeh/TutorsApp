@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -52,7 +55,6 @@ public class TeachersListActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReference2;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,8 @@ public class TeachersListActivity extends AppCompatActivity {
         setTitle("TutorApp - Tutors List");
 
         //tutorsIds.clear();
+
+        //Log.i("rate", TeacherInfoActivity.finalTutorRate);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorFormInfo");
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -81,6 +85,7 @@ public class TeachersListActivity extends AppCompatActivity {
         });
 
 
+        //a delay was added because it's taking time to get tutors' ids from db
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -89,10 +94,7 @@ public class TeachersListActivity extends AppCompatActivity {
             }
         }, 2000);
 
-
-
     }
-
 
 
 
@@ -260,7 +262,7 @@ public class TeachersListActivity extends AppCompatActivity {
         Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mNames,mImageUrls,this);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mNames,mImageUrls,this, tutorsIds);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
 

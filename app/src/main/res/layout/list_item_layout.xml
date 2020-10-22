@@ -29,7 +29,7 @@
         style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="225dp"
+        android:layout_marginStart="211dp"
         android:layout_marginTop="51dp"
         android:layout_toEndOf="@id/recyclerViewCircularImage"
         android:isIndicator="true"
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="255dp"
+        android:layout_marginStart="241dp"
         android:layout_toEndOf="@id/recyclerViewCircularImage"
         android:text="4.7" />
 
