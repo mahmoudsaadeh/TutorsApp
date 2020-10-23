@@ -200,11 +200,11 @@ public class TeachersListActivity extends AppCompatActivity {
         for(int k = 0;k<tutorsIds.size();k++){
             //databaseReference2 = FirebaseDatabase.getInstance().getReference().child(tutorsIds.get(0));
             databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(k));
-            Log.d("loop1", "for loop 1");
+            //Log.d("loop1", "for loop 1");
             databaseReference2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.d("outsideLoop2", "outside loop2");
+                    //Log.d("outsideLoop2", "outside loop2");
                     int n=0;
 
                     if(snapshot.hasChildren()){
@@ -213,16 +213,16 @@ public class TeachersListActivity extends AppCompatActivity {
                     if(snapshot.exists()){
                         Log.d("snapshot", "exists");
                     }
-                    Log.d("childrenCount", "" + snapshot.getChildrenCount());//0
+                    //Log.d("childrenCount", "" + snapshot.getChildrenCount());//0
 
 
                     mNames.add(snapshot.child("name").getValue().toString());
                     mImageUrls.add(snapshot.child("imageUrl").getValue().toString());
 
-                    Log.i("tname" + n, mNames.get(n));
+                    /*Log.i("tname" + n, mNames.get(n));
                     Log.i("tnamez" + n, snapshot.child("name").getValue().toString());
                     Log.i("turl" + n, mImageUrls.get(n));
-                    Log.i("turlz" + n, snapshot.child("imageUrl").getValue().toString());
+                    Log.i("turlz" + n, snapshot.child("imageUrl").getValue().toString());*/
 
                     n++;
 
@@ -259,7 +259,7 @@ public class TeachersListActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-        Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
+        //Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mNames,mImageUrls,this, tutorsIds);

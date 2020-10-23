@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,10 +30,12 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
 
     private static final String TAG = "RecyclerViewAdapter";//used for debugging - a static logtag with our class name
 
-    private ArrayList<String> imagesNames = new ArrayList<>();
-    private ArrayList<String> images = new ArrayList<>();
+    //float prevStudentRate;
 
-    private ArrayList<String> ids = new ArrayList<>();
+    private ArrayList<String> imagesNames;
+    private ArrayList<String> images;
+
+    private ArrayList<String> ids;
 
     private Context context;
 
@@ -63,7 +66,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
 
         holder.teachersName.setText(imagesNames.get(position));
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,11 +76,21 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
                         String rate = snapshot.child(ids.get(position)).child("rating").getValue().toString();
                         holder.teachersRating.setText(rate);
                         holder.rvTeacherRating.setRating(Float.parseFloat(rate));
+
+                        databaseReference.removeEventListener(this);
+                    }
+                    else {
+                        holder.teachersRating.setText("0.0");
+                        holder.rvTeacherRating.setRating(0);
+
+                        databaseReference.removeEventListener(this);
                     }
                 }
                 else {
                     holder.teachersRating.setText("0.0");
                     holder.rvTeacherRating.setRating(0);
+
+                    databaseReference.removeEventListener(this);
                 }
             }
 
@@ -92,8 +105,39 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
             public void onClick(View view) {
                 Log.d(TAG, "clicked on: " + imagesNames.get(position));
                 //Toast.makeText(context, "" + imagesNames.get(position), Toast.LENGTH_SHORT).show();
+/*
+                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorsRating");
+
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                            Log.i("1","1");
+                            if(snapshot.child(ids.get(position)).exists()) {
+                                Log.i("2","2");
+                                if (snapshot.child(ids.get(position)).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
+                                    prevStudentRate = Float.parseFloat(snapshot.child(ids.get(position)).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString());
+                                    Log.i("rateFromAdapter1", prevStudentRate + "");
+                                }
+                            }
+                        }
+                        else {
+                            prevStudentRate = 0;
+                        }
+
+                        //reference.removeEventListener(this);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });*/
+
                 Intent intent = new Intent(context, TeacherInfoActivity.class);
                 intent.putExtra("tutorId", ids.get(position));
+                //intent.putExtra("prevStudentRate", prevStudentRate);
+                //Log.i("rateFromAdapter2", prevStudentRate + "");
                 context.startActivity(intent);
             }
         });

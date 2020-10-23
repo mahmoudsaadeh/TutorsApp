@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ourapp">
+
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -19,9 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ResetPasswordActivity" />
-        <activity android:name=".TermsAndConditions" />
-        <activity android:name=".PrivacyPolicy" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -35,14 +33,21 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".StudentMapsActivity"
+            android:label="@string/title_activity_student_maps"></activity>
+        <activity android:name=".ResetPasswordActivity" />
+        <activity android:name=".TermsAndConditions" />
+        <activity android:name=".PrivacyPolicy" />
+        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".TeacherFormActivity" />
-        <activity android:name=".TeacherInfoActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".TeacherInfoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".TeachersListActivity" />
         <activity android:name=".MainActivitySignUp" />
-        <activity android:name=".MainActivityLogin"/>
+        <activity android:name=".MainActivityLogin" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

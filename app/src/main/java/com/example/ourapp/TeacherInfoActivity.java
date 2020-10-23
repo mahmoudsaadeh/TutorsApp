@@ -9,6 +9,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.text.Html;
 import android.util.Log;
@@ -36,12 +38,27 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
     //tutor id
     String id;
+    float previousStudentRate;
 
-    //public static String finalTutorRate = "0";
+    DatabaseReference reference;
 
     DatabaseReference databaseReference;
 
+    DatabaseReference updateData;
+
+    DatabaseReference setRatingBarValueReference;
+
     RatingBar ratingBar;
+
+    EditText teacherName;
+    EditText teacherAddress;
+    EditText teacherSubject;
+    EditText teacherExperience;
+    EditText teacherEmail;
+    EditText teacherPhoneNumber;
+    EditText teacherSalary;
+    EditText teacherAge;
+    ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,52 +69,126 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("tutorId");
+        //previousStudentRate = intent.getFloatExtra("prevStudentRate", 0);
 
-        final EditText teacherName = (EditText) findViewById(R.id.teacherNameETMultiLine);
-        final EditText teacherAddress = (EditText) findViewById(R.id.teacherAddressETMultiLine);
-        final EditText teacherSubject = (EditText) findViewById(R.id.teacherSubjectsETMultiLine);
-        final EditText teacherExperience = (EditText) findViewById(R.id.teacherExperienceETMultiLine);
-        final EditText teacherEmail = (EditText) findViewById(R.id.teacherEmail11);
-        final EditText teacherPhoneNumber = (EditText) findViewById(R.id.teacherPhone11);
-        final EditText teacherSalary = (EditText) findViewById(R.id.editTextSalaryNumberSigned);
+        //Log.i("ratezz", String.valueOf(previousStudentRate));
+
+        teacherName = (EditText) findViewById(R.id.teacherNameETMultiLine);
+        teacherAddress = (EditText) findViewById(R.id.teacherAddressETMultiLine);
+        teacherSubject = (EditText) findViewById(R.id.teacherSubjectsETMultiLine);
+        teacherExperience = (EditText) findViewById(R.id.teacherExperienceETMultiLine);
+        teacherEmail = (EditText) findViewById(R.id.teacherEmail11);
+        teacherPhoneNumber = (EditText) findViewById(R.id.teacherPhone11);
+        teacherSalary = (EditText) findViewById(R.id.editTextSalaryNumberSigned);
         ratingBar = findViewById(R.id.ratingBar);
-        final EditText teacherAge = (EditText) findViewById(R.id.teacherAge);
-        final ImageView image=(ImageView)  findViewById(R.id.image);
+        teacherAge = (EditText) findViewById(R.id.teacherAge);
+        image= (ImageView)  findViewById(R.id.image);
 
-        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("TutorFormInfo");
+        reference= FirebaseDatabase.getInstance().getReference("TutorFormInfo");
 
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        /*reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String name=snapshot.child(id).child("name").getValue(String.class);
-                        String address=snapshot.child(id).child("address").getValue(String.class);
-                        String exp=snapshot.child(id).child("experience").getValue(String.class);
-                        String email=snapshot.child(id).child("email").getValue(String.class);
-                        String phone=snapshot.child(id).child("phoneNum").getValue(String.class);
-                        String salary=snapshot.child(id).child("salary").getValue(String.class);
-                        String age=snapshot.child(id).child("age").getValue(String.class);
-                        String imageUrl=snapshot.child(id).child("imageUrl").getValue(String.class);
-                        String subject=snapshot.child(id).child("subject").getValue(String.class);
-
-
-                        teacherName.setText("Name: "+name);
-                        teacherAddress.setText("Address: "+address);
-                        teacherAge.setText("Age: "+age );
-                        teacherSubject.setText("Subject: "+subject);
-                        teacherExperience.setText("Experience: "+exp);
-                        teacherEmail.setText(Html.fromHtml("Email:<font color='purple'> "+email+" </font>"));
-                        teacherPhoneNumber.setText(Html.fromHtml("Phone Number:<font color='purple'> "+phone+"</font>"));
-                        teacherSalary.setText("Salary: "+salary+" $/hour");
-                        Picasso.get().load(imageUrl).into(image);
-
-
                     }
-
-                      @Override
-                      public void onCancelled(@NonNull DatabaseError error) {
-
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
                     }
-                    });
+        });*/
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String name=snapshot.child(id).child("name").getValue(String.class);
+                String address=snapshot.child(id).child("address").getValue(String.class);
+                String exp=snapshot.child(id).child("experience").getValue(String.class);
+                String email=snapshot.child(id).child("email").getValue(String.class);
+                String phone=snapshot.child(id).child("phoneNum").getValue(String.class);
+                String salary=snapshot.child(id).child("salary").getValue(String.class);
+                String age=snapshot.child(id).child("age").getValue(String.class);
+                String imageUrl=snapshot.child(id).child("imageUrl").getValue(String.class);
+                String subject=snapshot.child(id).child("subject").getValue(String.class);
+
+
+                teacherName.setText("Name: "+name);
+                teacherAddress.setText("Address: "+address);
+                teacherAge.setText("Age: "+age );
+                teacherSubject.setText("Subject: "+subject);
+                teacherExperience.setText("Experience: "+exp);
+                teacherEmail.setText(Html.fromHtml("Email:<font color='purple'> "+email+" </font>"));
+                teacherPhoneNumber.setText(Html.fromHtml("Phone Number:<font color='purple'> "+phone+"</font>"));
+                teacherSalary.setText("Salary: "+salary+" $/hour");
+                Picasso.get().load(imageUrl).into(image);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+        setRatingBarValueReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
+
+        setRatingBarValueReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                    Log.i("1","1");
+                    if(snapshot.child(id).exists()) {
+                        Log.i("2","2");
+                        if (snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
+                            previousStudentRate = Float.parseFloat(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString());
+                            Log.i("3", "3");
+                            Log.i("4", "" + previousStudentRate);
+                        }
+                    }
+                }
+                else {
+                    previousStudentRate = 0;
+                }
+
+                reference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+        Log.i("rate55", "" + previousStudentRate);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something here
+                ratingBar.setRating(previousStudentRate);
+                Log.i("rate66", "" + previousStudentRate);
+            }
+        }, 1500);
+
+
+        //ratingBar.setRating(previousStudentRate);
+
+        /*setRatingBarValueReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
+
+        setRatingBarValueReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChildren()){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
@@ -106,7 +197,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
-                Toast.makeText(TeacherInfoActivity.this, "" + ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TeacherInfoActivity.this, "" + ratingBar.getRating(), Toast.LENGTH_SHORT).show();
 
                 // freeze ratingbar (disable it)
                 //ratingBar.setIsIndicator(true);
@@ -116,9 +207,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
                 //Log.i("myRate", String.valueOf(rating));
 
-                //final float newRating = 0;
-
-                final DatabaseReference updateData = FirebaseDatabase.getInstance().getReference("TutorsRating");
+                updateData = FirebaseDatabase.getInstance().getReference("TutorsRating");
 
                 updateData.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -127,26 +216,53 @@ public class TeacherInfoActivity extends AppCompatActivity {
                         if(snapshot.child(id).exists()) {
                             //if the logged-in student already rated his teacher, update the existing rating of both student & teacher
                             if(FirebaseAuth.getInstance().getCurrentUser() != null){
-                                if (snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
-                                    String previousStudentRate = snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString();
-                                    String currentTutorRate = snapshot.child(id).child("rating").getValue().toString();
-                                    //removed the effect of the previous rating the student already did
-                                    String preCurrentTutorRate = String.valueOf((Float.parseFloat(currentTutorRate) * (float) 2) - Float.parseFloat(previousStudentRate));
-                                    String newTutorRate = String.valueOf((Float.parseFloat(preCurrentTutorRate) + rating) / (float) 2);
+                                if(snapshot.child(id).child("ratedBy").getChildrenCount() > 1) {
+                                    if (snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
+                                        String previousStudentRate = snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString();
+                                        String currentTutorRate = snapshot.child(id).child("rating").getValue().toString();
+                                        //removed the effect of the previous rating the student already did
+                                        String preCurrentTutorRate = String.valueOf((Float.parseFloat(currentTutorRate) * (float) 2) - Float.parseFloat(previousStudentRate));
+                                        String newTutorRate = String.valueOf((Float.parseFloat(preCurrentTutorRate) + rating) / (float) 2);
 
-                                    databaseReference.child(id).child("rating").setValue(newTutorRate);
-                                    databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+                                        databaseReference.child(id).child("rating").setValue(newTutorRate);
+                                        databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
 
-                                    //finalTutorRate = newTutorRate;
+                                        //finalTutorRate = newTutorRate;
+                                        updateData.removeEventListener(this);
+                                    }
+                                    else {
+                                        String currentTutorRate = snapshot.child(id).child("rating").getValue().toString();
+                                        String newTutorRate = String.valueOf((Float.parseFloat(currentTutorRate) + rating) / (float) 2);
+
+                                        databaseReference.child(id).child("rating").setValue(newTutorRate);
+                                        databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+
+                                        //finalTutorRate = newTutorRate;
+                                        updateData.removeEventListener(this);
+                                    }
                                 }
                                 else {
-                                    String currentTutorRate = snapshot.child(id).child("rating").getValue().toString();
-                                    String newTutorRate = String.valueOf((Float.parseFloat(currentTutorRate) + rating) / (float) 2);
+                                    if(snapshot.child(id).child("ratedBy").getChildrenCount() == 1){
+                                        //if this single student is the same that rated the tutut before
+                                        if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()){
+                                            databaseReference.child(id).child("rating").setValue(String.valueOf(rating));
+                                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
 
-                                    databaseReference.child(id).child("rating").setValue(newTutorRate);
-                                    databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+                                            //finalTutorRate = String.valueOf(rating);
+                                            updateData.removeEventListener(this);
+                                        }
+                                        //else, add the new student
+                                        else {
+                                            String currentTutorRate = snapshot.child(id).child("rating").getValue().toString();
+                                            String newTutorRate = String.valueOf((Float.parseFloat(currentTutorRate) + rating) / (float) 2);
 
-                                    //finalTutorRate = newTutorRate;
+                                            databaseReference.child(id).child("rating").setValue(newTutorRate);
+                                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+
+                                            //finalTutorRate = newTutorRate;
+                                            updateData.removeEventListener(this);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -156,6 +272,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                             databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
 
                             //finalTutorRate = String.valueOf(rating);
+                            updateData.removeEventListener(this);
                         }
                     }
 
@@ -173,6 +290,13 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
     }//end of onCreate
 
+
+
+    public void showTeacherLocation(View view){
+        Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
+        intent.putExtra("tutorId", id);
+        startActivity(intent);
+    }
 
 /*
     @Override
