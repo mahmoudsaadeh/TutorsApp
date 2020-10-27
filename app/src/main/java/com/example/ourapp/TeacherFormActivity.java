@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -48,7 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 public class TeacherFormActivity extends AppCompatActivity {
-
+    int flag;
     private static final int RESULT_LOAD_IMAGE = 1;
     ImageView imageToUpload;
     Uri selectedImage;
@@ -181,6 +183,34 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+       try{ flag=Integer.parseInt(getIntent().getStringExtra("FLAG"));}
+       catch(Exception e){}
+        if(flag!=1) {
+
+            DatabaseReference stRef2=FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            stRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        autoFill();
+
+                    } else {
+                        // Don't exist! Do something.
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+
+
+
+
+            });
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_form);
 
@@ -261,6 +291,8 @@ public class TeacherFormActivity extends AppCompatActivity {
                     phoneNumber.setText(cursor.getString(phoneIndex));
                     chosenLocation.setText(cursor.getString(locationIndex));
 
+                    selectedImage=Uri.parse(cursor.getString(imgUriIndex));
+
                     //if(lat.equals("") && lon.equals("")) {
                     lon = cursor.getString(lonIndex);
                     lat = cursor.getString(latIndex);
@@ -271,19 +303,41 @@ public class TeacherFormActivity extends AppCompatActivity {
                 imageToUpload.setImageURI(selectedImage);
             }*/
 
+
+                    FirebaseStorage storage=FirebaseStorage.getInstance();
+                    final StorageReference stRef=storage.getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePhoto.jpg");
+                    imageUrl=selectedImage.toString();
+                    stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+                    {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap bm= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                            imageToUpload.setImageBitmap(bm);
+
+
+                        }
+
+
+
+                    });
+
                     cursor.close();
                 }
             }
             sqLiteDatabase.close();
+
+
+
+
+
+
+
         }
         catch (Exception e){
             e.printStackTrace();
         }
 
     }
-
-
-
 
 
 
@@ -348,8 +402,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null){
             selectedImage = data.getData();
             imageToUpload.setImageURI(selectedImage);
-
-            //uploadImage(selectedImage);
+            uploadImage(selectedImage);
         }
     }
 
@@ -486,7 +539,7 @@ public class TeacherFormActivity extends AppCompatActivity {
             return;
         }
 
-        if(selectedImage == null){
+        if(imageToUpload.getDrawable()==null){
             Toast.makeText(this, "You should select an profile photo before you submit!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -497,8 +550,8 @@ public class TeacherFormActivity extends AppCompatActivity {
                 chosenLocation.requestFocus();
                 return;
             }
-            else {
-                uploadImage(selectedImage);
+           else {
+               // uploadImage(selectedImage);
             }
         }
 
@@ -525,6 +578,56 @@ public class TeacherFormActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private void autoFill() {
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("TutorFormInfo");
+        final String id=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                name.setText(snapshot.child(id).child("name").getValue(String.class));
+                email.setText(snapshot.child(id).child("email").getValue(String.class));
+                age.setText(snapshot.child(id).child("age").getValue(String.class));
+                address.setText(snapshot.child(id).child("address").getValue(String.class));
+                subject.setText(snapshot.child(id).child("subject").getValue(String.class));
+                salary.setText(snapshot.child(id).child("salary").getValue(String.class));
+                experience.setText(snapshot.child(id).child("experience").getValue(String.class));
+                phoneNumber.setText(snapshot.child(id).child("phoneNum").getValue(String.class));
+                chosenLocation.setText(snapshot.child(id).child("location").getValue(String.class));
+                imageUrl=snapshot.child(id).child("imageUrl").getValue(String.class);
+                lon = snapshot.child(id).child("longitude").getValue(String.class);
+                lat = snapshot.child(id).child("latitude").getValue(String.class);
+                addressLine=snapshot.child(id).child("location").getValue(String.class);
+                FirebaseStorage storage=FirebaseStorage.getInstance();
+                final StorageReference stRef=storage.getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePhoto.jpg");
+                selectedImage=Uri.parse(imageUrl);
+                stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
+                {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bm= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                        imageToUpload.setImageBitmap(bm);
+
+
+                    }
+
+
+
+                });
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
 
 
 

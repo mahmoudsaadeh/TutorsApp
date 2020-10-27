@@ -73,6 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             intent.putExtra("Latitude", "" + chosenLocLatLon.latitude);
             intent.putExtra("Longitude", "" + chosenLocLatLon.longitude);
             intent.putExtra("AddressLine", "" + chosenLocAddress);
+            intent.putExtra("FLAG", "1");
             //Log.d("lat","" + chosenLocLatLon.latitude);
             //Log.d("lon","" + chosenLocLatLon.longitude);
 
