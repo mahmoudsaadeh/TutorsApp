@@ -167,7 +167,7 @@ public class MainActivitySignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_sign_up);
 
-        setTitle("TutorApp - Sign up");
+        setTitle("TutorApp - Sign up(branch)");
 
         imageView = (ImageView) findViewById(R.id.logo);
         username = (EditText) findViewById(R.id.usernameETSU);
