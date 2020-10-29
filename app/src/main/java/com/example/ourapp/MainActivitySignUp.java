@@ -3,6 +3,7 @@ package com.example.ourapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +40,8 @@ public class MainActivitySignUp extends AppCompatActivity {
     Button signup;
     TextView loginLink;
 
-    ProgressBar progressBar;
+    //ProgressBar progressBar;
+    ProgressDialog progressDialog;
 
     String personTypeString = "";
 
@@ -107,7 +109,12 @@ public class MainActivitySignUp extends AppCompatActivity {
             }
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
 
         mAuth.createUserWithEmailAndPassword(mail, passwordd)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -123,7 +130,8 @@ public class MainActivitySignUp extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(MainActivitySignUp.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
+                                        //progressBar.setVisibility(View.GONE);
+                                        progressDialog.dismiss();
 
                                         //redirect to login screen
                                         Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
@@ -142,7 +150,8 @@ public class MainActivitySignUp extends AppCompatActivity {
                                     }
                                     else {
                                         Toast.makeText(MainActivitySignUp.this, "Failed to sign up, please try again.", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
+                                        //progressBar.setVisibility(View.GONE);
+                                        progressDialog.dismiss();
                                     }
                                 }
                             });
@@ -154,7 +163,8 @@ public class MainActivitySignUp extends AppCompatActivity {
                         }
                         else {
                             Toast.makeText(MainActivitySignUp.this, "Account already exists! Please try again with a different email address.", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
+                           // progressBar.setVisibility(View.GONE);
+                            progressDialog.dismiss();
                         }
                     }
                 });
@@ -183,7 +193,8 @@ public class MainActivitySignUp extends AppCompatActivity {
         username.requestFocus();
 
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressDialog = new ProgressDialog(MainActivitySignUp.this);
 
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
