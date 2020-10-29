@@ -3,6 +3,7 @@ package com.example.ourapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,8 +45,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
     TextView signupLink;
     TextView resetPassword;
 
-
-    ProgressBar progressBarLogin;
+    ProgressDialog progressDialog;
+    //ProgressBar progressBarLogin;
 
 
     @Override
@@ -115,7 +116,16 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
             return;
         }
 
-        progressBarLogin.setVisibility(View.VISIBLE);
+       // progressBarLogin.setVisibility(View.VISIBLE);
+
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
+
+
+
 
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -196,11 +206,13 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                         Toast.makeText(MainActivityLogin.this, "Check your email to verify your account.", Toast.LENGTH_SHORT).show();
                     }*/
 
-                    progressBarLogin.setVisibility(View.INVISIBLE);
+                    //progressBarLogin.setVisibility(View.INVISIBLE);
+                    progressDialog.dismiss();
                 }
                 else {
                     Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
-                    progressBarLogin.setVisibility(View.INVISIBLE);
+                    //progressBarLogin.setVisibility(View.INVISIBLE);
+                    progressDialog.dismiss();
                 }
             }
         });
@@ -212,6 +224,10 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        progressDialog = new ProgressDialog(MainActivityLogin.this);
+
+
         try
         {
             this.getSupportActionBar().hide();
@@ -229,7 +245,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         signupLink = (TextView) findViewById(R.id.signupLink);
         resetPassword = (TextView) findViewById(R.id.resetPasswordTV);
 
-        progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
+        //progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
 
 
 
