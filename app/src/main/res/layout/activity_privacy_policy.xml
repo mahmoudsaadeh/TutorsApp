@@ -21,6 +21,7 @@
                 android:id="@+id/privacyPolicyTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="11dp"
                 android:text="Privacy Policy:"
                 android:textSize="24sp"
                 android:textStyle="bold|italic" />
@@ -31,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
                 android:lineSpacingExtra="8sp"
+                android:padding="15dp"
                 android:text=" MHK built the TutorApp app as a Free app. This SERVICE is provided by MHK at no cost and is intended for use as is.\n
 This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
 If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy.\n
@@ -42,6 +44,7 @@ The terms used in this Privacy Policy have the same meanings as in our Terms and
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
+                android:paddingLeft="11dp"
                 android:text="Security:"
                 android:textSize="24sp"
                 android:textStyle="bold|italic" />
@@ -52,6 +55,7 @@ The terms used in this Privacy Policy have the same meanings as in our Terms and
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
                 android:lineSpacingExtra="8sp"
+                android:padding="15dp"
                 android:text=" I value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee its absolute security."
                 android:textSize="18sp" />
 
@@ -60,6 +64,7 @@ The terms used in this Privacy Policy have the same meanings as in our Terms and
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
+                android:paddingLeft="11dp"
                 android:text="Changes to This Privacy Policy:"
                 android:textSize="24sp"
                 android:textStyle="bold|italic" />
@@ -70,6 +75,7 @@ The terms used in this Privacy Policy have the same meanings as in our Terms and
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
                 android:lineSpacingExtra="8sp"
+                android:padding="15dp"
                 android:text=" I may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Privacy Policy on this page.
 
 This policy is effective as of 2020-10-13."
@@ -80,6 +86,7 @@ This policy is effective as of 2020-10-13."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
+                android:paddingLeft="11dp"
                 android:text="Contact Us:"
                 android:textSize="24sp"
                 android:textStyle="bold|italic" />
@@ -90,6 +97,7 @@ This policy is effective as of 2020-10-13."
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
                 android:lineSpacingExtra="8sp"
+                android:padding="15dp"
                 android:text=" If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact us at mhk@gmail.com ."
                 android:textSize="18sp" />
 
