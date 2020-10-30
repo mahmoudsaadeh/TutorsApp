@@ -236,7 +236,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        setTitle("TutorApp - Login");
+        //setTitle("TutorApp - Login");
 
         imageView = (ImageView) findViewById(R.id.logo);
         username = (EditText) findViewById(R.id.usernameEditText);

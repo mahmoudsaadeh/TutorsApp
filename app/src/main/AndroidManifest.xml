@@ -50,7 +50,8 @@
             android:name=".TeacherInfoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".TeachersListActivity" />
-        <activity android:name=".MainActivitySignUp" />
+        <activity android:name=".MainActivitySignUp"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".MainActivityLogin" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
