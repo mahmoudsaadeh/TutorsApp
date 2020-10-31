@@ -50,6 +50,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
     String getUserName;
 
+    public static String un;
+
 
     @Override
     protected void onStart(){
@@ -170,8 +172,9 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                                    intent.putExtra("username", getUserName + "");
-                                    Log.i("username",getUserName+"");
+                                    /*intent.putExtra("username", getUserName + "");
+                                    Log.i("username",getUserName+"");*/
+                                    un = getUserName;
 
                                     startActivity(intent);
                                     finish();
@@ -199,7 +202,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                                    intent.putExtra("username", getUserName + "");
+                                    //intent.putExtra("username", getUserName + "");
+                                    un = getUserName;
 
                                     startActivity(intent);
                                     finish();

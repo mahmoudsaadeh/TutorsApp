@@ -1,11 +1,14 @@
 package com.example.ourapp;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +17,11 @@ import android.os.Looper;
 import android.provider.ContactsContract;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -193,10 +198,9 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
 
-
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
+            public void onRatingChanged(final RatingBar ratingBar, final float rating, boolean fromUser) {
                 //Toast.makeText(TeacherInfoActivity.this, "" + ratingBar.getRating(), Toast.LENGTH_SHORT).show();
 
                 // freeze ratingbar (disable it)
@@ -225,7 +229,12 @@ public class TeacherInfoActivity extends AppCompatActivity {
                                         String newTutorRate = String.valueOf((Float.parseFloat(preCurrentTutorRate) + rating) / (float) 2);
 
                                         databaseReference.child(id).child("rating").setValue(newTutorRate);
-                                        databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+                                        databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                ratingDialog();
+                                            }
+                                        });
 
                                         //finalTutorRate = newTutorRate;
                                         updateData.removeEventListener(this);
@@ -235,7 +244,12 @@ public class TeacherInfoActivity extends AppCompatActivity {
                                         String newTutorRate = String.valueOf((Float.parseFloat(currentTutorRate) + rating) / (float) 2);
 
                                         databaseReference.child(id).child("rating").setValue(newTutorRate);
-                                        databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+                                        databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                ratingDialog();
+                                            }
+                                        });
 
                                         //finalTutorRate = newTutorRate;
                                         updateData.removeEventListener(this);
@@ -246,7 +260,12 @@ public class TeacherInfoActivity extends AppCompatActivity {
                                         //if this single student is the same that rated the tutut before
                                         if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()){
                                             databaseReference.child(id).child("rating").setValue(String.valueOf(rating));
-                                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+                                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    ratingDialog();
+                                                }
+                                            });
 
                                             //finalTutorRate = String.valueOf(rating);
                                             updateData.removeEventListener(this);
@@ -257,7 +276,12 @@ public class TeacherInfoActivity extends AppCompatActivity {
                                             String newTutorRate = String.valueOf((Float.parseFloat(currentTutorRate) + rating) / (float) 2);
 
                                             databaseReference.child(id).child("rating").setValue(newTutorRate);
-                                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+                                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    ratingDialog();
+                                                }
+                                            });
 
                                             //finalTutorRate = newTutorRate;
                                             updateData.removeEventListener(this);
@@ -269,7 +293,12 @@ public class TeacherInfoActivity extends AppCompatActivity {
                         //in this case, the tutor wasn't rated previously by any of the students
                         else {
                             databaseReference.child(id).child("rating").setValue(String.valueOf(rating));
-                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating));
+                            databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    ratingDialog();
+                                }
+                            });
 
                             //finalTutorRate = String.valueOf(rating);
                             updateData.removeEventListener(this);
@@ -290,6 +319,27 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
     }//end of onCreate
 
+
+
+    public void ratingDialog (){
+        AlertDialog.Builder builder = new AlertDialog.Builder(TeacherInfoActivity.this);
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+        View dialogView = LayoutInflater.from(ratingBar.getContext()).inflate(R.layout.rating_dialog, viewGroup, false);
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        alertDialog.getWindow().setLayout(1000, 1000); //Controlling width and height.
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something here
+                alertDialog.dismiss();
+            }
+        }, 2000);
+    }
 
 
     public void showTeacherLocation(View view){
