@@ -84,6 +84,8 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     String imageUrl = "";
 
+    String username;
+
 
     double progressPercentage;
     //deleted TeacherEditInfoForm Activity
@@ -183,8 +185,15 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       try{ flag=Integer.parseInt(getIntent().getStringExtra("FLAG"));}
-       catch(Exception e){}
+
+
+       try{
+           flag=Integer.parseInt(getIntent().getStringExtra("FLAG"));
+       }
+       catch(Exception e){
+           e.printStackTrace();
+       }
+
         if(flag!=1) {
 
             DatabaseReference stRef2=FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -206,15 +215,17 @@ public class TeacherFormActivity extends AppCompatActivity {
 
                 }
 
-
-
-
             });
         }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_form);
 
-        setTitle("TutorApp - " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + " Info Form");
+        Intent i = getIntent();
+        username = i.getStringExtra("username");
+
+        setTitle("" + username);
 
         imageToUpload = (ImageView) findViewById(R.id.teacherPhotoImageView);
 

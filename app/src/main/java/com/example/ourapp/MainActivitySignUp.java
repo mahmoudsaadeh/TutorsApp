@@ -111,6 +111,10 @@ public class MainActivitySignUp extends AppCompatActivity {
 
         //progressBar.setVisibility(View.VISIBLE);
         progressDialog.show();
+
+        //progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+
         progressDialog.setContentView(R.layout.progress_dialog);
         progressDialog.getWindow().setBackgroundDrawableResource(
                 android.R.color.transparent

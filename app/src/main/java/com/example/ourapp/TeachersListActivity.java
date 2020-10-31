@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -55,12 +56,19 @@ public class TeachersListActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReference2;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    String currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers_list);
 
-        setTitle("TutorApp - Tutors List");
+        Intent intent = getIntent();
+        currentUser = intent.getStringExtra("username");
+
+        setTitle("" + currentUser);
 
         //tutorsIds.clear();
 
@@ -93,6 +101,17 @@ public class TeachersListActivity extends AppCompatActivity {
                 initializeImageBitmaps();
             }
         }, 2000);
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //restart this activity to reload data
+                Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
+                startActivity(intent);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
     }
 
