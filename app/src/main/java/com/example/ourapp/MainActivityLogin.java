@@ -48,6 +48,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
     ProgressDialog progressDialog;
     //ProgressBar progressBarLogin;
 
+    String getUserName;
+
 
     @Override
     protected void onStart(){
@@ -119,6 +121,10 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
        // progressBarLogin.setVisibility(View.VISIBLE);
 
         progressDialog.show();
+
+        //progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+
         progressDialog.setContentView(R.layout.progress_dialog);
         progressDialog.getWindow().setBackgroundDrawableResource(
                 android.R.color.transparent
@@ -149,7 +155,10 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                         databaseReference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                                 String userType = snapshot.child("userType").getValue().toString();
+                                getUserName = snapshot.child("username").getValue().toString();
+
                                 if (userType.equalsIgnoreCase("student")) {
 
                                     int id=1;
@@ -160,6 +169,9 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
 
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                    intent.putExtra("username", getUserName + "");
+                                    Log.i("username",getUserName+"");
 
                                     startActivity(intent);
                                     finish();
@@ -186,6 +198,9 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                                     Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                    intent.putExtra("username", getUserName + "");
+
                                     startActivity(intent);
                                     finish();
                                     //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
@@ -239,7 +254,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         //setTitle("TutorApp - Login");
 
         imageView = (ImageView) findViewById(R.id.logo);
-        username = (EditText) findViewById(R.id.usernameEditText);
+        username = (EditText) findViewById(R.id.usernameEditText);//email
         password = (EditText) findViewById(R.id.passwordEditText);
         loginButton = (Button) findViewById(R.id.loginButton);
         signupLink = (TextView) findViewById(R.id.signupLink);
@@ -248,6 +263,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         //progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
 
 
+        username.requestFocus();
 
         signupLink.setOnClickListener(new View.OnClickListener() {
             @Override
