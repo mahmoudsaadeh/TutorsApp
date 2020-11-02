@@ -58,17 +58,17 @@ public class TeachersListActivity extends AppCompatActivity {
 
     SwipeRefreshLayout swipeRefreshLayout;
 
-    String currentUser;
+    //String currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers_list);
 
-        Intent intent = getIntent();
-        currentUser = intent.getStringExtra("username");
+        //Intent intent = getIntent();
+        //currentUser = intent.getStringExtra("username");
 
-        setTitle("" + currentUser);
+        setTitle("" + MainActivityLogin.un);
 
         //tutorsIds.clear();
 
