@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Submitted"
+            android:text="@string/submitted"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Thanks for your feedback."
+            android:text="@string/textView2"
             android:textSize="18sp" />
     </LinearLayout>
 

@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="17dp"
-            android:hint="Username"
+            android:hint="@string/usernameETSU"
             android:inputType="textPersonName" />
 
         <EditText
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="17dp"
-            android:hint="Email Address"
+            android:hint="@string/emailET"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="17dp"
-            android:hint="Password"
+            android:hint="@string/passwordEditText"
             android:inputType="textPassword" />
 
         <EditText
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="17dp"
-            android:hint="Confirm Password"
+            android:hint="@string/confirmPassword"
             android:inputType="textPassword" />
 
         <RadioGroup
@@ -72,13 +72,13 @@
                 android:id="@+id/radioButtonTeacher"
                 android:layout_width="85dp"
                 android:layout_height="wrap_content"
-                android:text="Tutor" />
+                android:text="@string/radioButtonTeacher" />
 
             <RadioButton
                 android:id="@+id/radioButtonStudent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Student" />
+                android:text="@string/radioButtonStudent" />
         </RadioGroup>
 
         <Button
@@ -88,7 +88,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="17dp"
             android:onClick="signUp"
-            android:text="Sign Up" />
+            android:text="@string/signUpButton" />
 
         <TextView
             android:id="@+id/loginLink"
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="17dp"
-            android:text="Already have an account? Login here." />
+            android:text="@string/loginLink" />
 
     </LinearLayout>
 

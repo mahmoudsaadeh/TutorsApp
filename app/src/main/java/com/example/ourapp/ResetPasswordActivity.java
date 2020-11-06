@@ -33,13 +33,15 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         if(email.isEmpty()){
             //username is the email, didn't rename because it's causing trouble
-            resetPasswordEmailEt.setError("Email is required!");
+            //resetPasswordEmailEt.setError("Email is required!");
+            resetPasswordEmailEt.setError(getString(R.string.emailError));
             resetPasswordEmailEt.requestFocus();
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            resetPasswordEmailEt.setError("Please enter a valid email!");
+            //resetPasswordEmailEt.setError("Please enter a valid email!");
+            resetPasswordEmailEt.setError(getString(R.string.emailCheck));
             resetPasswordEmailEt.requestFocus();
             return;
         }

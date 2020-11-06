@@ -19,7 +19,7 @@
         android:layout_marginStart="25dp"
         android:layout_toEndOf="@id/recyclerViewCircularImage"
         android:maxWidth="200dp"
-        android:text="Rocky Mountain National Park"
+        android:text="@string/rvTeacherName"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold|italic" />
@@ -48,6 +48,6 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="241dp"
         android:layout_toEndOf="@id/recyclerViewCircularImage"
-        android:text="4.7" />
+        android:text="@string/decimalRatingTextView" />
 
 </RelativeLayout>

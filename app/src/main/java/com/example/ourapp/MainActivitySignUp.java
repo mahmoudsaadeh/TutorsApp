@@ -56,41 +56,48 @@ public class MainActivitySignUp extends AppCompatActivity {
 
 
         if(name.isEmpty()){
-            username.setError("Username is required!");
+            //username.setError("Username is required!");
+            username.setError(getString(R.string.usernameError));
             username.requestFocus();
             return;
         }
 
         if(mail.isEmpty()){
-            email.setError("Email is required!");
+            //email.setError("Email is required!");
+            email.setError(getString(R.string.emailError));
             email.requestFocus();
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
-            email.setError("Please provide a correct email address!");
+            //email.setError("Please provide a correct email address!");
+            email.setError(getString(R.string.emailValid));
             email.requestFocus();
             return;
         }
 
         if(passwordd.isEmpty()){
-            password.setError("Password is required!");
+            //password.setError("Password is required!");
+            password.setError(getString(R.string.passwordError));
             password.requestFocus();
             return;
         }
 
         if(passwordd.length() < 6){
-            password.setError("Minimum password length is 6 characters!");
+            //password.setError("Minimum password length is 6 characters!");
+            password.setError(getString(R.string.passwordLength));
             password.requestFocus();
             return;
         }
 
         if(confirmPass.isEmpty()){
-            confirmPassword.setError("You need to confirm your password!");
+            //confirmPassword.setError("You need to confirm your password!");
+            confirmPassword.setError(getString(R.string.passwordConfirm));
             confirmPassword.requestFocus();
             return;
         } else if(!confirmPass.equals(passwordd)){
-            confirmPassword.setError("Your passwords doesn't match! Please recheck.");
+            //confirmPassword.setError("Your passwords doesn't match! Please recheck.");
+            confirmPassword.setError(getString(R.string.passwordMatch));
             confirmPassword.requestFocus();
             return;
         }

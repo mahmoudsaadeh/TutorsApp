@@ -96,26 +96,30 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
         if(email.isEmpty()){
             //username is the email, didn't rename because it's causing trouble
-            username.setError("Email is required!");
+            //username.setError("Email is required!");
+            username.setError(getString(R.string.emailError));
             username.requestFocus();
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            username.setError("Please enter a valid email!");
+            //username.setError("Please enter a valid email!");
+            username.setError(getString(R.string.emailCheck));
             username.requestFocus();
             return;
         }
 
         if(pass.isEmpty()){
-            password.setError("Password is required!");
+            //password.setError("Password is required!");
+            password.setError(getString(R.string.passwordError));
             password.requestFocus();
             return;
         }
 
         //not necessary
         if(pass.length() < 6){
-            password.setError("Minimum password length is 6 characters!");
+            //password.setError("Minimum password length is 6 characters!");
+            password.setError(getString(R.string.passwordLength));
             password.requestFocus();
             return;
         }
@@ -160,6 +164,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                                 String userType = snapshot.child("userType").getValue().toString();
                                 getUserName = snapshot.child("username").getValue().toString();
+
 
                                 if (userType.equalsIgnoreCase("student")) {
 

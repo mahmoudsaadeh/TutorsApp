@@ -497,55 +497,64 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
         if(tName.isEmpty()){
-            name.setError("Full name is required!");
+            //name.setError("Full name is required!");
+            name.setError(getString(R.string.nameError));
             name.requestFocus();
             return;
         }
 
         if(tEmail.isEmpty()){
-            email.setError("Email is required!");
+            //email.setError("Email is required!");
+            email.setError(getString(R.string.emailError));
             email.requestFocus();
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(tEmail).matches()){
-            email.setError("Please provide a correct email address!");
+            //email.setError("Please provide a correct email address!");
+            email.setError(getString(R.string.emailValid));
             email.requestFocus();
             return;
         }
 
         if(tAge.isEmpty()){
-            age.setError("Age is required!");
+            //age.setError("Age is required!");
+            age.setError(getString(R.string.ageError));
             age.requestFocus();
             return;
         }
 
         if(tAddress.isEmpty()){
-            address.setError("Address is required!");
+            //address.setError("Address is required!");
+            address.setError(getString(R.string.addressError));
             address.requestFocus();
             return;
         }
 
         if(subj.isEmpty()){
-            subject.setError("Subject field is required!");
+            //subject.setError("Subject field is required!");
+            subject.setError(getString(R.string.subjectError));
             subject.requestFocus();
             return;
         }
 
         if(tSal.isEmpty()){
-            salary.setError("Salary is required!");
+            //salary.setError("Salary is required!");
+            salary.setError(getString(R.string.salaryError));
             salary.requestFocus();
             return;
         }
 
         if(tExp.isEmpty()){
-            experience.setError("Experience is required!");
+            //experience.setError("Experience is required!");
+            experience.setError(getString(R.string.experienceError));
             experience.requestFocus();
             return;
         }
 
         if(tPhoneNum.isEmpty()){
-            phoneNumber.setError("Phone number is required!");
+            //phoneNumber.setError("Phone number is required!");
+            phoneNumber.setError(getString(R.string.phoneError));
             phoneNumber.requestFocus();
             return;
         }
@@ -557,7 +566,8 @@ public class TeacherFormActivity extends AppCompatActivity {
         else{
             if(addressLine == null || lat == null || lon == null){
                 Toast.makeText(this, "Location required", Toast.LENGTH_SHORT).show();
-                chosenLocation.setError("Location is required!");
+                //chosenLocation.setError("Location is required!");
+                chosenLocation.setError(getString(R.string.locationError));
                 chosenLocation.requestFocus();
                 return;
             }
