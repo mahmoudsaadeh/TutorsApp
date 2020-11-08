@@ -187,35 +187,11 @@ public class TeacherFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
-       try{
-           flag=Integer.parseInt(getIntent().getStringExtra("FLAG"));
-       }
-       catch(Exception e){
-           e.printStackTrace();
-       }
 
-        if(flag!=1) {
 
-            DatabaseReference stRef2=FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-            stRef2.addListenerForSingleValueEvent(new ValueEventListener() {
+        if(!returnedFromMapActivity()) {
 
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        autoFill();
-
-                    } else {
-                        // Don't exist! Do something.
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-
-            });
+           getDataFromFirebase();
         }
 
 
@@ -227,18 +203,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
         setTitle("" + username);
 
-        imageToUpload = (ImageView) findViewById(R.id.teacherPhotoImageView);
-
-        name = findViewById(R.id.teacherNameET);
-        email = findViewById(R.id.teacherEmailET);
-        age = findViewById(R.id.teacherAge);
-        address = findViewById(R.id.teacherAddressET);
-        subject = findViewById(R.id.teacherSubjectsET);
-        salary = findViewById(R.id.teacherSalaryET);
-        experience = findViewById(R.id.teacherExperienceET);
-        phoneNumber = findViewById(R.id.teacherPhoneNumET);
-
-        chosenLocation = findViewById(R.id.yourChosenLocation);
+        findViews();
 
         /*Intent intent = getIntent();
         lat = intent.getStringExtra("Latitude");
@@ -260,61 +225,14 @@ public class TeacherFormActivity extends AppCompatActivity {
 
                 if (cursor.getCount() > 0) {
 
-                    Log.d("cursor2", "acccessed");
-
-                    int idIndex = cursor.getColumnIndex("id");
-                    int nameIndex = cursor.getColumnIndex("name");
-                    int mailIndex = cursor.getColumnIndex("mail");
-                    int ageIndex = cursor.getColumnIndex("age");
-                    int addressIndex = cursor.getColumnIndex("address");
-                    int subjectsIndex = cursor.getColumnIndex("subjects");
-                    int salaryIndex = cursor.getColumnIndex("salary");
-                    int experienceIndex = cursor.getColumnIndex("experience");
-                    int phoneIndex = cursor.getColumnIndex("phone");
-                    int imgUriIndex = cursor.getColumnIndex("imgURI");
-                    int locationIndex = cursor.getColumnIndex("location");
-                    int lonIndex = cursor.getColumnIndex("longitude");
-                    int latIndex = cursor.getColumnIndex("latitude");
-
-                    cursor.moveToFirst();
-
-                    Log.i("id", cursor.getString(idIndex));
-                    Log.i("name", cursor.getString(nameIndex));
-                    Log.i("mail", cursor.getString(mailIndex));
-                    Log.i("age", cursor.getString(ageIndex));
-                    Log.i("address", cursor.getString(addressIndex));
-                    Log.i("subjects", cursor.getString(subjectsIndex));
-                    Log.i("salary", cursor.getString(salaryIndex));
-                    Log.i("experience", cursor.getString(experienceIndex));
-                    Log.i("phone", cursor.getString(phoneIndex));
-                    Log.i("imgUri", cursor.getString(imgUriIndex));
-                    Log.i("location", cursor.getString(locationIndex));
-                    Log.i("lon", cursor.getString(lonIndex));
-                    Log.i("lat", cursor.getString(latIndex));
-
-                    name.setText(cursor.getString(nameIndex));
-                    email.setText(cursor.getString(mailIndex));
-                    age.setText(cursor.getString(ageIndex));
-                    address.setText(cursor.getString(addressIndex));
-                    subject.setText(cursor.getString(subjectsIndex));
-                    salary.setText(cursor.getString(salaryIndex));
-                    experience.setText(cursor.getString(experienceIndex));
-                    phoneNumber.setText(cursor.getString(phoneIndex));
-                    chosenLocation.setText(cursor.getString(locationIndex));
-
-                    selectedImage=Uri.parse(cursor.getString(imgUriIndex));
-
-                    //if(lat.equals("") && lon.equals("")) {
-                    lon = cursor.getString(lonIndex);
-                    lat = cursor.getString(latIndex);
-                    addressLine = cursor.getString(locationIndex);
+                    getInfoSQLite(cursor);
                     //}
             /*if(cursor.getString(imgUriIndex) != null){
                 selectedImage = Uri.parse(cursor.getString(imgUriIndex));
                 imageToUpload.setImageURI(selectedImage);
             }*/
 
-
+                    //Refer to me
                     FirebaseStorage storage=FirebaseStorage.getInstance();
                     final StorageReference stRef=storage.getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePhoto.jpg");
                     imageUrl=selectedImage.toString();
@@ -648,10 +566,105 @@ public class TeacherFormActivity extends AppCompatActivity {
         });
 
     }
+    public boolean returnedFromMapActivity(){
+        try{
+            flag=Integer.parseInt(getIntent().getStringExtra("FLAG"));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
+        if (flag==1)return true;
+        else return false;
+    }
 
+    public void getDataFromFirebase() {
+        DatabaseReference stRef2=FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        stRef2.addListenerForSingleValueEvent(new ValueEventListener() {
 
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    autoFill();
 
+                } else {
+                    // Don't exist! Do something.
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+    }
+
+    public void findViews() {
+        imageToUpload = (ImageView) findViewById(R.id.teacherPhotoImageView);
+
+        name = findViewById(R.id.teacherNameET);
+        email = findViewById(R.id.teacherEmailET);
+        age = findViewById(R.id.teacherAge);
+        address = findViewById(R.id.teacherAddressET);
+        subject = findViewById(R.id.teacherSubjectsET);
+        salary = findViewById(R.id.teacherSalaryET);
+        experience = findViewById(R.id.teacherExperienceET);
+        phoneNumber = findViewById(R.id.teacherPhoneNumET);
+
+        chosenLocation = findViewById(R.id.yourChosenLocation);
+    }
+    public void getInfoSQLite(Cursor cursor) {
+        Log.d("cursor2", "acccessed");
+
+        int idIndex = cursor.getColumnIndex("id");
+        int nameIndex = cursor.getColumnIndex("name");
+        int mailIndex = cursor.getColumnIndex("mail");
+        int ageIndex = cursor.getColumnIndex("age");
+        int addressIndex = cursor.getColumnIndex("address");
+        int subjectsIndex = cursor.getColumnIndex("subjects");
+        int salaryIndex = cursor.getColumnIndex("salary");
+        int experienceIndex = cursor.getColumnIndex("experience");
+        int phoneIndex = cursor.getColumnIndex("phone");
+        int imgUriIndex = cursor.getColumnIndex("imgURI");
+        int locationIndex = cursor.getColumnIndex("location");
+        int lonIndex = cursor.getColumnIndex("longitude");
+        int latIndex = cursor.getColumnIndex("latitude");
+
+        cursor.moveToFirst();
+
+        Log.i("id", cursor.getString(idIndex));
+        Log.i("name", cursor.getString(nameIndex));
+        Log.i("mail", cursor.getString(mailIndex));
+        Log.i("age", cursor.getString(ageIndex));
+        Log.i("address", cursor.getString(addressIndex));
+        Log.i("subjects", cursor.getString(subjectsIndex));
+        Log.i("salary", cursor.getString(salaryIndex));
+        Log.i("experience", cursor.getString(experienceIndex));
+        Log.i("phone", cursor.getString(phoneIndex));
+        Log.i("imgUri", cursor.getString(imgUriIndex));
+        Log.i("location", cursor.getString(locationIndex));
+        Log.i("lon", cursor.getString(lonIndex));
+        Log.i("lat", cursor.getString(latIndex));
+
+        name.setText(cursor.getString(nameIndex));
+        email.setText(cursor.getString(mailIndex));
+        age.setText(cursor.getString(ageIndex));
+        address.setText(cursor.getString(addressIndex));
+        subject.setText(cursor.getString(subjectsIndex));
+        salary.setText(cursor.getString(salaryIndex));
+        experience.setText(cursor.getString(experienceIndex));
+        phoneNumber.setText(cursor.getString(phoneIndex));
+        chosenLocation.setText(cursor.getString(locationIndex));
+
+        selectedImage=Uri.parse(cursor.getString(imgUriIndex));
+
+        //if(lat.equals("") && lon.equals("")) {
+        lon = cursor.getString(lonIndex);
+        lat = cursor.getString(latIndex);
+        addressLine = cursor.getString(locationIndex);
+    }
 }//end class
 
 

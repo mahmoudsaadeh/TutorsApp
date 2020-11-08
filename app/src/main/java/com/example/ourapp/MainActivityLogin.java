@@ -35,9 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-
     DatabaseReference databaseReference;
-
     ImageView imageView;
     EditText username;//email
     EditText password;
@@ -56,20 +54,15 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
-        int userID=sessionManagement.getSession();
-        if (userID==1){ //student
-            Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
 
-            startActivity(intent);
-            finish();
+        int userID=createSession().getSession();
+
+        if (isStudent(userID)) { //student
+            goToTeachersList();
         }
-        else if(userID==2){//tutor
-            Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
-
-            startActivity(intent);
-            finish();
-             }
+        else if(isTutor(userID)) {//tutor
+            goToTutorForm();
+        }
 
 
     }
@@ -83,164 +76,43 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         startActivity(intent);*/
 
         // hide keyboard if button is pressed
-        try {
-            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        } catch (Exception e) {
-        }
+        hideKeyboard();
 
 
 
-        String email = username.getText().toString().trim();
-        String pass = password.getText().toString().trim();
+        String email = getEmail();
+        String pass =getPassword();
 
         if(email.isEmpty()){
             //username is the email, didn't rename because it's causing trouble
             //username.setError("Email is required!");
-            username.setError(getString(R.string.emailError));
-            username.requestFocus();
+
+           requireEmail();
+
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             //username.setError("Please enter a valid email!");
-            username.setError(getString(R.string.emailCheck));
-            username.requestFocus();
+            warnForEmail();
             return;
         }
 
         if(pass.isEmpty()){
             //password.setError("Password is required!");
-            password.setError(getString(R.string.passwordError));
-            password.requestFocus();
+            requirePassword();
             return;
         }
 
         //not necessary
         if(pass.length() < 6){
             //password.setError("Minimum password length is 6 characters!");
-            password.setError(getString(R.string.passwordLength));
-            password.requestFocus();
+            warnForPassword();
             return;
         }
 
-       // progressBarLogin.setVisibility(View.VISIBLE);
-
-        progressDialog.show();
-
-        //progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(
-                android.R.color.transparent
-        );
-
-
-
-
-        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    //Toast.makeText(MainActivityLogin.this, "login good", Toast.LENGTH_SHORT).show();
-
-                    //returns false
-                    /*boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
-                    Log.d("isnewUser5? ", String.valueOf(isNew));*/
-
-                    //email verification
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    //if(user.isEmailVerified()) {
-                        //redirect user to profile
-                        //check is user is a tutor or student, and redirect to corresponding screen
-                        String currentuserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                        databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentuserId);
-
-                        databaseReference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                String userType = snapshot.child("userType").getValue().toString();
-                                getUserName = snapshot.child("username").getValue().toString();
-
-
-                                if (userType.equalsIgnoreCase("student")) {
-
-                                    int id=1;
-
-                                    SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
-                                    sessionManagement.saveSession(id);
-
-                                    Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
-
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                                    /*intent.putExtra("username", getUserName + "");
-                                    Log.i("username",getUserName+"");*/
-                                    un = getUserName;
-
-                                    startActivity(intent);
-                                    finish();
-                                } else if (userType.equalsIgnoreCase("tutor")) {
-                                    //here we should check if tutor has filled the info form previously,
-                                    //then redirect her to TeacherEditInfoFrom
-                                    //else, open the main form that is TeacherFormActivity
-                                    //this check can be done by searching if there is any data
-                                    //related to the current tutor id, if not, we should open main form
-                                    //else, open the editing form..
-
-                                    //I will currently redirect tutor to main form until we make
-                                    //a new class to get tutor info and save it to db
-
-
-                                    int id=2;
-
-                                    SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
-                                    sessionManagement.saveSession(id);
-
-
-
-
-
-                                    Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                                    //intent.putExtra("username", getUserName + "");
-                                    un = getUserName;
-
-                                    startActivity(intent);
-                                    finish();
-                                    //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                    //}
-
-                   /* else{
-                        user.sendEmailVerification();
-                        Toast.makeText(MainActivityLogin.this, "Check your email to verify your account.", Toast.LENGTH_SHORT).show();
-                    }*/
-
-                    //progressBarLogin.setVisibility(View.INVISIBLE);
-                    progressDialog.dismiss();
-                }
-                else {
-                    Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
-                    //progressBarLogin.setVisibility(View.INVISIBLE);
-                    progressDialog.dismiss();
-                }
-            }
-        });
-
+       displayLoadingScreen();
+        signIn(email,pass);
     }
 
 
@@ -261,13 +133,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //setTitle("TutorApp - Login");
-
-        imageView = (ImageView) findViewById(R.id.logo);
-        username = (EditText) findViewById(R.id.usernameEditText);//email
-        password = (EditText) findViewById(R.id.passwordEditText);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        signupLink = (TextView) findViewById(R.id.signupLink);
-        resetPassword = (TextView) findViewById(R.id.resetPasswordTV);
+        getInfoFromUser();
 
         //progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
 
@@ -277,18 +143,14 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         signupLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivitySignUp.class);
-                //intent.putExtra("username","mahmoud");
-
-                startActivity(intent);
+            goToSingUp();
             }
         });
 
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
-                startActivity(intent);
+                goToReset();
             }
         });
 
@@ -312,5 +174,220 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+    }
+
+
+    public SessionManagement createSession() {
+        SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
+        return sessionManagement;
+    }
+    public String getEmail() {
+
+    return username.getText().toString().trim();
+    }
+
+    public String getPassword() {
+       return password.getText().toString().trim();
+    }
+
+    public boolean isStudent(int id) {
+
+        if(id==1) return true;
+        else return false;
+
+    }
+
+    public boolean isTutor(int id) {
+
+        if(id==2) return true;
+        else return false;
+
+    }
+    public void goToTeachersList() {
+
+        Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void goToTutorForm() {
+
+        Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+
+        startActivity(intent);
+        finish();
+    }
+
+    public void hideKeyboard() {
+        try {
+        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    } catch (Exception e) {
+    }
+
+    }
+
+    public void requireEmail(){
+        username.setError(getString(R.string.emailError));
+        username.requestFocus();
+    }
+
+    public void warnForEmail() {
+
+        username.setError(getString(R.string.emailCheck));
+        username.requestFocus();
+    }
+
+    public void requirePassword() {
+        password.setError(getString(R.string.passwordError));
+        password.requestFocus();
+
+    }
+
+    public void warnForPassword() {
+        password.setError(getString(R.string.passwordLength));
+        password.requestFocus();
+    }
+
+    public void displayLoadingScreen() {
+
+
+        // progressBarLogin.setVisibility(View.VISIBLE);
+
+        progressDialog.show();
+
+        //progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(
+                android.R.color.transparent
+        );
+    }
+
+    public void signIn(String email,String pass){
+        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    //Toast.makeText(MainActivityLogin.this, "login good", Toast.LENGTH_SHORT).show();
+
+                    //returns false
+                    /*boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
+                    Log.d("isnewUser5? ", String.valueOf(isNew));*/
+
+                    //email verification
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    //if(user.isEmailVerified()) {
+                    //redirect user to profile
+                    //check is user is a tutor or student, and redirect to corresponding screen
+                    String currentuserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                    databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentuserId);
+
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            String userType = snapshot.child("userType").getValue().toString();
+                            getUserName = snapshot.child("username").getValue().toString();
+
+
+                            if (userType.equalsIgnoreCase("student")) {
+
+                                int id=1;
+
+                                SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
+                                sessionManagement.saveSession(id);
+
+                                Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
+
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                    /*intent.putExtra("username", getUserName + "");
+                                    Log.i("username",getUserName+"");*/
+                                un = getUserName;
+
+                                startActivity(intent);
+                                finish();
+                            } else if (userType.equalsIgnoreCase("tutor")) {
+                                //here we should check if tutor has filled the info form previously,
+                                //then redirect her to TeacherEditInfoFrom
+                                //else, open the main form that is TeacherFormActivity
+                                //this check can be done by searching if there is any data
+                                //related to the current tutor id, if not, we should open main form
+                                //else, open the editing form..
+
+                                //I will currently redirect tutor to main form until we make
+                                //a new class to get tutor info and save it to db
+
+
+                                int id=2;
+
+                                SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
+                                sessionManagement.saveSession(id);
+
+
+
+
+
+                                Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                //intent.putExtra("username", getUserName + "");
+                                un = getUserName;
+
+                                startActivity(intent);
+                                finish();
+                                //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    //}
+
+                   /* else{
+                        user.sendEmailVerification();
+                        Toast.makeText(MainActivityLogin.this, "Check your email to verify your account.", Toast.LENGTH_SHORT).show();
+                    }*/
+
+                    //progressBarLogin.setVisibility(View.INVISIBLE);
+                    progressDialog.dismiss();
+                }
+                else {
+                    Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
+                    //progressBarLogin.setVisibility(View.INVISIBLE);
+                    progressDialog.dismiss();
+                }
+            }
+        });
+    }
+
+    public void getInfoFromUser() {
+
+        imageView = (ImageView) findViewById(R.id.logo);
+        username = (EditText) findViewById(R.id.usernameEditText);//email
+        password = (EditText) findViewById(R.id.passwordEditText);
+        loginButton = (Button) findViewById(R.id.loginButton);
+        signupLink = (TextView) findViewById(R.id.signupLink);
+        resetPassword = (TextView) findViewById(R.id.resetPasswordTV);
+    }
+
+    public void goToSingUp(){
+        Intent intent = new Intent(getApplicationContext(), MainActivitySignUp.class);
+        //intent.putExtra("username","mahmoud");
+
+        startActivity(intent);
+    }
+
+    public void goToReset(){
+        Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
+        startActivity(intent);
     }
 }

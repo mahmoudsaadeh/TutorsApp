@@ -33,48 +33,13 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
 
+        supportMapFragment();
         Intent intent = getIntent();
         String tutorId = intent.getStringExtra("tutorId");
+        getInfoFromDb(tutorId);
 
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorFormInfo").child(tutorId);
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child("latitude").getValue() == null){
-                    tutorLat = "0";
-                }
-                else {
-                    tutorLat = snapshot.child("latitude").getValue().toString();
-                }
-
-                if(snapshot.child("longitude").getValue() == null){
-                    tutorLon = "0";
-                }
-                else {
-                    tutorLon = snapshot.child("longitude").getValue().toString();
-                }
-
-                if(snapshot.child("location").getValue() == null){
-                    tutorLoc = "0";
-                }
-                else {
-                    tutorLoc = snapshot.child("location").getValue().toString();
-                }
-
-                reference.removeEventListener(this);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
     }
 
@@ -114,5 +79,46 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         }, 1700);
 
 
+    }
+    public void supportMapFragment(){
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+    public void getInfoFromDb(String tutorId){
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorFormInfo").child(tutorId);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child("latitude").getValue() == null){
+                    tutorLat = "0";
+                }
+                else {
+                    tutorLat = snapshot.child("latitude").getValue().toString();
+                }
+
+                if(snapshot.child("longitude").getValue() == null){
+                    tutorLon = "0";
+                }
+                else {
+                    tutorLon = snapshot.child("longitude").getValue().toString();
+                }
+
+                if(snapshot.child("location").getValue() == null){
+                    tutorLoc = "0";
+                }
+                else {
+                    tutorLoc = snapshot.child("location").getValue().toString();
+                }
+
+                reference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

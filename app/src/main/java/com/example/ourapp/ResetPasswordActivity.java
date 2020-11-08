@@ -34,41 +34,19 @@ public class ResetPasswordActivity extends AppCompatActivity {
         if(email.isEmpty()){
             //username is the email, didn't rename because it's causing trouble
             //resetPasswordEmailEt.setError("Email is required!");
-            resetPasswordEmailEt.setError(getString(R.string.emailError));
-            resetPasswordEmailEt.requestFocus();
+            requireEmail();
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             //resetPasswordEmailEt.setError("Please enter a valid email!");
-            resetPasswordEmailEt.setError(getString(R.string.emailCheck));
-            resetPasswordEmailEt.requestFocus();
+            emailFormatError();
             return;
         }
 
         progressBarResetPassword.setVisibility(View.VISIBLE);
 
-        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(ResetPasswordActivity.this, "Check your email to reset your password.", Toast.LENGTH_SHORT).show();
-                    progressBarResetPassword.setVisibility(View.INVISIBLE);
-
-                    Intent intent1 = new Intent(getApplicationContext(), MainActivityLogin.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent1);
-                }
-                else{
-                    Toast.makeText(ResetPasswordActivity.this, "Something went wrong! Please try again.", Toast.LENGTH_LONG).show();
-                    progressBarResetPassword.setVisibility(View.INVISIBLE);
-
-                    Intent intent1 = new Intent(getApplicationContext(), MainActivityLogin.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent1);
-                }
-            }
-        });
+        resetPassword(email);
 
     }
 
@@ -126,5 +104,35 @@ public class ResetPasswordActivity extends AppCompatActivity {
         //return super.onOptionsItemSelected(item);
     }
 */
+    public void requireEmail() {
+        resetPasswordEmailEt.setError(getString(R.string.emailError));
+        resetPasswordEmailEt.requestFocus();
+    }
+    public void emailFormatError() {
+        resetPasswordEmailEt.setError(getString(R.string.emailCheck));
+        resetPasswordEmailEt.requestFocus();
+    }
+    public void resetPassword(String email){
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(ResetPasswordActivity.this, "Check your email to reset your password.", Toast.LENGTH_SHORT).show();
+                    progressBarResetPassword.setVisibility(View.INVISIBLE);
 
+                    Intent intent1 = new Intent(getApplicationContext(), MainActivityLogin.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent1);
+                }
+                else{
+                    Toast.makeText(ResetPasswordActivity.this, "Something went wrong! Please try again.", Toast.LENGTH_LONG).show();
+                    progressBarResetPassword.setVisibility(View.INVISIBLE);
+
+                    Intent intent1 = new Intent(getApplicationContext(), MainActivityLogin.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent1);
+                }
+            }
+        });
+    }
 }
