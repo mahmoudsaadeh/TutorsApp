@@ -75,6 +75,7 @@ public class TeachersListActivity extends AppCompatActivity {
         //Log.i("rate", TeacherInfoActivity.finalTutorRate);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorFormInfo");
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -101,6 +102,7 @@ public class TeachersListActivity extends AppCompatActivity {
                 initializeImageBitmaps();
             }
         }, 2000);
+
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -142,14 +144,14 @@ public class TeachersListActivity extends AppCompatActivity {
                 Log.d("checkuser","" + user.getEmail());
                 FirebaseAuth.getInstance().signOut();
 
-                if(FirebaseAuth.getInstance().getCurrentUser() == null){
+                if(FirebaseAuth.getInstance().getCurrentUser() == null) {
                     Log.d("signout","successful");
                     SessionManagement sessionManagement=new SessionManagement(TeachersListActivity.this);
                     sessionManagement.removeSession();
                     Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent3);
-                }else{
+                }else {
                     Log.d("signout","failed");
                     Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -167,7 +169,7 @@ public class TeachersListActivity extends AppCompatActivity {
 
 
 
-    private void initializeImageBitmaps(){
+    private void initializeImageBitmaps() {
         Log.d("initializeBitmapFunc", "preparing bitmaps");
 /*
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
@@ -216,7 +218,7 @@ public class TeachersListActivity extends AppCompatActivity {
         });
 */
 
-        for(int k = 0;k<tutorsIds.size();k++){
+        for(int k = 0;k<tutorsIds.size();k++) {
             //databaseReference2 = FirebaseDatabase.getInstance().getReference().child(tutorsIds.get(0));
             databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(k));
             //Log.d("loop1", "for loop 1");
@@ -277,7 +279,7 @@ public class TeachersListActivity extends AppCompatActivity {
 
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         //Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);

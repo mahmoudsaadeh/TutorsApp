@@ -55,51 +55,53 @@ public class MainActivitySignUp extends AppCompatActivity {
         int personType = radioGroup.getCheckedRadioButtonId();
 
 
-        if(name.isEmpty()){
+        if(name.isEmpty()) {
             //username.setError("Username is required!");
             requireUsername();
             return;
         }
 
-        if(mail.isEmpty()){
+        if(mail.isEmpty()) {
             //email.setError("Email is required!");
             requireEmail();
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
+        if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
             //email.setError("Please provide a correct email address!");
             emailError();
             return;
         }
 
-        if(passwordd.isEmpty()){
+        if(passwordd.isEmpty()) {
             //password.setError("Password is required!");
             requirePassword();
             return;
         }
 
-        if(passwordd.length() < 6){
+        if(passwordd.length() < 6) {
             //password.setError("Minimum password length is 6 characters!");
             passwordLengthError();
             return;
         }
 
-        if(confirmPass.isEmpty()){
+        if(confirmPass.isEmpty()) {
             //confirmPassword.setError("You need to confirm your password!");
             requestPasswordConfirmation();
             return;
-        } else if(!confirmPass.equals(passwordd)){
+        }
+        else if(!confirmPass.equals(passwordd)) {
             //confirmPassword.setError("Your passwords doesn't match! Please recheck.");
             passwordMismatchError();
             return;
         }
 
-        if(personType == -1){
+        if(personType == -1) {
             UserTypeToast();
             return;
-        }else {
-                setPersonType(personType);
+        }
+        else {
+            setPersonType(personType);
         }
 
         displayLoadingScreen();
@@ -116,7 +118,7 @@ public class MainActivitySignUp extends AppCompatActivity {
 
         //setTitle("TutorApp - Sign up(branch-hadi)");
 
-        getInfo();
+        getViewsById();
         username.requestFocus();
 
 
@@ -126,7 +128,6 @@ public class MainActivitySignUp extends AppCompatActivity {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 goToLogin();
             }
         });
@@ -147,11 +148,15 @@ public class MainActivitySignUp extends AppCompatActivity {
 */
         mAuth = FirebaseAuth.getInstance();
 
-    }
+    }//end onCreate
+
+
+
     public void requireUsername() {
         username.setError(getString(R.string.usernameError));
         username.requestFocus();
     }
+
 
     public void requireEmail() {
         email.setError(getString(R.string.emailError));
@@ -159,43 +164,47 @@ public class MainActivitySignUp extends AppCompatActivity {
     }
 
 
-
     public void emailError() {
         email.setError(getString(R.string.emailValid));
         email.requestFocus();
     }
 
+
     public void requirePassword() {
         password.setError(getString(R.string.passwordError));
         password.requestFocus();
     }
+
+
     public void passwordLengthError() {
         password.setError(getString(R.string.passwordLength));
         password.requestFocus();
-
     }
-    public void requestPasswordConfirmation() {
 
+
+    public void requestPasswordConfirmation() {
         confirmPassword.setError(getString(R.string.passwordConfirm));
         confirmPassword.requestFocus();
     }
-    public void passwordMismatchError() {
 
+
+    public void passwordMismatchError() {
         confirmPassword.setError(getString(R.string.passwordMatch));
         confirmPassword.requestFocus();
     }
 
+
     public void UserTypeToast() {
         Toast.makeText(this, "You should choose a 'user type' before you continue!", Toast.LENGTH_SHORT).show();
-
     }
 
+
     public void setPersonType(int personType) {
-        if(personType == R.id.radioButtonStudent){
+        if(personType == R.id.radioButtonStudent) {
             personTypeString = radioButtonStudent.getText().toString();
             //Log.d("radiobtnn:", radioButtonStudent.getText().toString());
         }
-        else if(personType == R.id.radioButtonTeacher){
+        else if(personType == R.id.radioButtonTeacher) {
             personTypeString = radioButtonTeacher.getText().toString();
             //Log.d("radiobtnn:", radioButtonTeacher.getText().toString());
         }
@@ -213,12 +222,10 @@ public class MainActivitySignUp extends AppCompatActivity {
         progressDialog.getWindow().setBackgroundDrawableResource(
                 android.R.color.transparent
         );
-
-
     }
 
-    public void signUp(final String mail, String passwordd,final String name) {
 
+    public void signUp(final String mail, String passwordd,final String name) {
         mAuth.createUserWithEmailAndPassword(mail, passwordd)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -232,7 +239,7 @@ public class MainActivitySignUp extends AppCompatActivity {
                                     .setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
+                                    if(task.isSuccessful()) {
                                         Toast.makeText(MainActivitySignUp.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
                                         //progressBar.setVisibility(View.GONE);
                                         progressDialog.dismiss();
@@ -272,8 +279,11 @@ public class MainActivitySignUp extends AppCompatActivity {
                         }
                     }
                 });
-    }
-    public void getInfo() {
+    }// end signUp
+
+
+
+    public void getViewsById() {
         imageView = (ImageView) findViewById(R.id.logo);
         username = (EditText) findViewById(R.id.usernameETSU);
         email = (EditText) findViewById(R.id.emailET);
@@ -284,7 +294,6 @@ public class MainActivitySignUp extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         signup = (Button) findViewById(R.id.signUpButton);
         loginLink = (TextView) findViewById(R.id.loginLink);
-
     }
 
     public void goToLogin() {
@@ -292,4 +301,6 @@ public class MainActivitySignUp extends AppCompatActivity {
         //intent.putExtra("username","mahmoud");
         startActivity(intent);
     }
-}
+
+
+} // end MainActivitySignUp

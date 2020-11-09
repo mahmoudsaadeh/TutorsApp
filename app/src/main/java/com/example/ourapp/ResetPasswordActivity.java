@@ -47,8 +47,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         progressBarResetPassword.setVisibility(View.VISIBLE);
 
         resetPassword(email);
-
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +60,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         progressBarResetPassword = (ProgressBar) findViewById(R.id.progressBarResetPass);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
     }
+
 
 /*
     @Override
@@ -104,19 +104,25 @@ public class ResetPasswordActivity extends AppCompatActivity {
         //return super.onOptionsItemSelected(item);
     }
 */
+
+
     public void requireEmail() {
         resetPasswordEmailEt.setError(getString(R.string.emailError));
         resetPasswordEmailEt.requestFocus();
     }
+
+
     public void emailFormatError() {
         resetPasswordEmailEt.setError(getString(R.string.emailCheck));
         resetPasswordEmailEt.requestFocus();
     }
+
+
     public void resetPassword(String email){
         firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if(task.isSuccessful()) {
                     Toast.makeText(ResetPasswordActivity.this, "Check your email to reset your password.", Toast.LENGTH_SHORT).show();
                     progressBarResetPassword.setVisibility(View.INVISIBLE);
 
@@ -124,7 +130,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent1);
                 }
-                else{
+                else {
                     Toast.makeText(ResetPasswordActivity.this, "Something went wrong! Please try again.", Toast.LENGTH_LONG).show();
                     progressBarResetPassword.setVisibility(View.INVISIBLE);
 
@@ -135,4 +141,5 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
         });
     }
-}
+
+} // end class

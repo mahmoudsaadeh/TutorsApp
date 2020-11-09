@@ -55,15 +55,16 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        int userID=createSession().getSession();
+        int userID = createSession().getSession();
 
-        if (isStudent(userID)) { //student
+        //student
+        if (isStudent(userID)) {
             goToTeachersList();
         }
-        else if(isTutor(userID)) {//tutor
+        //tutor
+        else if(isTutor(userID)) {
             goToTutorForm();
         }
-
 
     }
 
@@ -79,39 +80,37 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         hideKeyboard();
 
 
-
         String email = getEmail();
         String pass =getPassword();
 
-        if(email.isEmpty()){
+        if(email.isEmpty()) {
             //username is the email, didn't rename because it's causing trouble
             //username.setError("Email is required!");
-
-           requireEmail();
-
+            requireEmail();
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             //username.setError("Please enter a valid email!");
             warnForEmail();
             return;
         }
 
-        if(pass.isEmpty()){
+        if(pass.isEmpty()) {
             //password.setError("Password is required!");
             requirePassword();
             return;
         }
 
         //not necessary
-        if(pass.length() < 6){
+        if(pass.length() < 6) {
             //password.setError("Minimum password length is 6 characters!");
             warnForPassword();
             return;
         }
 
-       displayLoadingScreen();
+
+        displayLoadingScreen();
         signIn(email,pass);
     }
 
@@ -123,17 +122,17 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(MainActivityLogin.this);
 
-
-        try
-        {
+        try {
             this.getSupportActionBar().hide();
         }
-        catch (NullPointerException e){}
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.activity_main);
 
         //setTitle("TutorApp - Login");
-        getInfoFromUser();
+        findViewsById();
 
         //progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
 
@@ -143,7 +142,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         signupLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            goToSingUp();
+                goToSingUp();
             }
         });
 
@@ -164,7 +163,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                         InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
                     return true;
                 }
@@ -181,79 +180,89 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
         return sessionManagement;
     }
-    public String getEmail() {
 
-    return username.getText().toString().trim();
+
+    public String getEmail() {
+        return username.getText().toString().trim();
     }
+
 
     public String getPassword() {
        return password.getText().toString().trim();
     }
 
+
     public boolean isStudent(int id) {
-
-        if(id==1) return true;
-        else return false;
-
+        if(id == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+
 
     public boolean isTutor(int id) {
-
-        if(id==2) return true;
-        else return false;
-
+        if(id==2) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
-    public void goToTeachersList() {
 
+
+    public void goToTeachersList() {
         Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
         startActivity(intent);
         finish();
     }
 
+
     public void goToTutorForm() {
-
         Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
-
         startActivity(intent);
         finish();
     }
 
+
     public void hideKeyboard() {
         try {
-        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-    } catch (Exception e) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    }
 
     public void requireEmail(){
         username.setError(getString(R.string.emailError));
         username.requestFocus();
     }
 
-    public void warnForEmail() {
 
+    public void warnForEmail() {
         username.setError(getString(R.string.emailCheck));
         username.requestFocus();
     }
 
+
     public void requirePassword() {
         password.setError(getString(R.string.passwordError));
         password.requestFocus();
-
     }
+
 
     public void warnForPassword() {
         password.setError(getString(R.string.passwordLength));
         password.requestFocus();
     }
 
+
     public void displayLoadingScreen() {
-
-
         // progressBarLogin.setVisibility(View.VISIBLE);
-
         progressDialog.show();
 
         //progressDialog.setCancelable(false);
@@ -295,7 +304,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                             if (userType.equalsIgnoreCase("student")) {
 
-                                int id=1;
+                                int id = 1;
 
                                 SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
                                 sessionManagement.saveSession(id);
@@ -310,7 +319,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                                 startActivity(intent);
                                 finish();
-                            } else if (userType.equalsIgnoreCase("tutor")) {
+                            }
+                            else if (userType.equalsIgnoreCase("tutor")) {
                                 //here we should check if tutor has filled the info form previously,
                                 //then redirect her to TeacherEditInfoFrom
                                 //else, open the main form that is TeacherFormActivity
@@ -328,9 +338,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                                 sessionManagement.saveSession(id);
 
 
-
-
-
                                 Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -340,7 +347,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                                 //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
-
                             }
                         }
 
@@ -369,8 +375,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         });
     }
 
-    public void getInfoFromUser() {
 
+    public void findViewsById() {
         imageView = (ImageView) findViewById(R.id.logo);
         username = (EditText) findViewById(R.id.usernameEditText);//email
         password = (EditText) findViewById(R.id.passwordEditText);
@@ -379,15 +385,18 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         resetPassword = (TextView) findViewById(R.id.resetPasswordTV);
     }
 
+
     public void goToSingUp(){
         Intent intent = new Intent(getApplicationContext(), MainActivitySignUp.class);
         //intent.putExtra("username","mahmoud");
-
         startActivity(intent);
     }
+
 
     public void goToReset(){
         Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
         startActivity(intent);
     }
-}
+
+
+}//end MainActivityLogin

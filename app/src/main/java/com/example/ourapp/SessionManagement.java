@@ -28,4 +28,5 @@ public class SessionManagement {
     public void removeSession(){
         editor.putInt(SESSION_KEY,-1).commit();
     }
+
 }

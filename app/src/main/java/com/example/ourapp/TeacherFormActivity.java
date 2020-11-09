@@ -50,8 +50,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 public class TeacherFormActivity extends AppCompatActivity {
+
     int flag;
+
     private static final int RESULT_LOAD_IMAGE = 1;
+
     ImageView imageToUpload;
     Uri selectedImage;
 
@@ -92,7 +95,6 @@ public class TeacherFormActivity extends AppCompatActivity {
     //will use if else statements to change TextView's texts in OnCreate
 
 
-
     public void openGallery(View view) {
         //link to try to get images from gallery for api > 24 phones
         //https://stackoverflow.com/questions/2169649/get-pick-an-image-from-androids-built-in-gallery-app-programmatically
@@ -103,21 +105,22 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
 
-
-    private boolean checkForTableExists(SQLiteDatabase db, String table){
+    private boolean checkForTableExists(SQLiteDatabase db, String table) {
         String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+table+"'";
         Cursor mCursor = db.rawQuery(sql, null);
+
         if (mCursor.getCount() > 0) {
             return true;
         }
+
         mCursor.close();
+
         return false;
     }
 
 
 
-
-    public void goToMap(View view){
+    public void goToMap(View view) {
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
 
         try {
@@ -134,8 +137,8 @@ public class TeacherFormActivity extends AppCompatActivity {
                 Log.d("gotomap","1.5");
 
                 Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM tutorData WHERE id = '" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "' LIMIT 1", null);
-                if (cursor.getCount() > 0) {
 
+                if (cursor.getCount() > 0) {
                     Log.d("gotomapp", "2");
                     sqLiteDatabase.execSQL("UPDATE tutorData SET name = '" + name.getText().toString() + "', mail = '" +
                             email.getText().toString() + "', age = '" + age.getText().toString() + "', address = '" +
@@ -143,7 +146,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                             "salary = '" + salary.getText().toString() + "', experience = '" + experience.getText().toString() + "', " +
                             "phone = '" + phoneNumber.getText().toString() + "', imgURI = '" + selectedImage + "'");
                 }
-                else{
+                else {
                     Log.d("gotomappz", "3");
                     sqLiteDatabase.execSQL("INSERT INTO tutorData (id, name,mail,age,address,subjects,salary,experience,phone,imgURI) " +
                             "VALUES ('" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "', '" + name.getText().toString() + "', '" +
@@ -167,7 +170,8 @@ public class TeacherFormActivity extends AppCompatActivity {
             }
             sqLiteDatabase.close();
         }
-        catch (Exception e){
+
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -179,21 +183,13 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
 
         if(!returnedFromMapActivity()) {
 
            getDataFromFirebase();
         }
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_form);
@@ -201,7 +197,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         Intent i = getIntent();
         username = i.getStringExtra("username");
 
-        setTitle("" + username);
+        setTitle("" + MainActivityLogin.un);
 
         findViews();
 
@@ -226,11 +222,6 @@ public class TeacherFormActivity extends AppCompatActivity {
                 if (cursor.getCount() > 0) {
 
                     getInfoSQLite(cursor);
-                    //}
-            /*if(cursor.getString(imgUriIndex) != null){
-                selectedImage = Uri.parse(cursor.getString(imgUriIndex));
-                imageToUpload.setImageURI(selectedImage);
-            }*/
 
                     //Refer to me
                     FirebaseStorage storage=FirebaseStorage.getInstance();
@@ -242,32 +233,23 @@ public class TeacherFormActivity extends AppCompatActivity {
                         public void onSuccess(byte[] bytes) {
                             Bitmap bm= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                             imageToUpload.setImageBitmap(bm);
-
-
                         }
 
 
 
                     });
-
                     cursor.close();
                 }
             }
+
             sqLiteDatabase.close();
-
-
-
-
-
-
-
         }
-        catch (Exception e){
+
+        catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
-
+    } // end onCreate
 
 
 
@@ -279,7 +261,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.privacyPolicyMenuItem:
                 Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
                 startActivity(intent1);
@@ -293,10 +275,12 @@ public class TeacherFormActivity extends AppCompatActivity {
                 Log.d("checkuser","" + user.getEmail());
                 FirebaseAuth.getInstance().signOut();
 
-                if(FirebaseAuth.getInstance().getCurrentUser() == null){
+                if(FirebaseAuth.getInstance().getCurrentUser() == null) {
                     Log.d("signout","successful");
+
                     SessionManagement sessionManagement=new SessionManagement(TeacherFormActivity.this);
                     sessionManagement.removeSession();
+
                     Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -305,12 +289,13 @@ public class TeacherFormActivity extends AppCompatActivity {
                         sqLiteDatabase.execSQL("DELETE FROM tutorData");
                         sqLiteDatabase.close();
                     }
-                    catch (Exception e){
+                    catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     startActivity(intent3);
-                }else{
+                }
+                else {
                     Log.d("signout","failed");
                     Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -339,8 +324,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
 
-    public String getFileExtension(Uri uri)
-    {
+    public String getFileExtension(Uri uri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(uri));
@@ -395,9 +379,7 @@ public class TeacherFormActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-
+    } // end uploadImage method
 
 
 
@@ -414,83 +396,83 @@ public class TeacherFormActivity extends AppCompatActivity {
         subj = subject.getText().toString();
 
 
-        if(tName.isEmpty()){
+        if(tName.isEmpty()) {
             //name.setError("Full name is required!");
             name.setError(getString(R.string.nameError));
             name.requestFocus();
             return;
         }
 
-        if(tEmail.isEmpty()){
+        if(tEmail.isEmpty()) {
             //email.setError("Email is required!");
             email.setError(getString(R.string.emailError));
             email.requestFocus();
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(tEmail).matches()){
+        if(!Patterns.EMAIL_ADDRESS.matcher(tEmail).matches()) {
             //email.setError("Please provide a correct email address!");
             email.setError(getString(R.string.emailValid));
             email.requestFocus();
             return;
         }
 
-        if(tAge.isEmpty()){
+        if(tAge.isEmpty()) {
             //age.setError("Age is required!");
             age.setError(getString(R.string.ageError));
             age.requestFocus();
             return;
         }
 
-        if(tAddress.isEmpty()){
+        if(tAddress.isEmpty()) {
             //address.setError("Address is required!");
             address.setError(getString(R.string.addressError));
             address.requestFocus();
             return;
         }
 
-        if(subj.isEmpty()){
+        if(subj.isEmpty()) {
             //subject.setError("Subject field is required!");
             subject.setError(getString(R.string.subjectError));
             subject.requestFocus();
             return;
         }
 
-        if(tSal.isEmpty()){
+        if(tSal.isEmpty()) {
             //salary.setError("Salary is required!");
             salary.setError(getString(R.string.salaryError));
             salary.requestFocus();
             return;
         }
 
-        if(tExp.isEmpty()){
+        if(tExp.isEmpty()) {
             //experience.setError("Experience is required!");
             experience.setError(getString(R.string.experienceError));
             experience.requestFocus();
             return;
         }
 
-        if(tPhoneNum.isEmpty()){
+        if(tPhoneNum.isEmpty()) {
             //phoneNumber.setError("Phone number is required!");
             phoneNumber.setError(getString(R.string.phoneError));
             phoneNumber.requestFocus();
             return;
         }
 
-        if(imageToUpload.getDrawable()==null){
+        if(imageToUpload.getDrawable()==null) {
             Toast.makeText(this, "You should select an profile photo before you submit!", Toast.LENGTH_SHORT).show();
             return;
         }
-        else{
-            if(addressLine == null || lat == null || lon == null){
+        else {
+            if(addressLine == null || lat == null || lon == null) {
                 Toast.makeText(this, "Location required", Toast.LENGTH_SHORT).show();
                 //chosenLocation.setError("Location is required!");
                 chosenLocation.setError(getString(R.string.locationError));
                 chosenLocation.requestFocus();
                 return;
             }
-           else {
-               // uploadImage(selectedImage);
+            else {
+                // uploadImage(selectedImage);
             }
         }
 
@@ -510,7 +492,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         databaseReference.setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if(task.isSuccessful()) {
                     Toast.makeText(TeacherFormActivity.this, "Data inserted successfully!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -522,6 +504,7 @@ public class TeacherFormActivity extends AppCompatActivity {
     private void autoFill() {
         DatabaseReference reference= FirebaseDatabase.getInstance().getReference("TutorFormInfo");
         final String id=FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -534,29 +517,25 @@ public class TeacherFormActivity extends AppCompatActivity {
                 experience.setText(snapshot.child(id).child("experience").getValue(String.class));
                 phoneNumber.setText(snapshot.child(id).child("phoneNum").getValue(String.class));
                 chosenLocation.setText(snapshot.child(id).child("location").getValue(String.class));
+
                 imageUrl=snapshot.child(id).child("imageUrl").getValue(String.class);
                 lon = snapshot.child(id).child("longitude").getValue(String.class);
                 lat = snapshot.child(id).child("latitude").getValue(String.class);
+
                 addressLine=snapshot.child(id).child("location").getValue(String.class);
+
                 FirebaseStorage storage=FirebaseStorage.getInstance();
                 final StorageReference stRef=storage.getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePhoto.jpg");
+
                 selectedImage=Uri.parse(imageUrl);
-                stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>()
-                {
+
+                stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
                         Bitmap bm= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
                         imageToUpload.setImageBitmap(bm);
-
-
                     }
-
-
-
                 });
-
-
-
             }
 
             @Override
@@ -565,31 +544,37 @@ public class TeacherFormActivity extends AppCompatActivity {
             }
         });
 
-    }
+    } // end autofill function
+
+
+
     public boolean returnedFromMapActivity(){
-        try{
+        try {
             flag=Integer.parseInt(getIntent().getStringExtra("FLAG"));
         }
-        catch(Exception e){
+        catch(Exception e) {
             e.printStackTrace();
         }
 
-        if (flag==1)return true;
-        else return false;
+        if (flag==1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void getDataFromFirebase() {
         DatabaseReference stRef2=FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        stRef2.addListenerForSingleValueEvent(new ValueEventListener() {
 
+        stRef2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     autoFill();
-
-                } else {
+                }
+                else {
                     // Don't exist! Do something.
-
                 }
             }
 
@@ -600,6 +585,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
         });
     }
+
 
     public void findViews() {
         imageToUpload = (ImageView) findViewById(R.id.teacherPhotoImageView);
@@ -615,6 +601,9 @@ public class TeacherFormActivity extends AppCompatActivity {
 
         chosenLocation = findViewById(R.id.yourChosenLocation);
     }
+
+
+
     public void getInfoSQLite(Cursor cursor) {
         Log.d("cursor2", "acccessed");
 
@@ -658,13 +647,14 @@ public class TeacherFormActivity extends AppCompatActivity {
         phoneNumber.setText(cursor.getString(phoneIndex));
         chosenLocation.setText(cursor.getString(locationIndex));
 
-        selectedImage=Uri.parse(cursor.getString(imgUriIndex));
+        selectedImage = Uri.parse(cursor.getString(imgUriIndex));
 
         //if(lat.equals("") && lon.equals("")) {
         lon = cursor.getString(lonIndex);
         lat = cursor.getString(latIndex);
         addressLine = cursor.getString(locationIndex);
     }
+
 }//end class
 
 

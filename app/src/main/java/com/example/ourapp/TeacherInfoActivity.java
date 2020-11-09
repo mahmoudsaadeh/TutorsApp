@@ -80,10 +80,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
         getTeacherInfo();
 
-
-
         loadRating();
-
 
         //ratingBar.setRating(previousStudentRate);
 
@@ -106,7 +103,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
         changeRating();
 
 
-    }//end of onCreate
+    } //end of onCreate
 
 
 
@@ -116,6 +113,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
         View dialogView = LayoutInflater.from(ratingBar.getContext()).inflate(R.layout.rating_dialog, viewGroup, false);
         builder.setView(dialogView);
         final AlertDialog alertDialog = builder.create();
+
         alertDialog.show();
         alertDialog.setCancelable(false);
         alertDialog.getWindow().setLayout(1000, 1000); //Controlling width and height.
@@ -181,7 +179,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
 */
 
 
-    public void callTeacher(View v){
+    public void callTeacher(View v) {
         EditText teacherPhoneNumber = (EditText) findViewById(R.id.teacherPhone11);
         String phoneNumber=teacherPhoneNumber.getText().toString().substring(14);
         Intent intent=new Intent(Intent.ACTION_DIAL);
@@ -189,7 +187,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void emailTeacher(View v){
+    public void emailTeacher(View v) {
         EditText teacherEmail = (EditText) findViewById(R.id.teacherEmail11);
         String email=teacherEmail.getText().toString().substring(7);
         Intent intent=new Intent(Intent.ACTION_SEND);
@@ -198,7 +196,8 @@ public class TeacherInfoActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "Choose an Email client :"));
     }
 
-    private void getTeacherInfo() {teacherName = (EditText) findViewById(R.id.teacherNameETMultiLine);
+    private void getTeacherInfo() {
+        teacherName = (EditText) findViewById(R.id.teacherNameETMultiLine);
         teacherAddress = (EditText) findViewById(R.id.teacherAddressETMultiLine);
         teacherSubject = (EditText) findViewById(R.id.teacherSubjectsETMultiLine);
         teacherExperience = (EditText) findViewById(R.id.teacherExperienceETMultiLine);
@@ -251,17 +250,20 @@ public class TeacherInfoActivity extends AppCompatActivity {
             }
         });
     }
-    public void loadRating(){
+
+
+
+    public void loadRating() {
         setRatingBarValueReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
 
         setRatingBarValueReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                if(FirebaseAuth.getInstance().getCurrentUser() != null) {
                     Log.i("1","1");
                     if(snapshot.child(id).exists()) {
                         Log.i("2","2");
-                        if (snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
+                        if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
                             previousStudentRate = Float.parseFloat(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString());
                             Log.i("3", "3");
                             Log.i("4", "" + previousStudentRate);
@@ -271,7 +273,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
                 else {
                     previousStudentRate = 0;
                 }
-
                 reference.removeEventListener(this);
             }
 
@@ -294,7 +295,11 @@ public class TeacherInfoActivity extends AppCompatActivity {
                 Log.i("rate66", "" + previousStudentRate);
             }
         }, 1500);
-    }
+
+    } // end loadRating
+
+
+
     public void changeRating(){
 
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
@@ -320,7 +325,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                         //if tutorId child already exists in TutorsRating parent(if the teacher was rated previously by one of the students)
                         if(snapshot.child(id).exists()) {
                             //if the logged-in student already rated his teacher, update the existing rating of both student & teacher
-                            if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                            if(FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 if(snapshot.child(id).child("ratedBy").getChildrenCount() > 1) {
                                     if (snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
                                         String previousStudentRate = snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString();
@@ -357,7 +362,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                                     }
                                 }
                                 else {
-                                    if(snapshot.child(id).child("ratedBy").getChildrenCount() == 1){
+                                    if(snapshot.child(id).child("ratedBy").getChildrenCount() == 1) {
                                         //if this single student is the same that rated the tutut before
                                         if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()){
                                             databaseReference.child(id).child("rating").setValue(String.valueOf(rating));
@@ -417,4 +422,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
             }
         });//end setOnRatingBarChangeListener
     }
+
+
 }//end class (activity)

@@ -34,13 +34,10 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
         setContentView(R.layout.activity_student_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-
         supportMapFragment();
         Intent intent = getIntent();
         String tutorId = intent.getStringExtra("tutorId");
         getInfoFromDb(tutorId);
-
-
     }
 
     /**
@@ -52,6 +49,8 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -80,11 +79,15 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
 
 
     }
+
+
     public void supportMapFragment(){
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
+
+
     public void getInfoFromDb(String tutorId){
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorFormInfo").child(tutorId);
 
@@ -120,5 +123,6 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
 
             }
         });
-    }
-}
+    } // end getInfoFromDb method
+
+} // end activity

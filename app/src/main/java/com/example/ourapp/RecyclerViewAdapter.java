@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +26,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private static final String TAG = "RecyclerViewAdapter";//used for debugging - a static logtag with our class name
+    //used for debugging - a static logtag with our class name
+    private static final String TAG = "RecyclerViewAdapter";
 
     //float prevStudentRate;
 
@@ -46,6 +45,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         this.ids = ids;
     }
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,6 +54,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
 
         return viewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
@@ -71,7 +72,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(ids.size() > 0){
+                if(ids.size() > 0) {
                     if(snapshot.child(ids.get(position)).exists()){
                         String rate = snapshot.child(ids.get(position)).child("rating").getValue().toString();
                         holder.teachersRating.setText(rate);
@@ -100,12 +101,13 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
             }
         });
 
+
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "clicked on: " + imagesNames.get(position));
                 //Toast.makeText(context, "" + imagesNames.get(position), Toast.LENGTH_SHORT).show();
-/*
+                /*
                 final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorsRating");
 
                 reference.addValueEventListener(new ValueEventListener() {
@@ -141,13 +143,16 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
                 context.startActivity(intent);
             }
         });
-    }
+    } //  end onBindViewHolder method
+
+
 
     @Override
     public int getItemCount() {
         //if left 'return 0', you'll get a blank screen when starting the activity containing the rv
         return imagesNames.size(); //this tells the adapter how many items is in your list
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -165,8 +170,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
             teachersRating = itemView.findViewById(R.id.decimalRatingTextView);
             rvTeacherRating = itemView.findViewById(R.id.rvTeacherRating);
             parentLayout = itemView.findViewById(R.id.parentLayout);
-
         }
-    }
+
+    } // end ViewHolder class
 
 }
