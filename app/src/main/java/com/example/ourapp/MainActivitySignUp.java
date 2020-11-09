@@ -186,8 +186,8 @@ public class MainActivitySignUp extends AppCompatActivity {
     }
 
     public void UserTypeToast() {
-        confirmPassword.setError(getString(R.string.passwordMatch));
-        confirmPassword.requestFocus();
+        Toast.makeText(this, "You should choose a 'user type' before you continue!", Toast.LENGTH_SHORT).show();
+
     }
 
     public void setPersonType(int personType) {
