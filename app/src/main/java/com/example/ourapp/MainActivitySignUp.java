@@ -57,42 +57,42 @@ public class MainActivitySignUp extends AppCompatActivity {
 
         if(name.isEmpty()) {
             //username.setError("Username is required!");
-            requireUsername();
+            commonMethods.Warning(username,getString(R.string.usernameError));
             return;
         }
 
         if(mail.isEmpty()) {
             //email.setError("Email is required!");
-            requireEmail();
+            commonMethods.Warning(email,getString(R.string.emailError));
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
             //email.setError("Please provide a correct email address!");
-            emailError();
+            commonMethods.Warning(email,getString(R.string.emailValid));
             return;
         }
 
         if(passwordd.isEmpty()) {
             //password.setError("Password is required!");
-            requirePassword();
+            commonMethods.Warning(password,getString(R.string.passwordError));
             return;
         }
 
         if(passwordd.length() < 6) {
             //password.setError("Minimum password length is 6 characters!");
-            passwordLengthError();
+            commonMethods.Warning(password,getString(R.string.passwordLength));
             return;
         }
 
         if(confirmPass.isEmpty()) {
             //confirmPassword.setError("You need to confirm your password!");
-            requestPasswordConfirmation();
+            commonMethods.Warning(password,getString(R.string.passwordConfirm));
             return;
         }
         else if(!confirmPass.equals(passwordd)) {
             //confirmPassword.setError("Your passwords doesn't match! Please recheck.");
-            passwordMismatchError();
+            commonMethods.Warning(password,getString(R.string.passwordMatch));
             return;
         }
 
@@ -151,7 +151,7 @@ public class MainActivitySignUp extends AppCompatActivity {
     }//end onCreate
 
 
-
+/*
     public void requireUsername() {
         username.setError(getString(R.string.usernameError));
         username.requestFocus();
@@ -192,7 +192,7 @@ public class MainActivitySignUp extends AppCompatActivity {
         confirmPassword.setError(getString(R.string.passwordMatch));
         confirmPassword.requestFocus();
     }
-
+*/
 
     public void UserTypeToast() {
         Toast.makeText(this, "You should choose a 'user type' before you continue!", Toast.LENGTH_SHORT).show();

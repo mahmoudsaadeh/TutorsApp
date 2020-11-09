@@ -34,13 +34,13 @@ public class ResetPasswordActivity extends AppCompatActivity {
         if(email.isEmpty()){
             //username is the email, didn't rename because it's causing trouble
             //resetPasswordEmailEt.setError("Email is required!");
-            requireEmail();
+            commonMethods.Warning(resetPasswordEmailEt,getString(R.string.emailError));
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             //resetPasswordEmailEt.setError("Please enter a valid email!");
-            emailFormatError();
+            commonMethods.Warning(resetPasswordEmailEt,getString(R.string.emailValid));
             return;
         }
 
@@ -104,7 +104,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         //return super.onOptionsItemSelected(item);
     }
 */
-
+/*
 
     public void requireEmail() {
         resetPasswordEmailEt.setError(getString(R.string.emailError));
@@ -116,7 +116,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         resetPasswordEmailEt.setError(getString(R.string.emailCheck));
         resetPasswordEmailEt.requestFocus();
     }
-
+*/
 
     public void resetPassword(String email){
         firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {

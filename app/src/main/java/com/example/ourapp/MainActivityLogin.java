@@ -86,26 +86,26 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         if(email.isEmpty()) {
             //username is the email, didn't rename because it's causing trouble
             //username.setError("Email is required!");
-            requireEmail();
+           commonMethods.Warning(username,getString(R.string.emailError));
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             //username.setError("Please enter a valid email!");
-            warnForEmail();
+            commonMethods.Warning(username,getString(R.string.emailValid));
             return;
         }
 
         if(pass.isEmpty()) {
             //password.setError("Password is required!");
-            requirePassword();
+            commonMethods.Warning(password,getString(R.string.passwordError));
             return;
         }
 
         //not necessary
         if(pass.length() < 6) {
             //password.setError("Minimum password length is 6 characters!");
-            warnForPassword();
+            commonMethods.Warning(password,getString(R.string.passwordLength));
             return;
         }
 
@@ -235,7 +235,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+/*
 
     public void requireEmail(){
         username.setError(getString(R.string.emailError));
@@ -260,7 +260,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         password.requestFocus();
     }
 
-
+*/
     public void displayLoadingScreen() {
         // progressBarLogin.setVisibility(View.VISIBLE);
         progressDialog.show();
