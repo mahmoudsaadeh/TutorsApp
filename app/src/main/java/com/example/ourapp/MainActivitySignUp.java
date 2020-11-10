@@ -6,13 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -57,42 +55,42 @@ public class MainActivitySignUp extends AppCompatActivity {
 
         if(name.isEmpty()) {
             //username.setError("Username is required!");
-            commonMethods.Warning(username,getString(R.string.usernameError));
+            CommonMethods.Warning(username,getString(R.string.usernameError));
             return;
         }
 
         if(mail.isEmpty()) {
             //email.setError("Email is required!");
-            commonMethods.Warning(email,getString(R.string.emailError));
+            CommonMethods.Warning(email,getString(R.string.emailError));
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
             //email.setError("Please provide a correct email address!");
-            commonMethods.Warning(email,getString(R.string.emailValid));
+            CommonMethods.Warning(email,getString(R.string.emailValid));
             return;
         }
 
         if(passwordd.isEmpty()) {
             //password.setError("Password is required!");
-            commonMethods.Warning(password,getString(R.string.passwordError));
+            CommonMethods.Warning(password,getString(R.string.passwordError));
             return;
         }
 
         if(passwordd.length() < 6) {
             //password.setError("Minimum password length is 6 characters!");
-            commonMethods.Warning(password,getString(R.string.passwordLength));
+            CommonMethods.Warning(password,getString(R.string.passwordLength));
             return;
         }
 
         if(confirmPass.isEmpty()) {
             //confirmPassword.setError("You need to confirm your password!");
-            commonMethods.Warning(password,getString(R.string.passwordConfirm));
+            CommonMethods.Warning(password,getString(R.string.passwordConfirm));
             return;
         }
         else if(!confirmPass.equals(passwordd)) {
             //confirmPassword.setError("Your passwords doesn't match! Please recheck.");
-            commonMethods.Warning(password,getString(R.string.passwordMatch));
+            CommonMethods.Warning(password,getString(R.string.passwordMatch));
             return;
         }
 

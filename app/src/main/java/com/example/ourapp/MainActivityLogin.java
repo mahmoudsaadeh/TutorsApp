@@ -5,19 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.se.omapi.Session;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,26 +81,26 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         if(email.isEmpty()) {
             //username is the email, didn't rename because it's causing trouble
             //username.setError("Email is required!");
-           commonMethods.Warning(username,getString(R.string.emailError));
+           CommonMethods.Warning(username,getString(R.string.emailError));
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             //username.setError("Please enter a valid email!");
-            commonMethods.Warning(username,getString(R.string.emailValid));
+            CommonMethods.Warning(username,getString(R.string.emailValid));
             return;
         }
 
         if(pass.isEmpty()) {
             //password.setError("Password is required!");
-            commonMethods.Warning(password,getString(R.string.passwordError));
+            CommonMethods.Warning(password,getString(R.string.passwordError));
             return;
         }
 
         //not necessary
         if(pass.length() < 6) {
             //password.setError("Minimum password length is 6 characters!");
-            commonMethods.Warning(password,getString(R.string.passwordLength));
+            CommonMethods.Warning(password,getString(R.string.passwordLength));
             return;
         }
 
