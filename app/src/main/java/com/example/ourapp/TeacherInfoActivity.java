@@ -35,11 +35,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class TeacherInfoActivity extends AppCompatActivity {
 
 
-    //String id="BN6PPyaVlGf6fJ2V8wCxwmxEaMf2"; //id of the clicked teacher
-    //String oldRating;
+    private static final int DELAY_TIME = 2000;
+    private static final int DELAY_TIME_2 = 1500;
+    private static final int LAYOUT_WIDTH = 1000;
+    private static final int LAYOUT_HEIGHT = 1000;
+    private static final float DEFAULT_PREVIOUS_STUDENT_RATE = 0;
+    private static final int ONE_CHILD = 1;
 
     //tutor id
     String id;
@@ -74,31 +80,12 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("tutorId");
-        //previousStudentRate = intent.getFloatExtra("prevStudentRate", 0);
 
         //Log.i("ratezz", String.valueOf(previousStudentRate));
 
         getTeacherInfo();
 
         loadRating();
-
-        //ratingBar.setRating(previousStudentRate);
-
-        /*setRatingBarValueReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
-
-        setRatingBarValueReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChildren()){
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
 
         changeRating();
 
@@ -107,7 +94,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
 
 
-    public void ratingDialog (){
+    public void ratingDialog () {
         AlertDialog.Builder builder = new AlertDialog.Builder(TeacherInfoActivity.this);
         ViewGroup viewGroup = findViewById(android.R.id.content);
         View dialogView = LayoutInflater.from(ratingBar.getContext()).inflate(R.layout.rating_dialog, viewGroup, false);
@@ -116,7 +103,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
         alertDialog.show();
         alertDialog.setCancelable(false);
-        alertDialog.getWindow().setLayout(1000, 1000); //Controlling width and height.
+        Objects.requireNonNull(alertDialog.getWindow()).setLayout(LAYOUT_WIDTH, LAYOUT_HEIGHT); //Controlling width and height.
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -125,7 +112,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                 //Do something here
                 alertDialog.dismiss();
             }
-        }, 2000);
+        }, DELAY_TIME);
     }
 
 
@@ -260,9 +247,13 @@ public class TeacherInfoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+
                     Log.i("1","1");
+
                     if(snapshot.child(id).exists()) {
+
                         Log.i("2","2");
+
                         if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
                             previousStudentRate = Float.parseFloat(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString());
                             Log.i("3", "3");
@@ -271,7 +262,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    previousStudentRate = 0;
+                    previousStudentRate = DEFAULT_PREVIOUS_STUDENT_RATE;
                 }
                 reference.removeEventListener(this);
             }
@@ -294,7 +285,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                 ratingBar.setRating(previousStudentRate);
                 Log.i("rate66", "" + previousStudentRate);
             }
-        }, 1500);
+        }, DELAY_TIME_2);
 
     } // end loadRating
 
@@ -362,8 +353,8 @@ public class TeacherInfoActivity extends AppCompatActivity {
                                     }
                                 }
                                 else {
-                                    if(snapshot.child(id).child("ratedBy").getChildrenCount() == 1) {
-                                        //if this single student is the same that rated the tutut before
+                                    if(snapshot.child(id).child("ratedBy").getChildrenCount() == ONE_CHILD) {
+                                        //if this single student is the same that rated the tutor before
                                         if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()){
                                             databaseReference.child(id).child("rating").setValue(String.valueOf(rating));
                                             databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating)).addOnSuccessListener(new OnSuccessListener<Void>() {

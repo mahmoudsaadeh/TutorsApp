@@ -28,6 +28,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
 
     //used for debugging - a static logtag with our class name
     private static final String TAG = "RecyclerViewAdapter";
+    private static final String DEFAULT_RATING_STRING = "0.0";
+    private static final int DEFAULT_RATING_INT = 0;
 
     //float prevStudentRate;
 
@@ -81,15 +83,15 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
                         databaseReference.removeEventListener(this);
                     }
                     else {
-                        holder.teachersRating.setText("0.0");
-                        holder.rvTeacherRating.setRating(0);
+                        holder.teachersRating.setText(DEFAULT_RATING_STRING);
+                        holder.rvTeacherRating.setRating(DEFAULT_RATING_INT);
 
                         databaseReference.removeEventListener(this);
                     }
                 }
                 else {
-                    holder.teachersRating.setText("0.0");
-                    holder.rvTeacherRating.setRating(0);
+                    holder.teachersRating.setText(DEFAULT_RATING_STRING);
+                    holder.rvTeacherRating.setRating(DEFAULT_RATING_INT);
 
                     databaseReference.removeEventListener(this);
                 }

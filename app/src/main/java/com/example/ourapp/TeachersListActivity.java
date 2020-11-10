@@ -58,6 +58,9 @@ public class TeachersListActivity extends AppCompatActivity {
 
     SwipeRefreshLayout swipeRefreshLayout;
 
+    private static final int DELAY = 2000;
+    private static final int DELAY_2 = 1500;
+
     //String currentUser;
 
     @Override
@@ -89,7 +92,8 @@ public class TeachersListActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                CommonMethods.makeToast(TeachersListActivity.this, "" + error.getMessage());
             }
         });
 
@@ -101,7 +105,7 @@ public class TeachersListActivity extends AppCompatActivity {
                 //Do something here
                 initializeImageBitmaps();
             }
-        }, 2000);
+        }, DELAY);
 
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
@@ -218,7 +222,7 @@ public class TeachersListActivity extends AppCompatActivity {
         });
 */
 
-        for(int k = 0;k<tutorsIds.size();k++) {
+        for(int k = 0; k < tutorsIds.size(); k++) {
             //databaseReference2 = FirebaseDatabase.getInstance().getReference().child(tutorsIds.get(0));
             databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(k));
             //Log.d("loop1", "for loop 1");
@@ -226,7 +230,7 @@ public class TeachersListActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     //Log.d("outsideLoop2", "outside loop2");
-                    int n=0;
+                    int n = 0;
 
                     if(snapshot.hasChildren()){
                         Log.d("hasChildren", "yes");
@@ -261,7 +265,8 @@ public class TeachersListActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    CommonMethods.makeToast(TeachersListActivity.this, "" + error.getMessage());
                 }
             });
         }
@@ -273,7 +278,7 @@ public class TeachersListActivity extends AppCompatActivity {
                 //Do something here
                 initRecyclerView();
             }
-        }, 1500);
+        }, DELAY_2);
 
         //initRecyclerView();
 

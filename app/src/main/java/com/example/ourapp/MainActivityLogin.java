@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,11 +51,11 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         int userID = createSession().getSession();
 
         //student
-        if (isStudent(userID)) {
+        if (CommonMethods.isStudent(userID)) {
             goToTeachersList();
         }
         //tutor
-        else if(isTutor(userID)) {
+        else if(CommonMethods.isTutor(userID)) {
             goToTutorForm();
         }
 
@@ -75,39 +73,41 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         hideKeyboard();
 
 
-        String email = getEmail();
-        String pass =getPassword();
+        String email = CommonMethods.getEmail(username);
+        String pass = CommonMethods.getPassword(password);
 
-        if(email.isEmpty()) {
+        if(CommonMethods.checkIfEmpty(email)) {
             //username is the email, didn't rename because it's causing trouble
             //username.setError("Email is required!");
-           CommonMethods.Warning(username,getString(R.string.emailError));
+            CommonMethods.warning(username, getString(R.string.emailError));
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if(CommonMethods.isNotAnEmail(email)) {
             //username.setError("Please enter a valid email!");
-            CommonMethods.Warning(username,getString(R.string.emailValid));
+            CommonMethods.warning(username, getString(R.string.emailValid));
             return;
         }
 
-        if(pass.isEmpty()) {
+        if(CommonMethods.checkIfEmpty(pass)) {
             //password.setError("Password is required!");
-            CommonMethods.Warning(password,getString(R.string.passwordError));
+            CommonMethods.warning(password, getString(R.string.passwordError));
             return;
         }
 
         //not necessary
-        if(pass.length() < 6) {
+        if(CommonMethods.checkIfPassLengthNotValid(pass)) {
             //password.setError("Minimum password length is 6 characters!");
-            CommonMethods.Warning(password,getString(R.string.passwordLength));
+            CommonMethods.warning(password, getString(R.string.passwordLength));
             return;
         }
 
 
-        displayLoadingScreen();
-        signIn(email,pass);
+        CommonMethods.displayLoadingScreen(progressDialog);
+        signIn(email, pass);
     }
+
+
 
 
     @Override
@@ -126,11 +126,9 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        //setTitle("TutorApp - Login");
         findViewsById();
 
         //progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
-
 
         username.requestFocus();
 
@@ -177,36 +175,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
     }
 
 
-    public String getEmail() {
-        return username.getText().toString().trim();
-    }
-
-
-    public String getPassword() {
-       return password.getText().toString().trim();
-    }
-
-
-    public boolean isStudent(int id) {
-        if(id == 1) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-
-    public boolean isTutor(int id) {
-        if(id==2) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-
     public void goToTeachersList() {
         Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
         startActivity(intent);
@@ -230,44 +198,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-/*
 
-    public void requireEmail(){
-        username.setError(getString(R.string.emailError));
-        username.requestFocus();
-    }
-
-
-    public void warnForEmail() {
-        username.setError(getString(R.string.emailCheck));
-        username.requestFocus();
-    }
-
-
-    public void requirePassword() {
-        password.setError(getString(R.string.passwordError));
-        password.requestFocus();
-    }
-
-
-    public void warnForPassword() {
-        password.setError(getString(R.string.passwordLength));
-        password.requestFocus();
-    }
-
-*/
-    public void displayLoadingScreen() {
-        // progressBarLogin.setVisibility(View.VISIBLE);
-        progressDialog.show();
-
-        //progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(
-                android.R.color.transparent
-        );
-    }
 
     public void signIn(String email,String pass){
         mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -347,7 +278,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
+                            CommonMethods.makeToast(MainActivityLogin.this, "Something wrong happened!");
                         }
                     });
 
@@ -362,7 +294,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
                 else {
-                    Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
+                    CommonMethods.makeToast(MainActivityLogin.this, "Failed to login! Please check your credentials.");
                     //progressBarLogin.setVisibility(View.INVISIBLE);
                     progressDialog.dismiss();
                 }

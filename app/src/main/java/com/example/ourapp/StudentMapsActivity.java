@@ -28,6 +28,9 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     private String tutorLon;
     private String tutorLoc;
 
+    private static final String DEFAULT_LAT_OR_LON = "0";
+    private static final int DELAY = 1700;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +78,7 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tutorLatLng,5));
                 mMap.addMarker(markerOptions);
             }
-        }, 1700);
+        }, DELAY);
 
 
     }
@@ -95,21 +98,21 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child("latitude").getValue() == null){
-                    tutorLat = "0";
+                    tutorLat = DEFAULT_LAT_OR_LON;
                 }
                 else {
                     tutorLat = snapshot.child("latitude").getValue().toString();
                 }
 
                 if(snapshot.child("longitude").getValue() == null){
-                    tutorLon = "0";
+                    tutorLon = DEFAULT_LAT_OR_LON;
                 }
                 else {
                     tutorLon = snapshot.child("longitude").getValue().toString();
                 }
 
                 if(snapshot.child("location").getValue() == null){
-                    tutorLoc = "0";
+                    tutorLoc = DEFAULT_LAT_OR_LON;
                 }
                 else {
                     tutorLoc = snapshot.child("location").getValue().toString();

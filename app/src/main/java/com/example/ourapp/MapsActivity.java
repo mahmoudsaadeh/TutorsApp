@@ -63,7 +63,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void getLocation(View view){
         //Log.d("getLoc1","accessed");
         if(chosenLocLatLon == null || chosenLocAddress.isEmpty()) {
-            Toast.makeText(this, "Please choose a location!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Please choose a location!", Toast.LENGTH_SHORT).show();
+            CommonMethods.makeToast(MapsActivity.this, "Please choose a location!");
         }
         else {
             //Log.d("getLoc2","accessed");
