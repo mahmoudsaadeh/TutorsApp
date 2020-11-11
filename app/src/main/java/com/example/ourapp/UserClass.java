@@ -15,4 +15,5 @@ public class UserClass {
         this.email = email;
         this.userType = userType;
     }
+
 }

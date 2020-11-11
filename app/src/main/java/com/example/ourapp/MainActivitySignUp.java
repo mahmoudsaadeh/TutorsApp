@@ -6,17 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,86 +41,122 @@ public class MainActivitySignUp extends AppCompatActivity {
 
     String personTypeString = "";
 
-    public void signUp(View view){
-        /*Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
-        startActivity(intent);*/
-        final String mail = email.getText().toString().trim();
-        final String name = username.getText().toString().trim();
+    public static final int PERSON_TYPE_NOT_SELECTED = -1;
+
+    public void signUp(View view) {
+        String mail = email.getText().toString().trim();
+        String name = username.getText().toString().trim();
         String passwordd = password.getText().toString().trim();
         String confirmPass = confirmPassword.getText().toString().trim();
         int personType = radioGroup.getCheckedRadioButtonId();
 
 
-        if(name.isEmpty()){
-            username.setError("Username is required!");
-            username.requestFocus();
+        if(name.isEmpty()) {
+            CommonMethods.warning(username,getString(R.string.usernameError));
             return;
         }
 
-        if(mail.isEmpty()){
-            email.setError("Email is required!");
-            email.requestFocus();
+        if(CommonMethods.checkIfEmpty(mail)) {
+            CommonMethods.warning(email,getString(R.string.emailError));
             return;
         }
 
-        if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
-            email.setError("Please provide a correct email address!");
-            email.requestFocus();
+        if(CommonMethods.isNotAnEmail(mail)) {
+            CommonMethods.warning(email,getString(R.string.emailValid));
             return;
         }
 
-        if(passwordd.isEmpty()){
-            password.setError("Password is required!");
-            password.requestFocus();
+        if(CommonMethods.checkIfEmpty(passwordd)) {
+            CommonMethods.warning(password,getString(R.string.passwordError));
             return;
         }
 
-        if(passwordd.length() < 6){
-            password.setError("Minimum password length is 6 characters!");
-            password.requestFocus();
+        if(CommonMethods.checkIfPassLengthNotValid(passwordd)) {
+            CommonMethods.warning(password,getString(R.string.passwordLength));
             return;
         }
 
-        if(confirmPass.isEmpty()){
-            confirmPassword.setError("You need to confirm your password!");
-            confirmPassword.requestFocus();
+        if(CommonMethods.checkIfEmpty(confirmPass)) {
+            CommonMethods.warning(confirmPassword,getString(R.string.passwordConfirm));
             return;
-        } else if(!confirmPass.equals(passwordd)){
-            confirmPassword.setError("Your passwords doesn't match! Please recheck.");
-            confirmPassword.requestFocus();
+        }
+        else if(!CommonMethods.checkIfConfirmPassMatchesPass(confirmPass, passwordd)) {
+            CommonMethods.warning(confirmPassword,getString(R.string.passwordMatch));
             return;
         }
 
-        if(personType == -1){
-            Toast.makeText(this, "You should choose a 'user type' before you continue!", Toast.LENGTH_SHORT).show();
+        if(personType == PERSON_TYPE_NOT_SELECTED) {
+            CommonMethods.makeToast(MainActivitySignUp.this, "You should choose a 'user type' before you continue!");
             return;
-        }else {
-            if(personType == R.id.radioButtonStudent){
-                personTypeString = radioButtonStudent.getText().toString();
-                //Log.d("radiobtnn:", radioButtonStudent.getText().toString());
+        }
+        else {
+            setPersonType(personType);
+        }
+
+        CommonMethods.displayLoadingScreen(progressDialog);
+
+        signUp(mail,passwordd,name);
+
+    } // end signUp method
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_sign_up);
+
+        getViewsById();
+        username.requestFocus();
+
+        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressDialog = new ProgressDialog(MainActivitySignUp.this);
+
+        loginLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToLogin();
             }
-            else if(personType == R.id.radioButtonTeacher){
-                personTypeString = radioButtonTeacher.getText().toString();
-                //Log.d("radiobtnn:", radioButtonTeacher.getText().toString());
-            }
+        });
+
+        /* if(radioGroup.getCheckedRadioButtonId() == -1){
+            Log.d("radio"," No radio buttons are checked");
         }
+        else if (radioGroup.getCheckedRadioButtonId() == R.id.radioButtonStudent){
+            Log.d("radio"," Student radio chosen");
+        }
+        else if (radioGroup.getCheckedRadioButtonId() == R.id.radioButtonTeacher){
+            Log.d("radio"," Tutor radio chosen");
+        }
+        else{
 
-        //progressBar.setVisibility(View.VISIBLE);
-        progressDialog.show();
+        }*/
 
-        //progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
+        mAuth = FirebaseAuth.getInstance();
 
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(
-                android.R.color.transparent
-        );
+    }//end onCreate
 
+
+
+
+    public void setPersonType(int personType) {
+        if(personType == R.id.radioButtonStudent) {
+            personTypeString = radioButtonStudent.getText().toString();
+            //Log.d("radiobtnn:", radioButtonStudent.getText().toString());
+        }
+        else if(personType == R.id.radioButtonTeacher) {
+            personTypeString = radioButtonTeacher.getText().toString();
+            //Log.d("radiobtnn:", radioButtonTeacher.getText().toString());
+        }
+    }
+
+
+    public void signUp(final String mail, String passwordd,final String name) {
         mAuth.createUserWithEmailAndPassword(mail, passwordd)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+
                             final UserClass newUser = new UserClass(name, mail, personTypeString);
 
                             FirebaseDatabase.getInstance().getReference("User")
@@ -132,8 +164,9 @@ public class MainActivitySignUp extends AppCompatActivity {
                                     .setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        Toast.makeText(MainActivitySignUp.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
+                                    if(task.isSuccessful()) {
+                                        //Toast.makeText(MainActivitySignUp.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
+                                        CommonMethods.makeToast(MainActivitySignUp.this, "Sign Up Successful!");
                                         //progressBar.setVisibility(View.GONE);
                                         progressDialog.dismiss();
 
@@ -141,19 +174,10 @@ public class MainActivitySignUp extends AppCompatActivity {
                                         Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
                                         startActivity(intent);
                                         finish();
-
-                                        /*if(personTypeString.equalsIgnoreCase("tutor")){
-                                            Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }else{
-                                            //redirect to login screen
-                                            Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
-                                            startActivity(intent);
-                                        }*/
                                     }
                                     else {
-                                        Toast.makeText(MainActivitySignUp.this, "Failed to sign up, please try again.", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(MainActivitySignUp.this, "Failed to sign up, please try again.", Toast.LENGTH_SHORT).show();
+                                        CommonMethods.makeToast(MainActivitySignUp.this, "Failed to sign up, please try again.");
                                         //progressBar.setVisibility(View.GONE);
                                         progressDialog.dismiss();
                                     }
@@ -166,23 +190,18 @@ public class MainActivitySignUp extends AppCompatActivity {
 
                         }
                         else {
-                            Toast.makeText(MainActivitySignUp.this, "Account already exists! Please try again with a different email address.", Toast.LENGTH_SHORT).show();
-                           // progressBar.setVisibility(View.GONE);
+                            //Toast.makeText(MainActivitySignUp.this, "Account already exists! Please try again with a different email address.", Toast.LENGTH_SHORT).show();
+                            CommonMethods.makeToast(MainActivitySignUp.this, "Account already exists! Please try again with a different email address.");
+                            // progressBar.setVisibility(View.GONE);
                             progressDialog.dismiss();
                         }
                     }
                 });
+    }// end signUp
 
-    }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_sign_up);
-
-        //setTitle("TutorApp - Sign up(branch-hadi)");
-
+    public void getViewsById() {
         imageView = (ImageView) findViewById(R.id.logo);
         username = (EditText) findViewById(R.id.usernameETSU);
         email = (EditText) findViewById(R.id.emailET);
@@ -193,42 +212,13 @@ public class MainActivitySignUp extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         signup = (Button) findViewById(R.id.signUpButton);
         loginLink = (TextView) findViewById(R.id.loginLink);
+    }
 
-        username.requestFocus();
-
-
-        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressDialog = new ProgressDialog(MainActivitySignUp.this);
-
-        loginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
-                //intent.putExtra("username","mahmoud");
-                startActivity(intent);
-            }
-        });
-
-/*
-        if(radioGroup.getCheckedRadioButtonId() == -1){
-            Log.d("radio"," No radio buttons are checked");
-        }
-        else if (radioGroup.getCheckedRadioButtonId() == R.id.radioButtonStudent){
-            Log.d("radio"," Student radio chosen");
-        }
-        else if (radioGroup.getCheckedRadioButtonId() == R.id.radioButtonTeacher){
-            Log.d("radio"," Tutor radio chosen");
-        }
-        else{
-
-        }
-*/
-        mAuth = FirebaseAuth.getInstance();
-
+    public void goToLogin() {
+        Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
+        //intent.putExtra("username","mahmoud");
+        startActivity(intent);
     }
 
 
-
-
-
-}
+} // end MainActivitySignUp

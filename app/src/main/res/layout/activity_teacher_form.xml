@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
-                android:text="Fill out the following form with your info:"
+                android:text="@string/formTextView"
                 android:textSize="17sp"
                 android:textStyle="bold|italic" />
 
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Full Name"
+                android:hint="@string/teacherName"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Email"
+                android:hint="@string/teacherEmail"
                 android:inputType="textEmailAddress" />
 
             <EditText
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Age"
+                android:hint="@string/teacherAge"
                 android:inputType="number"
                 android:maxLength="3"
                 android:numeric="integer" />
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Address"
+                android:hint="@string/teacherAddress"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Subjects You Teach"
+                android:hint="@string/teacherSubjects"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Salary in USD"
+                android:hint="@string/teacherSalary"
                 android:inputType="number"
                 android:numeric="decimal" />
 
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Your Experience in brief"
+                android:hint="@string/teacherExperience"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -92,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Phone Number"
+                android:hint="@string/teacherPhoneNum"
                 android:inputType="numberSigned"
                 android:numeric="integer" />
 
@@ -102,14 +102,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21px"
                 android:layout_marginBottom="21px"
-                android:text="Click on (+) icon below to upload your photo:"
+                android:text="@string/uploadImageTextView"
                 android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/teacherPhotoImageView"
                 android:layout_width="match_parent"
                 android:layout_height="216dp"
-                android:contentDescription="Upload Your Photo Here"
+                android:contentDescription="@string/teacherPhotoImageView"
                 android:onClick="openGallery"
                 android:textDirection="firstStrongRtl"
                 app:srcCompat="@android:drawable/ic_input_add" />
@@ -119,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11px"
-                android:text="Select your location:"
+                android:text="@string/chooseLocationTextView"
                 android:textSize="18sp" />
 
             <TextView
@@ -129,14 +129,14 @@
                 android:layout_marginStart="21px"
                 android:layout_marginTop="15px"
                 android:layout_marginBottom="11px"
-                android:text="Your Location" />
+                android:text="@string/yourChosenLocation" />
 
             <Button
                 android:id="@+id/goToMapButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="goToMap"
-                android:text="Go to map!" />
+                android:text="@string/goToMapButton" />
 
             <Button
                 android:id="@+id/submitTutorInfoBtn"
@@ -145,7 +145,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="25px"
                 android:onClick="submitForm"
-                android:text="Submit Form" />
+                android:text="@string/submitTutorInfoBtn" />
 
         </LinearLayout>
 

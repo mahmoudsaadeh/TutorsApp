@@ -30,7 +30,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Name"
+                android:hint="@string/teacherNameETMultiLine"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -45,7 +45,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Address"
+                android:hint="@string/teacherAddressETMultiLine"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -60,7 +60,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Age"
+                android:hint="@string/teacherAge"
                 android:inputType="number" />
 
             <EditText
@@ -75,7 +75,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Subjects"
+                android:hint="@string/teacherSubjectsETMultiLine"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -90,7 +90,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Experience"
+                android:hint="@string/teacherExperienceETMultiLine"
                 android:inputType="textMultiLine" />
 
             <EditText
@@ -105,7 +105,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Email"
+                android:hint="@string/teacherEmail11"
                 android:inputType="textEmailAddress"
                 android:onClick="emailTeacher"/>
 
@@ -121,7 +121,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Phone"
+                android:hint="@string/teacherPhone11"
                 android:inputType="phone"
                 android:onClick="callTeacher"/>
 
@@ -137,7 +137,7 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="Salary in USD"
+                android:hint="@string/editTextSalaryNumberSigned"
                 android:inputType="number" />
 
             <TextView
@@ -147,7 +147,7 @@
                 android:layout_marginLeft="15px"
                 android:layout_marginTop="17px"
                 android:layout_marginBottom="11px"
-                android:text="Rate Your Teacher:"
+                android:text="@string/ratingTextView"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:layout_marginBottom="25px"
-                android:text="Profile Picture:"
+                android:text="@string/profilePic"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -181,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
-                android:text="Location:"
+                android:text="@string/location"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18px"
                 android:onClick="showTeacherLocation"
-                android:text="Show Location On Map" />
+                android:text="@string/getTeacherLocationBtn" />
 
 
         </LinearLayout>

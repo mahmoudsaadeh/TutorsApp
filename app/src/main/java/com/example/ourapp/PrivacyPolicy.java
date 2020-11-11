@@ -33,9 +33,10 @@ public class PrivacyPolicy extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.privacyPolicyMenuItem:
                 Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
                 startActivity(intent1);
@@ -50,7 +51,7 @@ public class PrivacyPolicy extends AppCompatActivity {
                 Log.d("checkuser","" + user.getEmail());
                 FirebaseAuth.getInstance().signOut();
 
-                if(FirebaseAuth.getInstance().getCurrentUser() == null){
+                if(FirebaseAuth.getInstance().getCurrentUser() == null) {
                     Log.d("signout","successful");
                     SessionManagement sessionManagement=new SessionManagement(PrivacyPolicy.this);
                     sessionManagement.removeSession();
@@ -67,7 +68,8 @@ public class PrivacyPolicy extends AppCompatActivity {
                     }
 
                     startActivity(intent3);
-                }else{
+                }
+                else {
                     Log.d("signout","failed");
                     Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -77,7 +79,6 @@ public class PrivacyPolicy extends AppCompatActivity {
         return true;
         //return super.onOptionsItemSelected(item);
     }
-
 
 
 }

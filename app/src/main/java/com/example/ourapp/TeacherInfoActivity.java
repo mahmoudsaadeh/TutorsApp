@@ -4,42 +4,44 @@ import com.squareup.picasso.Picasso;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.ContactsContract;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class TeacherInfoActivity extends AppCompatActivity {
 
 
-    //String id="BN6PPyaVlGf6fJ2V8wCxwmxEaMf2"; //id of the clicked teacher
-    //String oldRating;
+    private static final int DELAY_TIME = 2000;
+    private static final int DELAY_TIME_2 = 1500;
+    private static final int LAYOUT_WIDTH = 1000;
+    private static final int LAYOUT_HEIGHT = 1000;
+    private static final float DEFAULT_PREVIOUS_STUDENT_RATE = 0;
+    private static final int ONE_CHILD = 1;
 
     //tutor id
     String id;
@@ -74,10 +76,114 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("tutorId");
-        //previousStudentRate = intent.getFloatExtra("prevStudentRate", 0);
 
         //Log.i("ratezz", String.valueOf(previousStudentRate));
 
+        getTeacherInfo();
+
+        loadRating();
+
+        changeRating();
+
+
+    } //end of onCreate
+
+
+
+    public void ratingDialog () {
+
+        if( PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("RATING",0)==1 ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(TeacherInfoActivity.this);
+            ViewGroup viewGroup = findViewById(android.R.id.content);
+            View dialogView = LayoutInflater.from(ratingBar.getContext()).inflate(R.layout.rating_dialog, viewGroup, false);
+            builder.setView(dialogView);
+            final AlertDialog alertDialog = builder.create();
+
+            alertDialog.show();
+            alertDialog.setCancelable(false);
+            Objects.requireNonNull(alertDialog.getWindow()).setLayout(LAYOUT_WIDTH, LAYOUT_HEIGHT); //Controlling width and height.
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Do something here
+                    alertDialog.dismiss();
+                }
+            }, DELAY_TIME);
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING",0).apply();
+        }
+    }
+
+
+    public void showTeacherLocation(View view){
+        Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
+        intent.putExtra("tutorId", id);
+        startActivity(intent);
+    }
+
+/*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.privacyPolicyMenuItem:
+                Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
+                startActivity(intent1);
+                break;
+            case R.id.termsCondsMenuItem:
+                Intent intent2 = new Intent(getApplicationContext(), TermsAndConditions.class);
+                startActivity(intent2);
+                break;
+            case R.id.logoutMenuItem:
+                //Log.d("logout1","accessed");
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Log.d("checkuser","" + user.getEmail());
+                FirebaseAuth.getInstance().signOut();
+
+                if(FirebaseAuth.getInstance().getCurrentUser() == null){
+                    Log.d("signout","successful");
+                    SessionManagement sessionManagement=new SessionManagement(TeacherInfoActivity.this);
+                    sessionManagement.removeSession();
+                    Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
+                    intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent3);
+                }else{
+                    Log.d("signout","failed");
+                    Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+        }
+        return true;
+        //return super.onOptionsItemSelected(item);
+    }
+*/
+
+
+    public void callTeacher(View v) {
+        EditText teacherPhoneNumber = (EditText) findViewById(R.id.teacherPhone11);
+        String phoneNumber=teacherPhoneNumber.getText().toString().substring(14);
+        Intent intent=new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+phoneNumber));
+        startActivity(intent);
+    }
+
+    public void emailTeacher(View v) {
+        EditText teacherEmail = (EditText) findViewById(R.id.teacherEmail11);
+        String email=teacherEmail.getText().toString().substring(7);
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] { email });
+        intent.setType("message/rfc822");
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+    }
+
+    private void getTeacherInfo() {
         teacherName = (EditText) findViewById(R.id.teacherNameETMultiLine);
         teacherAddress = (EditText) findViewById(R.id.teacherAddressETMultiLine);
         teacherSubject = (EditText) findViewById(R.id.teacherSubjectsETMultiLine);
@@ -130,19 +236,25 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
             }
         });
+    }
 
 
 
+    public void loadRating() {
         setRatingBarValueReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
 
         setRatingBarValueReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+
                     Log.i("1","1");
+
                     if(snapshot.child(id).exists()) {
+
                         Log.i("2","2");
-                        if (snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
+
+                        if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
                             previousStudentRate = Float.parseFloat(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString());
                             Log.i("3", "3");
                             Log.i("4", "" + previousStudentRate);
@@ -150,9 +262,8 @@ public class TeacherInfoActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    previousStudentRate = 0;
+                    previousStudentRate = DEFAULT_PREVIOUS_STUDENT_RATE;
                 }
-
                 reference.removeEventListener(this);
             }
 
@@ -174,33 +285,37 @@ public class TeacherInfoActivity extends AppCompatActivity {
                 ratingBar.setRating(previousStudentRate);
                 Log.i("rate66", "" + previousStudentRate);
             }
-        }, 1500);
+        }, DELAY_TIME_2);
+
+    } // end loadRating
 
 
-        //ratingBar.setRating(previousStudentRate);
 
-        /*setRatingBarValueReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
-
-        setRatingBarValueReference.addValueEventListener(new ValueEventListener() {
+    @SuppressLint("ClickableViewAccessibility")
+    public void changeRating(){
+        ratingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChildren()){
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING",1).apply();
 
                 }
+
+                return false;
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
-
-
+        });
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
+
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(final RatingBar ratingBar, final float rating, boolean fromUser) {
+
+
+
+
+
+
                 //Toast.makeText(TeacherInfoActivity.this, "" + ratingBar.getRating(), Toast.LENGTH_SHORT).show();
 
                 // freeze ratingbar (disable it)
@@ -219,7 +334,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
                         //if tutorId child already exists in TutorsRating parent(if the teacher was rated previously by one of the students)
                         if(snapshot.child(id).exists()) {
                             //if the logged-in student already rated his teacher, update the existing rating of both student & teacher
-                            if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                            if(FirebaseAuth.getInstance().getCurrentUser() != null) {
                                 if(snapshot.child(id).child("ratedBy").getChildrenCount() > 1) {
                                     if (snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
                                         String previousStudentRate = snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString();
@@ -256,8 +371,8 @@ public class TeacherInfoActivity extends AppCompatActivity {
                                     }
                                 }
                                 else {
-                                    if(snapshot.child(id).child("ratedBy").getChildrenCount() == 1){
-                                        //if this single student is the same that rated the tutut before
+                                    if(snapshot.child(id).child("ratedBy").getChildrenCount() == ONE_CHILD) {
+                                        //if this single student is the same that rated the tutor before
                                         if(snapshot.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()){
                                             databaseReference.child(id).child("rating").setValue(String.valueOf(rating));
                                             databaseReference.child(id).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(String.valueOf(rating)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -315,98 +430,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
             }
         });//end setOnRatingBarChangeListener
-
-
-    }//end of onCreate
-
-
-
-    public void ratingDialog (){
-        AlertDialog.Builder builder = new AlertDialog.Builder(TeacherInfoActivity.this);
-        ViewGroup viewGroup = findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from(ratingBar.getContext()).inflate(R.layout.rating_dialog, viewGroup, false);
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        alertDialog.setCancelable(false);
-        alertDialog.getWindow().setLayout(1000, 1000); //Controlling width and height.
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something here
-                alertDialog.dismiss();
-            }
-        }, 2000);
-    }
-
-
-    public void showTeacherLocation(View view){
-        Intent intent = new Intent(getApplicationContext(), StudentMapsActivity.class);
-        intent.putExtra("tutorId", id);
-        startActivity(intent);
-    }
-
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.privacyPolicyMenuItem:
-                Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
-                startActivity(intent1);
-                break;
-            case R.id.termsCondsMenuItem:
-                Intent intent2 = new Intent(getApplicationContext(), TermsAndConditions.class);
-                startActivity(intent2);
-                break;
-            case R.id.logoutMenuItem:
-                //Log.d("logout1","accessed");
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Log.d("checkuser","" + user.getEmail());
-                FirebaseAuth.getInstance().signOut();
-
-                if(FirebaseAuth.getInstance().getCurrentUser() == null){
-                    Log.d("signout","successful");
-                    SessionManagement sessionManagement=new SessionManagement(TeacherInfoActivity.this);
-                    sessionManagement.removeSession();
-                    Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
-                    intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent3);
-                }else{
-                    Log.d("signout","failed");
-                    Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
-                }
-
-                break;
-        }
-        return true;
-        //return super.onOptionsItemSelected(item);
-    }
-*/
-
-
-    public void callTeacher(View v){
-        EditText teacherPhoneNumber = (EditText) findViewById(R.id.teacherPhone11);
-        String phoneNumber=teacherPhoneNumber.getText().toString().substring(14);
-        Intent intent=new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:"+phoneNumber));
-        startActivity(intent);
-    }
-
-    public void emailTeacher(View v){
-        EditText teacherEmail = (EditText) findViewById(R.id.teacherEmail11);
-        String email=teacherEmail.getText().toString().substring(7);
-        Intent intent=new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[] { email });
-        intent.setType("message/rfc822");
-        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
     }
 
 

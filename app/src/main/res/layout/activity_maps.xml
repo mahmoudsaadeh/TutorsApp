@@ -23,6 +23,6 @@
         android:layout_marginEnd="125dp"
         android:layout_marginBottom="17dp"
         android:onClick="getLocation"
-        android:text="Choose Location" />
+        android:text="@string/chooseLocation" />
 
 </RelativeLayout>

@@ -28,54 +28,19 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
     private String tutorLon;
     private String tutorLoc;
 
+    private static final String DEFAULT_LAT_OR_LON = "0";
+    private static final int DELAY = 1700;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
-
+        supportMapFragment();
         Intent intent = getIntent();
         String tutorId = intent.getStringExtra("tutorId");
-
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorFormInfo").child(tutorId);
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child("latitude").getValue() == null){
-                    tutorLat = "0";
-                }
-                else {
-                    tutorLat = snapshot.child("latitude").getValue().toString();
-                }
-
-                if(snapshot.child("longitude").getValue() == null){
-                    tutorLon = "0";
-                }
-                else {
-                    tutorLon = snapshot.child("longitude").getValue().toString();
-                }
-
-                if(snapshot.child("location").getValue() == null){
-                    tutorLoc = "0";
-                }
-                else {
-                    tutorLoc = snapshot.child("location").getValue().toString();
-                }
-
-                reference.removeEventListener(this);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+        getInfoFromDb(tutorId);
     }
 
     /**
@@ -87,6 +52,8 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -111,8 +78,54 @@ public class StudentMapsActivity extends FragmentActivity implements OnMapReadyC
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(tutorLatLng,5));
                 mMap.addMarker(markerOptions);
             }
-        }, 1700);
+        }, DELAY);
 
 
     }
-}
+
+
+    public void supportMapFragment(){
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+
+    public void getInfoFromDb(String tutorId){
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorFormInfo").child(tutorId);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child("latitude").getValue() == null){
+                    tutorLat = DEFAULT_LAT_OR_LON;
+                }
+                else {
+                    tutorLat = snapshot.child("latitude").getValue().toString();
+                }
+
+                if(snapshot.child("longitude").getValue() == null){
+                    tutorLon = DEFAULT_LAT_OR_LON;
+                }
+                else {
+                    tutorLon = snapshot.child("longitude").getValue().toString();
+                }
+
+                if(snapshot.child("location").getValue() == null){
+                    tutorLoc = DEFAULT_LAT_OR_LON;
+                }
+                else {
+                    tutorLoc = snapshot.child("location").getValue().toString();
+                }
+
+                reference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    } // end getInfoFromDb method
+
+} // end activity

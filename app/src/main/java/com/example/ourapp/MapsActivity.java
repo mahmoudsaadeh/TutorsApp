@@ -36,15 +36,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        supportMapFragment();
     }
 
     public String getCityName(LatLng selectedLocation){
         String addressLine = "";
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
         try {
             List<Address> addresses = geocoder.getFromLocation(selectedLocation.latitude, selectedLocation.longitude, 1);
             addressLine = addresses.get(0).getAddressLine(0);
@@ -64,42 +62,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void getLocation(View view){
         //Log.d("getLoc1","accessed");
-        if(chosenLocLatLon == null || chosenLocAddress.isEmpty()){
-            Toast.makeText(this, "Please choose a location!", Toast.LENGTH_SHORT).show();
+        if(chosenLocLatLon == null || chosenLocAddress.isEmpty()) {
+            //Toast.makeText(this, "Please choose a location!", Toast.LENGTH_SHORT).show();
+            CommonMethods.makeToast(MapsActivity.this, "Please choose a location!");
         }
-        else{
+        else {
             //Log.d("getLoc2","accessed");
+            String imageUri=getIntent().getStringExtra("URI");
             Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
             intent.putExtra("Latitude", "" + chosenLocLatLon.latitude);
             intent.putExtra("Longitude", "" + chosenLocLatLon.longitude);
             intent.putExtra("AddressLine", "" + chosenLocAddress);
             intent.putExtra("FLAG", "1");
+            intent.putExtra("URI",imageUri);
             //Log.d("lat","" + chosenLocLatLon.latitude);
             //Log.d("lon","" + chosenLocLatLon.longitude);
 
             Log.d("maps", "test1");
 
-            try {
-
-                SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
-
-                sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS tutorData (id VARCHAR, name VARCHAR, mail VARCHAR, age VARCHAR, address VARCHAR, subjects VARCHAR, salary VARCHAR, experience VARCHAR, phone VARCHAR, imgURI VARCHAR, location VARCHAR, longitude VARCHAR, latitude VARCHAR)");
-
-                sqLiteDatabase.execSQL("UPDATE tutorData SET location = '" + chosenLocAddress + "', longitude = '" + chosenLocLatLon.longitude
-                        + "', latitude = '" + chosenLocLatLon.latitude + "' WHERE id = '" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "'");
-
-                Log.d("maps", "test2");
-
-                sqLiteDatabase.close();
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+            storeLocation();
 
             startActivity(intent);
             finish();
         }
-
     }
 
 
@@ -139,7 +124,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-    }
+
+    }// end onMapReady
 
 
     //hadi
@@ -155,4 +141,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 */
 
-}
+
+    public void supportMapFragment() {
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+
+    public void storeLocation() {
+        try {
+            SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
+
+            sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS tutorData (id VARCHAR, name VARCHAR, mail VARCHAR, age VARCHAR, address VARCHAR, subjects VARCHAR, salary VARCHAR, experience VARCHAR, phone VARCHAR, imgURI VARCHAR, location VARCHAR, longitude VARCHAR, latitude VARCHAR)");
+
+            sqLiteDatabase.execSQL("UPDATE tutorData SET location = '" + chosenLocAddress + "', longitude = '" + chosenLocLatLon.longitude
+                    + "', latitude = '" + chosenLocLatLon.latitude + "' WHERE id = '" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "'");
+
+            Log.d("maps", "test2");
+
+            sqLiteDatabase.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+} // end MapsActivity class

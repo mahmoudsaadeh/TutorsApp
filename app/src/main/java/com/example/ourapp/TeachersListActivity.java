@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,6 +59,9 @@ public class TeachersListActivity extends AppCompatActivity {
 
     SwipeRefreshLayout swipeRefreshLayout;
 
+    private static final int DELAY = 2000;
+    private static final int DELAY_2 = 1500;
+
     //String currentUser;
 
     @Override
@@ -67,14 +71,15 @@ public class TeachersListActivity extends AppCompatActivity {
 
         //Intent intent = getIntent();
         //currentUser = intent.getStringExtra("username");
-
-        setTitle("" + MainActivityLogin.un);
+        String s=MainActivityLogin.un;
+        setTitle("" + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
 
         //tutorsIds.clear();
 
         //Log.i("rate", TeacherInfoActivity.finalTutorRate);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorFormInfo");
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -88,7 +93,8 @@ public class TeachersListActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                CommonMethods.makeToast(TeachersListActivity.this, "" + error.getMessage());
             }
         });
 
@@ -100,7 +106,8 @@ public class TeachersListActivity extends AppCompatActivity {
                 //Do something here
                 initializeImageBitmaps();
             }
-        }, 2000);
+        }, DELAY);
+
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -142,14 +149,14 @@ public class TeachersListActivity extends AppCompatActivity {
                 Log.d("checkuser","" + user.getEmail());
                 FirebaseAuth.getInstance().signOut();
 
-                if(FirebaseAuth.getInstance().getCurrentUser() == null){
+                if(FirebaseAuth.getInstance().getCurrentUser() == null) {
                     Log.d("signout","successful");
                     SessionManagement sessionManagement=new SessionManagement(TeachersListActivity.this);
                     sessionManagement.removeSession();
                     Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
                     intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent3);
-                }else{
+                }else {
                     Log.d("signout","failed");
                     Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -167,7 +174,7 @@ public class TeachersListActivity extends AppCompatActivity {
 
 
 
-    private void initializeImageBitmaps(){
+    private void initializeImageBitmaps() {
         Log.d("initializeBitmapFunc", "preparing bitmaps");
 /*
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
@@ -216,7 +223,7 @@ public class TeachersListActivity extends AppCompatActivity {
         });
 */
 
-        for(int k = 0;k<tutorsIds.size();k++){
+        for(int k = 0; k < tutorsIds.size(); k++) {
             //databaseReference2 = FirebaseDatabase.getInstance().getReference().child(tutorsIds.get(0));
             databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(k));
             //Log.d("loop1", "for loop 1");
@@ -224,7 +231,7 @@ public class TeachersListActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     //Log.d("outsideLoop2", "outside loop2");
-                    int n=0;
+                    int n = 0;
 
                     if(snapshot.hasChildren()){
                         Log.d("hasChildren", "yes");
@@ -259,7 +266,8 @@ public class TeachersListActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    CommonMethods.makeToast(TeachersListActivity.this, "" + error.getMessage());
                 }
             });
         }
@@ -271,13 +279,13 @@ public class TeachersListActivity extends AppCompatActivity {
                 //Do something here
                 initRecyclerView();
             }
-        }, 1500);
+        }, DELAY_2);
 
         //initRecyclerView();
 
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         //Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);

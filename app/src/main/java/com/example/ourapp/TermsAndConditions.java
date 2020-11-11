@@ -1,6 +1,5 @@
 package com.example.ourapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class TermsAndConditions extends AppCompatActivity {
 
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    //private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +25,8 @@ public class TermsAndConditions extends AppCompatActivity {
         setTitle("TutorApp - Terms & Conditions");
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
