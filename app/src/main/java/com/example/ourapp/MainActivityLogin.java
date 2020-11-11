@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -242,7 +243,8 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                                     /*intent.putExtra("username", getUserName + "");
                                     Log.i("username",getUserName+"");*/
                                 un = getUserName;
-
+                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
+                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING",0).apply();
                                 startActivity(intent);
                                 finish();
                             }
@@ -269,7 +271,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                                 //intent.putExtra("username", getUserName + "");
                                 un = getUserName;
-
+                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
                                 startActivity(intent);
                                 finish();
                                 //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();

@@ -15,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -108,7 +109,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     public void goToMap(View view) {
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-
+        intent.putExtra("URI",imageUrl);
         try {
 
             SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
@@ -182,7 +183,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         Intent i = getIntent();
         username = i.getStringExtra("username");
 
-        setTitle("" + MainActivityLogin.un);
+        setTitle("" + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
 
         findViews();
 
@@ -552,12 +553,13 @@ public class TeacherFormActivity extends AppCompatActivity {
 
     public boolean returnedFromMapActivity(){
         try {
+
             flag = Integer.parseInt(getIntent().getStringExtra("FLAG"));
         }
         catch(Exception e) {
             e.printStackTrace();
         }
-
+        //imageUrl=getIntent().getStringExtra("URI");
         return flag == FLAG;
     }
 

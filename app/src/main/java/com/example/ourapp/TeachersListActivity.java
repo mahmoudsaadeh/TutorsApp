@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,8 +71,8 @@ public class TeachersListActivity extends AppCompatActivity {
 
         //Intent intent = getIntent();
         //currentUser = intent.getStringExtra("username");
-
-        setTitle("" + MainActivityLogin.un);
+        String s=MainActivityLogin.un;
+        setTitle("" + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
 
         //tutorsIds.clear();
 

@@ -4,31 +4,27 @@ import com.squareup.picasso.Picasso;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.ContactsContract;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -95,24 +91,28 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
 
     public void ratingDialog () {
-        AlertDialog.Builder builder = new AlertDialog.Builder(TeacherInfoActivity.this);
-        ViewGroup viewGroup = findViewById(android.R.id.content);
-        View dialogView = LayoutInflater.from(ratingBar.getContext()).inflate(R.layout.rating_dialog, viewGroup, false);
-        builder.setView(dialogView);
-        final AlertDialog alertDialog = builder.create();
 
-        alertDialog.show();
-        alertDialog.setCancelable(false);
-        Objects.requireNonNull(alertDialog.getWindow()).setLayout(LAYOUT_WIDTH, LAYOUT_HEIGHT); //Controlling width and height.
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if( PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getInt("RATING",0)==1 ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(TeacherInfoActivity.this);
+            ViewGroup viewGroup = findViewById(android.R.id.content);
+            View dialogView = LayoutInflater.from(ratingBar.getContext()).inflate(R.layout.rating_dialog, viewGroup, false);
+            builder.setView(dialogView);
+            final AlertDialog alertDialog = builder.create();
 
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Do something here
-                alertDialog.dismiss();
-            }
-        }, DELAY_TIME);
+            alertDialog.show();
+            alertDialog.setCancelable(false);
+            Objects.requireNonNull(alertDialog.getWindow()).setLayout(LAYOUT_WIDTH, LAYOUT_HEIGHT); //Controlling width and height.
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Do something here
+                    alertDialog.dismiss();
+                }
+            }, DELAY_TIME);
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING",0).apply();
+        }
     }
 
 
@@ -291,13 +291,31 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
 
 
+    @SuppressLint("ClickableViewAccessibility")
     public void changeRating(){
+        ratingBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING",1).apply();
 
+                }
+
+                return false;
+            }
+        });
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorsRating");
+
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(final RatingBar ratingBar, final float rating, boolean fromUser) {
+
+
+
+
+
+
                 //Toast.makeText(TeacherInfoActivity.this, "" + ratingBar.getRating(), Toast.LENGTH_SHORT).show();
 
                 // freeze ratingbar (disable it)

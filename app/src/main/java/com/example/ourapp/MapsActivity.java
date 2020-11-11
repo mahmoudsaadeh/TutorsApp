@@ -68,11 +68,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else {
             //Log.d("getLoc2","accessed");
+            String imageUri=getIntent().getStringExtra("URI");
             Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
             intent.putExtra("Latitude", "" + chosenLocLatLon.latitude);
             intent.putExtra("Longitude", "" + chosenLocLatLon.longitude);
             intent.putExtra("AddressLine", "" + chosenLocAddress);
             intent.putExtra("FLAG", "1");
+            intent.putExtra("URI",imageUri);
             //Log.d("lat","" + chosenLocLatLon.latitude);
             //Log.d("lon","" + chosenLocLatLon.longitude);
 
