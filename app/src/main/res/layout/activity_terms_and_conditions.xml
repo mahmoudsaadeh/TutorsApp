@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TermsAndConditions">
+    tools:context=".TermsAndConditions"
+    android:background="#ffffff"
+    android:backgroundTint="#800080"
+    tools:background="#800080">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +27,8 @@
                 android:paddingLeft="11dp"
                 android:text="@string/termsCondsTextView"
                 android:textSize="24sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/termsCondsTVContent"
@@ -34,7 +38,8 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/termsCondsTVContent"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/termsChangesTV"
@@ -44,7 +49,8 @@
                 android:paddingLeft="11dp"
                 android:text="@string/termsChangesTV"
                 android:textSize="24sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/termsChangesTVContent"
@@ -54,7 +60,8 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/termsChangesTVContent"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/contactUsTCTV"
@@ -64,7 +71,8 @@
                 android:paddingLeft="11dp"
                 android:text="@string/contactUsTCTV"
                 android:textSize="24sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/contactUsTCTVContent"
@@ -74,7 +82,8 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/contactUsTCTVContent"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"/>
 
         </LinearLayout>
     </ScrollView>

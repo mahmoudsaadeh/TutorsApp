@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TeacherFormActivity">
+    tools:context=".TeacherFormActivity"
+    android:background="#ffffff"
+    android:backgroundTint="#0E9EAF"
+    tools:background="#800080">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="57px">
+            android:padding="57px"
+            >
 
             <TextView
                 android:id="@+id/formTextView"
@@ -22,16 +26,31 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/formTextView"
-                android:textSize="17sp"
+                android:textColor="#800080"
+                android:textSize="20sp"
                 android:textStyle="bold|italic" />
 
             <EditText
                 android:id="@+id/teacherNameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:hint="@string/teacherName"
-                android:inputType="textPersonName" />
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+                android:ems="10"
+
+                android:layout_marginTop="60px"
+                android:includeFontPadding="true"
+                android:inputType="textPersonName"
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff" />
 
             <EditText
                 android:id="@+id/teacherEmailET"
@@ -39,7 +58,21 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/teacherEmail"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff"
+                android:includeFontPadding="true"
+                android:layout_marginTop="60px"/>
 
             <EditText
                 android:id="@+id/teacherAge"
@@ -49,7 +82,21 @@
                 android:hint="@string/teacherAge"
                 android:inputType="number"
                 android:maxLength="3"
-                android:numeric="integer" />
+                android:numeric="integer"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff"
+                android:includeFontPadding="true"
+                android:layout_marginTop="60px"/>
 
             <EditText
                 android:id="@+id/teacherAddressET"
@@ -58,7 +105,21 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="@string/teacherAddress"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff"
+                android:includeFontPadding="true"
+                android:layout_marginTop="60px"/>
 
             <EditText
                 android:id="@+id/teacherSubjectsET"
@@ -67,7 +128,21 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="@string/teacherSubjects"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff"
+                android:includeFontPadding="true"
+                android:layout_marginTop="60px"/>
 
             <EditText
                 android:id="@+id/teacherSalaryET"
@@ -76,7 +151,21 @@
                 android:ems="10"
                 android:hint="@string/teacherSalary"
                 android:inputType="number"
-                android:numeric="decimal" />
+                android:numeric="decimal"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff"
+                android:includeFontPadding="true"
+                android:layout_marginTop="60px"/>
 
             <EditText
                 android:id="@+id/teacherExperienceET"
@@ -85,7 +174,21 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="@string/teacherExperience"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff"
+                android:includeFontPadding="true"
+                android:layout_marginTop="60px"/>
 
             <EditText
                 android:id="@+id/teacherPhoneNumET"
@@ -94,7 +197,21 @@
                 android:ems="10"
                 android:hint="@string/teacherPhoneNum"
                 android:inputType="numberSigned"
-                android:numeric="integer" />
+                android:numeric="integer"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="bold|italic"
+                tools:textColorHint="#ffffff"
+                android:includeFontPadding="true"
+                android:layout_marginTop="60px"/>
 
             <TextView
                 android:id="@+id/uploadImageTextView"
@@ -103,7 +220,10 @@
                 android:layout_marginTop="21px"
                 android:layout_marginBottom="21px"
                 android:text="@string/uploadImageTextView"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#800080"
+
+                android:textStyle="bold|italic"/>
 
             <ImageView
                 android:id="@+id/teacherPhotoImageView"
@@ -112,7 +232,7 @@
                 android:contentDescription="@string/teacherPhotoImageView"
                 android:onClick="openGallery"
                 android:textDirection="firstStrongRtl"
-                app:srcCompat="@android:drawable/ic_input_add" />
+                app:srcCompat="@drawable/imageedit_1_7145354886" />
 
             <TextView
                 android:id="@+id/chooseLocationTextView"
@@ -120,7 +240,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11px"
                 android:text="@string/chooseLocationTextView"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#800080"
+
+                android:textStyle="bold|italic"/>
 
             <TextView
                 android:id="@+id/yourChosenLocation"
@@ -129,14 +252,30 @@
                 android:layout_marginStart="21px"
                 android:layout_marginTop="15px"
                 android:layout_marginBottom="11px"
-                android:text="@string/yourChosenLocation" />
+                android:text="@string/yourChosenLocation"
+                android:textColor="#800080"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"/>
 
             <Button
                 android:id="@+id/goToMapButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="goToMap"
-                android:text="@string/goToMapButton" />
+                android:text="@string/goToMapButton"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/rounded_corners"
+                android:fontFamily="sans-serif-black"
+
+                android:paddingLeft="6dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:shadowColor="#FFFFFF"
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold"
+                tools:shadowColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/submitTutorInfoBtn"
@@ -145,7 +284,22 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="25px"
                 android:onClick="submitForm"
-                android:text="@string/submitTutorInfoBtn" />
+                android:text="@string/submitTutorInfoBtn"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/rounded_corners"
+                android:fontFamily="sans-serif-black"
+
+                android:paddingLeft="6dp"
+
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:shadowColor="#FFFFFF"
+
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold"
+                tools:shadowColor="#FFFFFF"/>
 
         </LinearLayout>
 

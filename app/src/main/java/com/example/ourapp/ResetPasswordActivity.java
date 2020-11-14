@@ -51,6 +51,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            this.getSupportActionBar().hide();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
