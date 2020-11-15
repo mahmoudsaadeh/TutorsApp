@@ -24,13 +24,18 @@ public class CommonMethods {
     // common methods in all activities
 
     public static void displayLoadingScreen(ProgressDialog progressDialog) {
-        progressDialog.show();
-        progressDialog.setCanceledOnTouchOutside(false);
+        try{
+            progressDialog.show();
+            progressDialog.setCanceledOnTouchOutside(false);
 
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(
-                android.R.color.transparent
-        );
+            progressDialog.setContentView(R.layout.progress_dialog);
+            progressDialog.getWindow().setBackgroundDrawableResource(
+                    android.R.color.transparent
+            );
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void makeToast(Context context, String toastMessage) {
