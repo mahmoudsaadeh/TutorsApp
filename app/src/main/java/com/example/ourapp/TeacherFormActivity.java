@@ -163,7 +163,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
-        finish();
+        //finish();
     }
 
 

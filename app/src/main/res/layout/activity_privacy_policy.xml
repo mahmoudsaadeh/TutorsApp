@@ -83,6 +83,7 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/changesToPPContent"
+                android:textColor="#FFFDFD"
                 android:textSize="18sp" />
 
             <TextView

@@ -24,7 +24,7 @@
             android:layout_marginTop="25dp"
             android:layout_marginBottom="55dp"
             android:text="@string/welcome"
-            android:textColor="#800080"
+            android:textColor="#EFE3EF"
             android:textSize="25pt"
             android:textStyle="bold" />
 

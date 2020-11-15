@@ -18,10 +18,10 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="25dp"
         android:layout_toEndOf="@id/recyclerViewCircularImage"
-        android:maxWidth="200dp"
+        android:maxWidth="155dp"
         android:text="@string/rvTeacherName"
         android:textColor="#800080"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textStyle="bold|italic" />
 
     <RatingBar
@@ -37,8 +37,8 @@
         android:numStars="5"
         android:padding="0px"
         android:rating="4.7"
-        android:scaleX="1.2"
-        android:scaleY="1.2"
+        android:scaleX="1"
+        android:scaleY="1"
         android:visibility="visible" />
 
     <TextView
