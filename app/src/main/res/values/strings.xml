@@ -66,7 +66,7 @@
     <string name="teacherSalary">Salary in USD</string>
     <string name="teacherExperience">Your Experience in brief</string>
     <string name="teacherPhoneNum">Phone Number</string>
-    <string name="uploadImageTextView">Click on (+) icon below to upload your photo:</string>
+    <string name="uploadImageTextView">Click on the icon below to upload your photo:</string>
     <string name="teacherPhotoImageView">Upload Your Photo Here</string>
     <string name="chooseLocationTextView">Select your location:</string>
     <string name="yourChosenLocation">Your Location</string>

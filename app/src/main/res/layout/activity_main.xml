@@ -4,11 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:backgroundTint="#0E9EAF"
+    tools:background="#800080"
     tools:context=".MainActivityLogin">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="418dp"
+        android:layout_height="607dp"
+        android:layout_marginTop="111dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,8 +34,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="11dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#800080"
             android:hint="Email Address"
-            android:inputType="textEmailAddress" />
+            android:includeFontPadding="true"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="11dp"
+            android:paddingTop="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="6dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="8pt"
+            android:textStyle="normal|italic"
+            tools:textColorHint="#ffffff" />
 
         <EditText
             android:id="@+id/passwordEditText"
@@ -39,25 +55,52 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="15dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#800080"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:includeFontPadding="true"
+            android:inputType="textPassword"
+            android:paddingLeft="11dp"
+            android:paddingTop="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="6dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="8pt"
+            android:textStyle="normal|italic" />
 
         <Button
             android:id="@+id/loginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="110dp"
+            android:layout_height="39dp"
             android:layout_gravity="center"
             android:layout_marginBottom="25dp"
+            android:background="@drawable/rounded_corners"
+
+            android:fontFamily="sans-serif-black"
             android:onClick="login"
-            android:text="@string/login" />
+            android:paddingLeft="6dp"
+            android:paddingTop="6dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="6dp"
+            android:shadowColor="#FFFFFF"
+            android:text="@string/login"
+            android:textColor="#ffffff"
+            android:textSize="9pt"
+            android:textStyle="bold"
+            tools:shadowColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/signupLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
-            android:text="@string/signupLink" />
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/signupLink"
+            android:textColor="#ffffff"
+            android:textSize="7pt"
+            android:textStyle="bold" />
 
 
         <TextView
@@ -65,7 +108,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/resetPassword" />
+            android:layout_marginTop="175dp"
+            android:text="@string/resetPassword"
+            android:textColor="#FFFFFF"
+            android:textSize="7pt"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="false"
-    tools:context=".TeacherInfoActivity">
+    tools:context=".TeacherInfoActivity"
+    android:background="#ffffff"
+    android:backgroundTint="#800080"
+    tools:background="#800080">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,7 +34,9 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="@string/teacherNameETMultiLine"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <EditText
                 android:id="@+id/teacherAddressETMultiLine"
@@ -46,7 +51,9 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="@string/teacherAddressETMultiLine"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <EditText
                 android:id="@+id/teacherAge"
@@ -61,7 +68,9 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="@string/teacherAge"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <EditText
                 android:id="@+id/teacherSubjectsETMultiLine"
@@ -76,7 +85,9 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="@string/teacherSubjectsETMultiLine"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <EditText
                 android:id="@+id/teacherExperienceETMultiLine"
@@ -91,7 +102,9 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="@string/teacherExperienceETMultiLine"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <EditText
                 android:id="@+id/teacherEmail11"
@@ -107,7 +120,9 @@
                 android:gravity="start|top"
                 android:hint="@string/teacherEmail11"
                 android:inputType="textEmailAddress"
-                android:onClick="emailTeacher"/>
+                android:onClick="emailTeacher"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <EditText
                 android:id="@+id/teacherPhone11"
@@ -123,7 +138,9 @@
                 android:gravity="start|top"
                 android:hint="@string/teacherPhone11"
                 android:inputType="phone"
-                android:onClick="callTeacher"/>
+                android:onClick="callTeacher"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <EditText
                 android:id="@+id/editTextSalaryNumberSigned"
@@ -138,7 +155,9 @@
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
                 android:hint="@string/editTextSalaryNumberSigned"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="8pt"/>
 
             <TextView
                 android:id="@+id/ratingTextView"
@@ -148,8 +167,10 @@
                 android:layout_marginTop="17px"
                 android:layout_marginBottom="11px"
                 android:text="@string/ratingTextView"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -157,7 +178,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:numStars="5"
-                android:rating="0" />
+                android:rating="0"
+                android:theme="@style/RatingBar"/>
 
             <TextView
                 android:id="@+id/profilePicTV"
@@ -166,8 +188,10 @@
                 android:layout_marginLeft="15px"
                 android:layout_marginBottom="25px"
                 android:text="@string/profilePic"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                />
 
             <ImageView
                 android:id="@+id/image"
@@ -182,16 +206,35 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:text="@string/location"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
             <Button
                 android:id="@+id/getTeacherLocationBtn"
-                android:layout_width="match_parent"
+                android:layout_width="339dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginBottom="18px"
+                android:background="@drawable/rounded_corners_2"
+
+
+                android:fontFamily="sans-serif-black"
+
+
                 android:onClick="showTeacherLocation"
-                android:text="@string/getTeacherLocationBtn" />
+                android:paddingLeft="6dp"
+
+                android:paddingTop="6dp"
+
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:shadowColor="#FFFFFF"
+                android:text="@string/getTeacherLocationBtn"
+                android:textColor="#ffffff"
+                android:textSize="9pt"
+                android:textStyle="bold"
+                tools:shadowColor="#FFFFFF" />
 
 
         </LinearLayout>

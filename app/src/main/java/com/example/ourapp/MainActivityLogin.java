@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -169,6 +171,12 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        return super.onTouchEvent(event);
+    }
 
     public SessionManagement createSession() {
         SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
@@ -293,13 +301,33 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                     }*/
 
                     //progressBarLogin.setVisibility(View.INVISIBLE);
-                    progressDialog.dismiss();
+                    try {
+                        if ((progressDialog != null) && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                    } catch (final Exception e) {
+                        // Handle or log or ignore
+                        e.printStackTrace();
+                    } finally {
+                        progressDialog = null;
+                    }
+                    //progressDialog.dismiss();
                 }
                 else {
                     //Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
                     CommonMethods.makeToast(MainActivityLogin.this, "Failed to login! Please check your credentials.");
                     //progressBarLogin.setVisibility(View.INVISIBLE);
-                    progressDialog.dismiss();
+                    try {
+                        if ((progressDialog != null) && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                    } catch (final Exception e) {
+                        // Handle or log or ignore
+                        e.printStackTrace();
+                    } finally {
+                        progressDialog = null;
+                    }
+                    //progressDialog.dismiss();
                 }
             }
         });

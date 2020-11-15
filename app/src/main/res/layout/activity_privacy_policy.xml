@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:backgroundTint="#800080"
+    tools:background="#800080"
     tools:context=".PrivacyPolicy">
 
     <ScrollView
@@ -24,7 +27,9 @@
                 android:paddingLeft="11dp"
                 android:text="@string/privacyPolicyTextView"
                 android:textSize="24sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:textColor="#FFFFFF"
+/>
 
             <TextView
                 android:id="@+id/ppContentTV"
@@ -34,7 +39,8 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/ppContent"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/securityTV"
@@ -44,7 +50,8 @@
                 android:paddingLeft="11dp"
                 android:text="@string/security"
                 android:textSize="24sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/securityContentTV"
@@ -54,7 +61,8 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/securityContent"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/changesToPPTV"
@@ -64,7 +72,8 @@
                 android:paddingLeft="11dp"
                 android:text="@string/changesToPP"
                 android:textSize="24sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/changesToPPContentTV"
@@ -74,6 +83,7 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/changesToPPContent"
+                android:textColor="#FFFDFD"
                 android:textSize="18sp" />
 
             <TextView
@@ -84,7 +94,8 @@
                 android:paddingLeft="11dp"
                 android:text="@string/contactUs"
                 android:textSize="24sp"
-                android:textStyle="bold|italic" />
+                android:textStyle="bold|italic"
+                android:textColor="#FFFFFF"/>
 
             <TextView
                 android:id="@+id/contactUsContentTV"
@@ -94,7 +105,8 @@
                 android:lineSpacingExtra="8sp"
                 android:padding="15dp"
                 android:text="@string/contactUsConten"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"/>
 
         </LinearLayout>
     </ScrollView>
