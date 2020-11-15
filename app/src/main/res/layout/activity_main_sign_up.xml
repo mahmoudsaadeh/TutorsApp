@@ -32,7 +32,7 @@
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#800080"
             android:hint="@string/usernameETSU"
@@ -53,7 +53,7 @@
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#800080"
             android:hint="@string/emailET"
@@ -69,47 +69,70 @@
             android:textStyle="normal|italic"
             tools:textColorHint="#ffffff" />
 
-        <EditText
-            android:id="@+id/passwordEditTextSU"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="17dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="#800080"
-            android:hint="@string/passwordEditText"
-            android:includeFontPadding="true"
-            android:inputType="textPassword"
-            android:paddingLeft="11dp"
-            android:paddingTop="6dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="6dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            android:textSize="8pt"
-            android:textStyle="normal|italic"
-            tools:textColorHint="#ffffff" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
 
-        <EditText
-            android:id="@+id/confirmPasswordET"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="17dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="#800080"
-            android:hint="@string/confirmPassword"
-            android:includeFontPadding="true"
-            android:inputType="textPassword"
-            android:paddingLeft="11dp"
-            android:paddingTop="6dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="6dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            android:textSize="8pt"
-            android:textStyle="normal|italic"
-            tools:textColorHint="#ffffff" />
+            android:hint=" "
+            app:passwordToggleEnabled="true">
+
+
+            <EditText
+                android:id="@+id/passwordEditTextSU"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="17dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+                android:hint="@string/passwordEditText"
+                android:includeFontPadding="true"
+                android:inputType="textPassword"
+                android:paddingLeft="11dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="normal|italic"
+                tools:textColorHint="#ffffff" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:hint=" "
+            android:layout_marginTop="-10dp"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/confirmPasswordET"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="17dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+                android:hint="@string/confirmPassword"
+                android:includeFontPadding="true"
+                android:inputType="textPassword"
+                android:paddingLeft="11dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="normal|italic"
+                tools:textColorHint="#ffffff" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <RadioGroup
             android:id="@+id/radioGroup"
