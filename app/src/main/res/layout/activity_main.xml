@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="418dp"
         android:layout_height="607dp"
-        android:layout_marginTop="111dp"
+        android:layout_marginTop="50dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,25 +49,34 @@
             android:textStyle="normal|italic"
             tools:textColorHint="#ffffff" />
 
-        <EditText
-            android:id="@+id/passwordEditText"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="#800080"
-            android:hint="Password"
-            android:includeFontPadding="true"
-            android:inputType="textPassword"
-            android:paddingLeft="11dp"
-            android:paddingTop="6dp"
-            android:paddingRight="6dp"
-            android:paddingBottom="6dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            android:textSize="8pt"
-            android:textStyle="normal|italic" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:hint=" "
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="#800080"
+                android:hint="Password"
+                android:includeFontPadding="true"
+                android:inputType="textPassword"
+                android:paddingLeft="11dp"
+                android:paddingTop="6dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#FFFFFF"
+                android:textSize="8pt"
+                android:textStyle="normal|italic" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/loginButton"
