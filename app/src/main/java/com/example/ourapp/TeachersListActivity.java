@@ -19,11 +19,13 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -61,6 +64,9 @@ public class TeachersListActivity extends AppCompatActivity {
 
     private static final int DELAY = 2000;
     private static final int DELAY_2 = 1500;
+
+
+    RecyclerViewAdapter recyclerViewAdapter;
 
     //String currentUser;
 
@@ -129,6 +135,27 @@ public class TeachersListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
+
+        MenuItem searchItem= menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                recyclerViewAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
+
+
         return true;
     }
 
@@ -289,11 +316,41 @@ public class TeachersListActivity extends AppCompatActivity {
         //Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(mNames,mImageUrls,this, tutorsIds);
+        recyclerViewAdapter = new RecyclerViewAdapter(mNames,mImageUrls,this, tutorsIds);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
 
         //Log.d("AL size", tutorsIds.size() + "");
     }
+
+
+
+
+    //Search method
+  /*  @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu,menu);
+
+        MenuItem SearchItem= menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) SearchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                recyclerViewAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+        return true;
+    }*/
+
+
 
 }
