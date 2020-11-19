@@ -233,13 +233,13 @@ public class MainActivitySignUp extends AppCompatActivity {
     public void getViewsById() {
         imageView = (ImageView) findViewById(R.id.logo);
         username = (EditText) findViewById(R.id.usernameETSU);
-        email = (EditText) findViewById(R.id.emailET);
-        password = (EditText) findViewById(R.id.passwordEditTextSU);
-        confirmPassword = (EditText) findViewById(R.id.confirmPasswordET);
+        email = (EditText) findViewById(R.id.emailEdit);
+        password = (EditText) findViewById(R.id.NewPasswordEditTextSU);
+        confirmPassword = (EditText) findViewById(R.id.confirmNewPasswordET);
         radioButtonTeacher = (RadioButton) findViewById(R.id.radioButtonTeacher);
         radioButtonStudent = (RadioButton) findViewById(R.id.radioButtonStudent);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        signup = (Button) findViewById(R.id.signUpButton);
+        signup = (Button) findViewById(R.id.submitButton);
         loginLink = (TextView) findViewById(R.id.loginLink);
     }
 

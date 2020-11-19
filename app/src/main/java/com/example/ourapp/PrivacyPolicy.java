@@ -38,14 +38,19 @@ public class PrivacyPolicy extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
-            case R.id.privacyPolicyMenuItem:
-                Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
+            case R.id.editProfileMenuItem:
+                Intent intent1 = new Intent(getApplicationContext(), StudentEditProfileActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.termsCondsMenuItem:
-                Intent intent2 = new Intent(getApplicationContext(), TermsAndConditions.class);
+            case R.id.privacyPolicyMenuItem:
+                Intent intent2 = new Intent(getApplicationContext(), PrivacyPolicy.class);
                 startActivity(intent2);
+                break;
+            case R.id.termsCondsMenuItem:
+                Intent intent3 = new Intent(getApplicationContext(), TermsAndConditions.class);
+                startActivity(intent3);
                 break;
             case R.id.logoutMenuItem:
                 //Log.d("logout1","accessed");
@@ -57,8 +62,8 @@ public class PrivacyPolicy extends AppCompatActivity {
                     Log.d("signout","successful");
                     SessionManagement sessionManagement=new SessionManagement(PrivacyPolicy.this);
                     sessionManagement.removeSession();
-                    Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
-                    intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Intent intent4 = new Intent(getApplicationContext(), MainActivityLogin.class);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     try {
                         SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
@@ -69,7 +74,7 @@ public class PrivacyPolicy extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    startActivity(intent3);
+                    startActivity(intent4);
                 }
                 else {
                     Log.d("signout","failed");

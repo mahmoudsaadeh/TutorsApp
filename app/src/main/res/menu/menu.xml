@@ -11,6 +11,9 @@
          />
 
     <item
+        android:id="@+id/editProfileMenuItem"
+        android:title="Edit Profile" />
+    <item
         android:title="Privacy Policy"
         android:id="@+id/privacyPolicyMenuItem" />
 
