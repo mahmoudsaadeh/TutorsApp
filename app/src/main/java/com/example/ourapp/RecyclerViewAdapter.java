@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,10 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  implements Filterable {
 
     //used for debugging - a static logtag with our class name
     private static final String TAG = "RecyclerViewAdapter";
@@ -36,6 +39,9 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
     private ArrayList<String> imagesNames;
     private ArrayList<String> images;
 
+    //copy of the imagesNames list
+    private ArrayList<String> imagesNamesFull;
+
     private ArrayList<String> ids;
 
     private Context context;
@@ -45,8 +51,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         this.images = images;
         this.context = context;
         this.ids = ids;
+        imagesNamesFull= new ArrayList<>(imagesNames);
     }
-
 
     @NonNull
     @Override
@@ -175,5 +181,43 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         }
 
     } // end ViewHolder class
+
+
+    // filter for the search
+    @Override
+    public Filter getFilter() {
+        return namesFilter;
+    }
+
+    private Filter namesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<String> filteredList = new ArrayList<>();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(imagesNamesFull);
+            }
+            else {
+                String filterPattern= charSequence.toString().toLowerCase().trim();
+
+                for (String item : imagesNamesFull) {
+                    if (item.contains(charSequence.toString().toLowerCase())) {   //toLowercase().contains(filterPattern)
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            imagesNames.clear();
+            imagesNames.addAll((List)filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
 }
