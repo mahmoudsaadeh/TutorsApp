@@ -243,7 +243,7 @@ public class TeacherFormActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-
+        menu.findItem(R.id.editProfileMenuItem).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         return true;
     }
