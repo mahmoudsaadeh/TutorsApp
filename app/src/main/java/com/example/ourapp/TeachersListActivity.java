@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -64,7 +65,7 @@ public class TeachersListActivity extends AppCompatActivity {
 
     private static final int DELAY = 2000;
     private static final int DELAY_2 = 1500;
-
+    ProgressDialog progressDialog ;
 
     RecyclerViewAdapter recyclerViewAdapter;
 
@@ -74,7 +75,8 @@ public class TeachersListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers_list);
-
+        progressDialog = new ProgressDialog(TeachersListActivity.this);
+        CommonMethods.displayLoadingScreen(progressDialog);
         //Intent intent = getIntent();
         //currentUser = intent.getStringExtra("username");
         String s=MainActivityLogin.un;
@@ -324,6 +326,17 @@ public class TeachersListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
 
+
+        try {
+            if ((progressDialog != null) && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        } catch (final Exception e) {
+            // Handle or log or ignore
+            e.printStackTrace();
+        } finally {
+            progressDialog = null;
+        }
         //Log.d("AL size", tutorsIds.size() + "");
     }
 
