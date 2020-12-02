@@ -245,19 +245,24 @@ public class TeacherFormActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
         menu.findItem(R.id.editProfileMenuItem).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.privacyPolicyMenuItem:
-                Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
+            case R.id.showRating:
+                Intent intent1 = new Intent(getApplicationContext(), ShowTutorRatingActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.termsCondsMenuItem:
-                Intent intent2 = new Intent(getApplicationContext(), TermsAndConditions.class);
+            case R.id.privacyPolicyMenuItem:
+                Intent intent2 = new Intent(getApplicationContext(), PrivacyPolicy.class);
                 startActivity(intent2);
+                break;
+            case R.id.termsCondsMenuItem:
+                Intent intent3 = new Intent(getApplicationContext(), TermsAndConditions.class);
+                startActivity(intent3);
                 break;
             case R.id.logoutMenuItem:
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -270,8 +275,8 @@ public class TeacherFormActivity extends AppCompatActivity {
                     SessionManagement sessionManagement=new SessionManagement(TeacherFormActivity.this);
                     sessionManagement.removeSession();
 
-                    Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
-                    intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Intent intent4 = new Intent(getApplicationContext(), MainActivityLogin.class);
+                    intent4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     try {
                         SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
@@ -282,7 +287,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    startActivity(intent3);
+                    startActivity(intent4);
                 }
                 else {
                     Log.d("signout","failed");

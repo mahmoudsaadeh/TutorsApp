@@ -7,8 +7,8 @@
     android:clickable="false"
     tools:context=".TeacherInfoActivity"
     android:background="#ffffff"
-    android:backgroundTint="#800080"
-    tools:background="#800080">
+    android:backgroundTint="#9EA7A8"
+    tools:background="#9EA7A8">
 
     <ScrollView
         android:layout_width="match_parent"

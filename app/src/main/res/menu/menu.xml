@@ -14,6 +14,9 @@
         android:id="@+id/editProfileMenuItem"
         android:title="Edit Profile" />
     <item
+        android:id="@+id/showRating"
+        android:title="Show Rating" />
+    <item
         android:title="Privacy Policy"
         android:id="@+id/privacyPolicyMenuItem" />
 
