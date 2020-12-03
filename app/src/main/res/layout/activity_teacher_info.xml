@@ -36,46 +36,21 @@
                 android:hint="@string/teacherNameETMultiLine"
                 android:inputType="textMultiLine"
                 android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
+                android:textSize="15pt"
+                android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/teacherAddressETMultiLine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:clickable="false"
-                android:contextClickable="false"
-                android:cursorVisible="false"
-                android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="start|top"
-                android:hint="@string/teacherAddressETMultiLine"
-                android:inputType="textMultiLine"
-                android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
-
-            <EditText
-                android:id="@+id/teacherAge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:clickable="false"
-                android:contextClickable="false"
-                android:cursorVisible="false"
-                android:ems="10"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="start|top"
-                android:hint="@string/teacherAge"
-                android:inputType="number"
-                android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="242dp"
+                android:layout_height="318dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="21px"
+                app:srcCompat="@drawable/avatar" />
 
             <EditText
                 android:id="@+id/teacherSubjectsETMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -87,12 +62,31 @@
                 android:hint="@string/teacherSubjectsETMultiLine"
                 android:inputType="textMultiLine"
                 android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
+                android:textSize="10pt"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/teacherAge"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:backgroundTint="@android:color/transparent"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:cursorVisible="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="start|top"
+                android:hint="@string/teacherAge"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="10pt"
+                android:textStyle="bold"/>
 
             <EditText
                 android:id="@+id/teacherExperienceETMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -104,12 +98,13 @@
                 android:hint="@string/teacherExperienceETMultiLine"
                 android:inputType="textMultiLine"
                 android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
+                android:textSize="10pt"
+                android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/teacherEmail11"
+                android:id="@+id/editTextSalaryNumberSigned"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -118,16 +113,34 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="@string/teacherEmail11"
-                android:inputType="textEmailAddress"
-                android:onClick="emailTeacher"
+                android:hint="@string/editTextSalaryNumberSigned"
+                android:inputType="number"
                 android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
+                android:textSize="10pt"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/teacherAddressETMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:backgroundTint="@android:color/transparent"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:cursorVisible="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="start|top"
+                android:hint="@string/teacherAddressETMultiLine"
+                android:inputType="textMultiLine"
+                android:textColor="#FFFFFF"
+                android:textSize="10pt"
+                android:textStyle="bold"/>
 
             <EditText
                 android:id="@+id/teacherPhone11"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -140,12 +153,13 @@
                 android:inputType="phone"
                 android:onClick="callTeacher"
                 android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
+                android:textSize="10pt"
+                android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/editTextSalaryNumberSigned"
+                android:id="@+id/teacherEmail11"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -154,10 +168,12 @@
                 android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:gravity="start|top"
-                android:hint="@string/editTextSalaryNumberSigned"
-                android:inputType="number"
+                android:hint="@string/teacherEmail11"
+                android:inputType="textEmailAddress"
+                android:onClick="emailTeacher"
                 android:textColor="#FFFFFF"
-                android:textSize="8pt"/>
+                android:textSize="10pt"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/ratingTextView"
@@ -167,10 +183,9 @@
                 android:layout_marginTop="17px"
                 android:layout_marginBottom="11px"
                 android:text="@string/ratingTextView"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                />
+                android:textSize="12pt"
+                android:textStyle="bold" />
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -179,26 +194,7 @@
                 android:layout_gravity="center_horizontal"
                 android:numStars="5"
                 android:rating="0"
-                android:theme="@style/RatingBar"/>
-
-            <TextView
-                android:id="@+id/profilePicTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15px"
-                android:layout_marginBottom="25px"
-                android:text="@string/profilePic"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                />
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="21px"
-                app:srcCompat="@drawable/avatar" />
+                android:theme="@style/RatingBar" />
 
             <TextView
                 android:id="@+id/locationTV"
@@ -206,13 +202,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:text="@string/location"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#FFFFFF"/>
+                android:textColor="#FFFFFF"
+                android:textSize="12pt"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/getTeacherLocationBtn"
-                android:layout_width="339dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="18px"
@@ -223,16 +219,16 @@
 
 
                 android:onClick="showTeacherLocation"
-                android:paddingLeft="6dp"
+                android:paddingLeft="5dp"
 
-                android:paddingTop="6dp"
+                android:paddingTop="5dp"
 
-                android:paddingRight="6dp"
-                android:paddingBottom="6dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
                 android:shadowColor="#FFFFFF"
                 android:text="@string/getTeacherLocationBtn"
                 android:textColor="#ffffff"
-                android:textSize="9pt"
+                android:textSize="8pt"
                 android:textStyle="bold"
                 tools:shadowColor="#FFFFFF" />
 
