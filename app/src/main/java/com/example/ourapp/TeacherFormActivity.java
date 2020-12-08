@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -386,6 +387,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
     public void submitForm (View view){
+        hideKeyboard();
 
         tName = name.getText().toString();
         tEmail = email.getText().toString();
@@ -659,6 +661,15 @@ public class TeacherFormActivity extends AppCompatActivity {
         addressLine = cursor.getString(locationIndex);
     }
 
+    public void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }//end class
 
 
