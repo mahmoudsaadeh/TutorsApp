@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -179,8 +180,14 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        return super.onTouchEvent(event);
+        try {
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            return super.onTouchEvent(event);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public SessionManagement createSession() {
@@ -227,85 +234,91 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                     //email verification
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    //if(user.isEmailVerified()) {
-                    //redirect user to profile
-                    //check is user is a tutor or student, and redirect to corresponding screen
-                    String currentuserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    assert user != null;
+                    if(user.isEmailVerified()) {
+                        //redirect user to profile
+                        //check is user is a tutor or student, and redirect to corresponding screen
+                        String currentuserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                    databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentuserId);
+                        databaseReference = FirebaseDatabase.getInstance().getReference().child("User").child(currentuserId);
 
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        databaseReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            String userType = snapshot.child("userType").getValue().toString();
-                            getUserName = snapshot.child("username").getValue().toString();
+                                if(snapshot.exists()) {
+
+                                    String userType = snapshot.child("userType").getValue().toString();
+                                    getUserName = snapshot.child("username").getValue().toString();
 
 
-                            if (userType.equalsIgnoreCase("student")) {
+                                    if (userType.equalsIgnoreCase("student")) {
 
-                                int id = 1;
+                                        int id = 1;
 
-                                SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
-                                sessionManagement.saveSession(id);
+                                        SessionManagement sessionManagement = new SessionManagement(MainActivityLogin.this);
+                                        sessionManagement.saveSession(id);
 
-                                Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
 
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                                    /*intent.putExtra("username", getUserName + "");
-                                    Log.i("username",getUserName+"");*/
-                                un = getUserName;
-                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
-                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING",0).apply();
-                                startActivity(intent);
-                                finish();
+                                            /*intent.putExtra("username", getUserName + "");
+                                            Log.i("username",getUserName+"");*/
+                                        un = getUserName;
+                                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
+                                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING", 0).apply();
+                                        startActivity(intent);
+                                        finish();
+                                    } else if (userType.equalsIgnoreCase("tutor")) {
+                                        //here we should check if tutor has filled the info form previously,
+                                        //then redirect her to TeacherEditInfoFrom
+                                        //else, open the main form that is TeacherFormActivity
+                                        //this check can be done by searching if there is any data
+                                        //related to the current tutor id, if not, we should open main form
+                                        //else, open the editing form..
+
+                                        //I will currently redirect tutor to main form until we make
+                                        //a new class to get tutor info and save it to db
+
+
+                                        int id = 2;
+
+                                        SessionManagement sessionManagement = new SessionManagement(MainActivityLogin.this);
+                                        sessionManagement.saveSession(id);
+
+
+                                        Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                                        //intent.putExtra("username", getUserName + "");
+                                        un = getUserName;
+                                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
+                                        startActivity(intent);
+                                        finish();
+                                        //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                else {
+                                    CommonMethods.makeToast(getApplicationContext(), "User not found!");
+                                }
                             }
-                            else if (userType.equalsIgnoreCase("tutor")) {
-                                //here we should check if tutor has filled the info form previously,
-                                //then redirect her to TeacherEditInfoFrom
-                                //else, open the main form that is TeacherFormActivity
-                                //this check can be done by searching if there is any data
-                                //related to the current tutor id, if not, we should open main form
-                                //else, open the editing form..
 
-                                //I will currently redirect tutor to main form until we make
-                                //a new class to get tutor info and save it to db
-
-
-                                int id=2;
-
-                                SessionManagement sessionManagement=new SessionManagement(MainActivityLogin.this);
-                                sessionManagement.saveSession(id);
-
-
-                                Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                                //intent.putExtra("username", getUserName + "");
-                                un = getUserName;
-                                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
-                                startActivity(intent);
-                                finish();
-                                //Toast.makeText(MainActivityLogin.this, "tutor type", Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                //Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
+                                CommonMethods.makeToast(MainActivityLogin.this, "Something wrong happened!");
                             }
-                        }
+                        });
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            //Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
-                            CommonMethods.makeToast(MainActivityLogin.this, "Something wrong happened!");
-                        }
-                    });
+                    }
 
-                    //}
-
-                   /* else{
+                    else {
                         user.sendEmailVerification();
-                        Toast.makeText(MainActivityLogin.this, "Check your email to verify your account.", Toast.LENGTH_SHORT).show();
-                    }*/
+                        Toast.makeText(MainActivityLogin.this, "Please check your email to verify your account.", Toast.LENGTH_SHORT).show();
+                    }
 
-                    //progressBarLogin.setVisibility(View.INVISIBLE);
+
                     try {
                         if ((progressDialog != null) && progressDialog.isShowing()) {
                             progressDialog.dismiss();
@@ -316,12 +329,12 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                     } finally {
                         progressDialog = null;
                     }
-                    //progressDialog.dismiss();
+
                 }
                 else {
                     //Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
                     CommonMethods.makeToast(MainActivityLogin.this, "Failed to login! Please check your credentials.");
-                    //progressBarLogin.setVisibility(View.INVISIBLE);
+
                     try {
                         if ((progressDialog != null) && progressDialog.isShowing()) {
                             progressDialog.dismiss();
@@ -332,7 +345,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                     } finally {
                         progressDialog = null;
                     }
-                    //progressDialog.dismiss();
+
                 }
             }
         });
