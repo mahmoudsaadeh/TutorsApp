@@ -225,8 +225,8 @@ public class TeacherInfoActivity extends AppCompatActivity {
                 teacherAge.setText("Age: "+age );
                 teacherSubject.setText("Subject: "+subject);
                 teacherExperience.setText("Experience: "+exp);
-                teacherEmail.setText(Html.fromHtml("Email:<font color='#0E9EAF'> "+email+" </font>"));
-                teacherPhoneNumber.setText(Html.fromHtml("Phone Number:<font color='#0E9EAF'> "+phone+"</font>"));
+                teacherEmail.setText(Html.fromHtml("Email:<font color='#800080'> "+email+" </font>"));
+                teacherPhoneNumber.setText(Html.fromHtml("Phone Number:<font color='#800080'> "+phone+"</font>"));
                 teacherSalary.setText("Salary: "+salary+" $/hour");
                 Picasso.get().load(imageUrl).into(image);
             }
