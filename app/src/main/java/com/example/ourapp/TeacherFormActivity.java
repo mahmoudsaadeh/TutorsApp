@@ -49,6 +49,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class TeacherFormActivity extends AppCompatActivity {
 
@@ -131,7 +132,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                             email.getText().toString() + "', age = '" + age.getText().toString() + "', address = '" +
                             address.getText().toString() + "', subjects = '" + subject.getText().toString() + "', " +
                             "salary = '" + salary.getText().toString() + "', experience = '" + experience.getText().toString() + "', " +
-                            "phone = '" + phoneNumber.getText().toString() + "', imgURI = '" + selectedImage + "'");
+                            "phone = '" + phoneNumber.getText().toString() + "', imgURI = '" + imageUrl + "'");
                 }
                 else {
                     Log.d("gotomappz", "3");
@@ -139,7 +140,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                             "VALUES ('" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "', '" + name.getText().toString() + "', '" +
                             email.getText().toString() + "', '" + age.getText().toString() + "', '" +
                             address.getText().toString() + "', '" + subject.getText().toString() + "', '" + salary.getText().toString() + "', '" +
-                            experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + selectedImage + "')");
+                            experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + imageUrl + "')");
 
                 }
             }
@@ -151,7 +152,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                         "VALUES ('" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "', '" + name.getText().toString() + "', '" +
                         email.getText().toString() + "', '" + age.getText().toString() + "', '" +
                         address.getText().toString() + "', '" + subject.getText().toString() + "', '" + salary.getText().toString() + "', '" +
-                        experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + selectedImage + "')");
+                        experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + imageUrl + "')");
 
 
             }
@@ -174,7 +175,7 @@ public class TeacherFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         if(!returnedFromMapActivity()) {
-           getDataFromFirebase();
+            getDataFromFirebase();
         }
 
         super.onCreate(savedInstanceState);
@@ -538,14 +539,14 @@ public class TeacherFormActivity extends AppCompatActivity {
                 final StorageReference stRef = storage.getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePhoto.jpg");
 
                 selectedImage = Uri.parse(imageUrl);
-
-                stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                Picasso.get().load(selectedImage).into(imageToUpload);
+                /*stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, BITMAP_OFFSET, bytes.length);
                         imageToUpload.setImageBitmap(bm);
                     }
-                });
+                });*/
             }
 
             @Override
@@ -652,7 +653,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         chosenLocation.setText(cursor.getString(locationIndex));
 
         selectedImage = Uri.parse(cursor.getString(imgUriIndex));
-
+        Picasso.get().load(selectedImage).into(imageToUpload);
         lon = cursor.getString(lonIndex);
         lat = cursor.getString(latIndex);
         addressLine = cursor.getString(locationIndex);
