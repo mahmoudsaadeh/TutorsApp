@@ -50,7 +50,7 @@
             <EditText
                 android:id="@+id/teacherSubjectsETMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -68,7 +68,7 @@
             <EditText
                 android:id="@+id/teacherAge"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -81,12 +81,12 @@
                 android:inputType="number"
                 android:textColor="#FFFFFF"
                 android:textSize="10pt"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/teacherExperienceETMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -99,14 +99,14 @@
                 android:inputType="textMultiLine"
                 android:textColor="#FFFFFF"
                 android:textSize="10pt"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editTextSalaryNumberSigned"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
-                android:clickable="false"
+                android:clickable="true"
                 android:contextClickable="false"
                 android:cursorVisible="false"
                 android:ems="10"
@@ -117,12 +117,12 @@
                 android:inputType="number"
                 android:textColor="#FFFFFF"
                 android:textSize="10pt"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/teacherAddressETMultiLine"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -135,12 +135,12 @@
                 android:inputType="textMultiLine"
                 android:textColor="#FFFFFF"
                 android:textSize="10pt"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/teacherPhone11"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -154,12 +154,12 @@
                 android:onClick="callTeacher"
                 android:textColor="#FFFFFF"
                 android:textSize="10pt"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/teacherEmail11"
                 android:layout_width="match_parent"
-                android:layout_height="43dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:clickable="false"
                 android:contextClickable="false"
@@ -173,7 +173,7 @@
                 android:onClick="emailTeacher"
                 android:textColor="#FFFFFF"
                 android:textSize="10pt"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ratingTextView"
@@ -201,6 +201,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
+                android:layout_marginBottom="8px"
                 android:text="@string/location"
                 android:textColor="#FFFFFF"
                 android:textSize="12pt"
