@@ -59,7 +59,7 @@ public class TeacherFormActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int BITMAP_OFFSET = 0;
     private static final int FLAG = 1;
-
+    ProgressDialog progressDialog ;
     ImageView imageToUpload;
     Uri selectedImage;
 
@@ -515,6 +515,8 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
     private void autoFill() {
+        progressDialog = new ProgressDialog(TeacherFormActivity.this);
+        CommonMethods.displayLoadingScreen(progressDialog);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorFormInfo");
         final String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -542,6 +544,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
                 selectedImage = Uri.parse(imageUrl);
                 Picasso.get().load(selectedImage).into(imageToUpload);
+                progressDialog.dismiss();
                 /*stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
