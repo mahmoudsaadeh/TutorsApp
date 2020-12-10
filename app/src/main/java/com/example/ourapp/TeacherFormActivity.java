@@ -176,7 +176,10 @@ public class TeacherFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         if(!returnedFromMapActivity()) {
+            progressDialog = new ProgressDialog(TeacherFormActivity.this);
+            CommonMethods.displayLoadingScreen(progressDialog);
             getDataFromFirebase();
+            progressDialog.dismiss();
         }
 
         super.onCreate(savedInstanceState);

@@ -45,10 +45,8 @@ public class ShowTutorRatingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String rating=snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("rating").getValue(String.class);
+                if (rating==null){ rating="0.0";}
                 displayRating(rating);
-
-
-
 
             }
 
