@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -49,6 +50,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class TeacherFormActivity extends AppCompatActivity {
 
@@ -57,7 +59,7 @@ public class TeacherFormActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int BITMAP_OFFSET = 0;
     private static final int FLAG = 1;
-
+    ProgressDialog progressDialog ;
     ImageView imageToUpload;
     Uri selectedImage;
 
@@ -131,7 +133,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                             email.getText().toString() + "', age = '" + age.getText().toString() + "', address = '" +
                             address.getText().toString() + "', subjects = '" + subject.getText().toString() + "', " +
                             "salary = '" + salary.getText().toString() + "', experience = '" + experience.getText().toString() + "', " +
-                            "phone = '" + phoneNumber.getText().toString() + "', imgURI = '" + selectedImage + "'");
+                            "phone = '" + phoneNumber.getText().toString() + "', imgURI = '" + imageUrl + "'");
                 }
                 else {
                     Log.d("gotomappz", "3");
@@ -139,7 +141,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                             "VALUES ('" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "', '" + name.getText().toString() + "', '" +
                             email.getText().toString() + "', '" + age.getText().toString() + "', '" +
                             address.getText().toString() + "', '" + subject.getText().toString() + "', '" + salary.getText().toString() + "', '" +
-                            experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + selectedImage + "')");
+                            experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + imageUrl + "')");
 
                 }
             }
@@ -151,7 +153,7 @@ public class TeacherFormActivity extends AppCompatActivity {
                         "VALUES ('" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "', '" + name.getText().toString() + "', '" +
                         email.getText().toString() + "', '" + age.getText().toString() + "', '" +
                         address.getText().toString() + "', '" + subject.getText().toString() + "', '" + salary.getText().toString() + "', '" +
-                        experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + selectedImage + "')");
+                        experience.getText().toString() + "', '" + phoneNumber.getText().toString() + "', '" + imageUrl + "')");
 
 
             }
@@ -174,7 +176,10 @@ public class TeacherFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         if(!returnedFromMapActivity()) {
-           getDataFromFirebase();
+            progressDialog = new ProgressDialog(TeacherFormActivity.this);
+            CommonMethods.displayLoadingScreen(progressDialog);
+            getDataFromFirebase();
+            progressDialog.dismiss();
         }
 
         super.onCreate(savedInstanceState);
@@ -385,6 +390,7 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
     public void submitForm (View view){
+        hideKeyboard();
 
         tName = name.getText().toString();
         tEmail = email.getText().toString();
@@ -512,6 +518,8 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
     private void autoFill() {
+        progressDialog = new ProgressDialog(TeacherFormActivity.this);
+        CommonMethods.displayLoadingScreen(progressDialog);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorFormInfo");
         final String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -538,14 +546,15 @@ public class TeacherFormActivity extends AppCompatActivity {
                 final StorageReference stRef = storage.getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("profilePhoto.jpg");
 
                 selectedImage = Uri.parse(imageUrl);
-
-                stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                Picasso.get().load(selectedImage).into(imageToUpload);
+                progressDialog.dismiss();
+                /*stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, BITMAP_OFFSET, bytes.length);
                         imageToUpload.setImageBitmap(bm);
                     }
-                });
+                });*/
             }
 
             @Override
@@ -652,12 +661,21 @@ public class TeacherFormActivity extends AppCompatActivity {
         chosenLocation.setText(cursor.getString(locationIndex));
 
         selectedImage = Uri.parse(cursor.getString(imgUriIndex));
-
+        Picasso.get().load(selectedImage).into(imageToUpload);
         lon = cursor.getString(lonIndex);
         lat = cursor.getString(latIndex);
         addressLine = cursor.getString(locationIndex);
     }
 
+    public void hideKeyboard() {
+        try {
+            InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }//end class
 
 
