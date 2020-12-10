@@ -188,7 +188,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         Intent i = getIntent();
         username = i.getStringExtra("username");
 
-        setTitle("" + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
+        setTitle("Welcome " + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
 
         findViews();
 

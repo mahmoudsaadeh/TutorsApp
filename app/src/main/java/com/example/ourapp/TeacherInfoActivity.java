@@ -72,7 +72,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_info);
 
-        setTitle("TutorApp - Tutor Info");
+        setTitle("Tutor Info");
 
         Intent intent = getIntent();
         id = intent.getStringExtra("tutorId");

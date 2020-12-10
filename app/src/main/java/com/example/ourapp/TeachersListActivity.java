@@ -80,7 +80,7 @@ public class TeachersListActivity extends AppCompatActivity {
         //Intent intent = getIntent();
         //currentUser = intent.getStringExtra("username");
         String s=MainActivityLogin.un;
-        setTitle("" + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
+        setTitle("Welcome " + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
 
         //tutorsIds.clear();
 

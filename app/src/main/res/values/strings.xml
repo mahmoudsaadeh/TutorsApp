@@ -1,6 +1,6 @@
 <resources>
     <!-- Java files -->
-    <string name="app_name">Our App</string>
+    <string name="app_name">TutorApp</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_student_maps">Map</string>
     <string name="emailError">Email is required!</string>
@@ -8,7 +8,7 @@
     <string name="passwordError">Password is required!</string>
     <string name="passwordLength">Minimum password length is 6 characters!</string>
     <string name="passwordConfirm">You need to confirm your password!</string>
-    <string name="passwordMatch">Your passwords don not match! Please recheck!</string>
+    <string name="passwordMatch">Your passwords do not match! Please recheck!</string>
     <string name="usernameError">Username is required!</string>
     <string name="emailValid">Please provide a correct email address!</string>
     <string name="nameError">Full name is required!</string>
@@ -109,7 +109,7 @@
     <string name="newPassword">New Password</string>
     <string name="ConfirmNewPassword">Confirm New Password</string>
     <string name="submitButton">Submit Changes</string>
-    <string name="updateStudentProfile">"Your login credentials was successfully changed! You will be signed out now"</string>
+    <string name="updateStudentProfile">"Your login credentials was successfully changed! You will be signed out now..."</string>
 
 
 </resources>
