@@ -65,7 +65,7 @@ public class MainActivitySignUp extends AppCompatActivity {
         }
 
         if(CommonMethods.isNotAnEmail(mail)) {
-            CommonMethods.warning(email,getString(R.string.emailValid));
+            CommonMethods.warning(email, getString(R.string.emailValid));
             return;
         }
 

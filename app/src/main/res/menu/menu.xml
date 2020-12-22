@@ -2,20 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:title="Search"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.widget.SearchView"
-         />
+        app:actionViewClass="android.widget.SearchView" />
 
     <item
         android:id="@+id/editProfileMenuItem"
         android:title="Edit Profile" />
+
     <item
         android:id="@+id/showRating"
         android:title="Show Rating" />
+
+    <item
+        android:id="@+id/checkMsgs"
+        android:title="Check messages" />
+
     <item
         android:title="Privacy Policy"
         android:id="@+id/privacyPolicyMenuItem" />

@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -68,6 +71,12 @@ public class TeachersListActivity extends AppCompatActivity {
     ProgressDialog progressDialog ;
 
     RecyclerViewAdapter recyclerViewAdapter;
+
+   /* EditText search;
+
+    ArrayList<String> filterdNames = new ArrayList<>();
+    ArrayList<String> filterdImagesUrls = new ArrayList<>();
+    ArrayList<String> filterdIds = new ArrayList<>();*/
 
     //String currentUser;
 
@@ -128,10 +137,45 @@ public class TeachersListActivity extends AppCompatActivity {
             }
         });
 
+      /*  search = findViewById(R.id.mySearch);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // 's' represents the content of our edittext
+                filter(s.toString());
+            }
+        });*/
+
     }
 
 
+  /*  private void filter(String searchText) {
+        int index = 0;
+        ArrayListsClass arrayListsClass;
 
+        for(String item : mNames) {
+            if(item.toLowerCase().contains(searchText.toLowerCase())) {
+                filterdNames.add(item);
+                filterdIds.add(tutorsIds.get(index));
+                filterdImagesUrls.add(mImageUrls.get(index));
+            }
+            index++;
+        }
+
+        arrayListsClass = new ArrayListsClass(filterdImagesUrls, filterdNames, filterdIds);
+
+        recyclerViewAdapter.filterList(arrayListsClass);
+    }*/
 
 
     @Override
@@ -139,6 +183,7 @@ public class TeachersListActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
 
         menu.findItem(R.id.showRating).setVisible(false);
+        menu.findItem(R.id.checkMsgs).setVisible(false);
         MenuItem searchItem= menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
 

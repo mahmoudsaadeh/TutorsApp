@@ -45,6 +45,7 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
     //tutor id
     String id;
+
     float previousStudentRate;
 
     DatabaseReference reference;
@@ -88,6 +89,12 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
     } //end of onCreate
 
+
+    public void sendAMessage(View view) {
+        Intent intent = new Intent(getApplicationContext(), StudentSendMessage.class);
+        intent.putExtra("recipientId", "" + id);
+        startActivity(intent);
+    }
 
 
     public void ratingDialog () {

@@ -23,7 +23,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowTutorRatingActivity"></activity>
+        <activity android:name=".TutorCheckMessages"></activity>
+        <activity android:name=".StudentSendMessage" />
+        <activity android:name=".ShowTutorRatingActivity" />
         <activity android:name=".StudentEditProfileActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

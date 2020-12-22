@@ -34,6 +34,7 @@ public class TermsAndConditions extends AppCompatActivity {
         menu.findItem(R.id.showRating).setVisible(false);
         menu.findItem(R.id.editProfileMenuItem).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.checkMsgs).setVisible(false);
         return true;
     }
 

@@ -261,6 +261,10 @@ public class TeacherFormActivity extends AppCompatActivity {
                 Intent intent1 = new Intent(getApplicationContext(), ShowTutorRatingActivity.class);
                 startActivity(intent1);
                 break;
+            case R.id.checkMsgs:
+                Intent intent5 = new Intent(getApplicationContext(), TutorCheckMessages.class);
+                startActivity(intent5);
+                break;
             case R.id.privacyPolicyMenuItem:
                 Intent intent2 = new Intent(getApplicationContext(), PrivacyPolicy.class);
                 startActivity(intent2);
