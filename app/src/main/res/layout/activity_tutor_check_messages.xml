@@ -30,7 +30,7 @@
                 android:text="Latest Students Messages:"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
+            <!--
             <TextView
                 android:id="@+id/from"
                 android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                 android:layout_height="2dp"
                 android:layout_marginBottom="17px"
                 android:background="#000000" />
-
+            -->
             <!--
             <LinearLayout
                 android:layout_width="match_parent"
