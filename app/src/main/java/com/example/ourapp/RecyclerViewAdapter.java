@@ -189,28 +189,26 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
         return namesFilter;
     }
 
+
     private Filter namesFilter = new Filter() {
         @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
+        protected FilterResults performFiltering(CharSequence constraint) {
             List<String> filteredList = new ArrayList<>();
-
-            if (charSequence == null || charSequence.length() == 0) {
+            if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(imagesNamesFull);
-            }
-            else {
-                String filterPattern= charSequence.toString().toLowerCase().trim();
-
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
                 for (String item : imagesNamesFull) {
-                    if (item.contains(charSequence.toString().toLowerCase())) {   //toLowercase().contains(filterPattern)
+                    if (item.toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
             }
-
             FilterResults results = new FilterResults();
             results.values = filteredList;
             return results;
         }
+
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
