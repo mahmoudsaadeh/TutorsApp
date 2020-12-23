@@ -39,7 +39,7 @@ public class MainActivitySignUp extends AppCompatActivity {
     Button signup;
     TextView loginLink;
 
-    //ProgressBar progressBar;
+
     ProgressDialog progressDialog;
 
     String personTypeString = "";
@@ -111,7 +111,7 @@ public class MainActivitySignUp extends AppCompatActivity {
         getViewsById();
         username.requestFocus();
 
-        //progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         progressDialog = new ProgressDialog(MainActivitySignUp.this);
 
         loginLink.setOnClickListener(new View.OnClickListener() {
@@ -120,19 +120,6 @@ public class MainActivitySignUp extends AppCompatActivity {
                 goToLogin();
             }
         });
-
-        /* if(radioGroup.getCheckedRadioButtonId() == -1){
-            Log.d("radio"," No radio buttons are checked");
-        }
-        else if (radioGroup.getCheckedRadioButtonId() == R.id.radioButtonStudent){
-            Log.d("radio"," Student radio chosen");
-        }
-        else if (radioGroup.getCheckedRadioButtonId() == R.id.radioButtonTeacher){
-            Log.d("radio"," Tutor radio chosen");
-        }
-        else{
-
-        }*/
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -150,11 +137,10 @@ public class MainActivitySignUp extends AppCompatActivity {
     public void setPersonType(int personType) {
         if(personType == R.id.radioButtonStudent) {
             personTypeString = radioButtonStudent.getText().toString();
-            //Log.d("radiobtnn:", radioButtonStudent.getText().toString());
         }
         else if(personType == R.id.radioButtonTeacher) {
             personTypeString = radioButtonTeacher.getText().toString();
-            //Log.d("radiobtnn:", radioButtonTeacher.getText().toString());
+
         }
     }
 
@@ -174,16 +160,13 @@ public class MainActivitySignUp extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()) {
-                                        //Toast.makeText(MainActivitySignUp.this, "Sign Up Successful!", Toast.LENGTH_SHORT).show();
                                         CommonMethods.makeToast(MainActivitySignUp.this, "Sign Up Successful!");
-                                        //progressBar.setVisibility(View.GONE);
-                                        //progressDialog.dismiss();
+
                                         try {
                                             if ((progressDialog != null) && progressDialog.isShowing()) {
                                                 progressDialog.dismiss();
                                             }
                                         } catch (final Exception e) {
-                                            // Handle or log or ignore
                                             e.printStackTrace();
                                         } finally {
                                             progressDialog = null;
@@ -195,24 +178,19 @@ public class MainActivitySignUp extends AppCompatActivity {
                                         finish();
                                     }
                                     else {
-                                        //Toast.makeText(MainActivitySignUp.this, "Failed to sign up, please try again.", Toast.LENGTH_SHORT).show();
                                         CommonMethods.makeToast(MainActivitySignUp.this, "Failed to sign up, please try again.");
                                         //progressBar.setVisibility(View.GONE);
                                         progressDialog.dismiss();
                                     }
                                 }
                             });
-                            /*
-                            //returns true
-                            boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
-                            Log.d("isnewUser5? ", String.valueOf(isNew));*/
+
 
                         }
                         else {
-                            //Toast.makeText(MainActivitySignUp.this, "Account already exists! Please try again with a different email address.", Toast.LENGTH_SHORT).show();
+
                             CommonMethods.makeToast(MainActivitySignUp.this, "Account already exists! Please try again with a different email address.");
-                            // progressBar.setVisibility(View.GONE);
-                            //progressDialog.dismiss();
+
                             try {
                                 if ((progressDialog != null) && progressDialog.isShowing()) {
                                     progressDialog.dismiss();
@@ -245,7 +223,6 @@ public class MainActivitySignUp extends AppCompatActivity {
 
     public void goToLogin() {
         Intent intent = new Intent(getApplicationContext(), MainActivityLogin.class);
-        //intent.putExtra("username","mahmoud");
         startActivity(intent);
     }
 

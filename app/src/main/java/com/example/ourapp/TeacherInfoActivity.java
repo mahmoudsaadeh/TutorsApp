@@ -77,7 +77,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("tutorId");
 
-        //Log.i("ratezz", String.valueOf(previousStudentRate));
 
         getTeacherInfo();
 
@@ -107,7 +106,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //Do something here
                     alertDialog.dismiss();
                 }
             }, DELAY_TIME);
@@ -121,49 +119,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
         intent.putExtra("tutorId", id);
         startActivity(intent);
     }
-
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.privacyPolicyMenuItem:
-                Intent intent1 = new Intent(getApplicationContext(), PrivacyPolicy.class);
-                startActivity(intent1);
-                break;
-            case R.id.termsCondsMenuItem:
-                Intent intent2 = new Intent(getApplicationContext(), TermsAndConditions.class);
-                startActivity(intent2);
-                break;
-            case R.id.logoutMenuItem:
-                //Log.d("logout1","accessed");
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Log.d("checkuser","" + user.getEmail());
-                FirebaseAuth.getInstance().signOut();
-
-                if(FirebaseAuth.getInstance().getCurrentUser() == null){
-                    Log.d("signout","successful");
-                    SessionManagement sessionManagement=new SessionManagement(TeacherInfoActivity.this);
-                    sessionManagement.removeSession();
-                    Intent intent3 = new Intent(getApplicationContext(), MainActivityLogin.class);
-                    intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent3);
-                }else{
-                    Log.d("signout","failed");
-                    Toast.makeText(this, "Logout Failed!", Toast.LENGTH_SHORT).show();
-                }
-
-                break;
-        }
-        return true;
-        //return super.onOptionsItemSelected(item);
-    }
-*/
 
 
     public void callTeacher(View v) {
@@ -197,14 +152,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
 
         reference= FirebaseDatabase.getInstance().getReference("TutorFormInfo");
 
-        /*reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-        });*/
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -311,20 +258,6 @@ public class TeacherInfoActivity extends AppCompatActivity {
             @Override
             public void onRatingChanged(final RatingBar ratingBar, final float rating, boolean fromUser) {
 
-
-
-
-
-
-                //Toast.makeText(TeacherInfoActivity.this, "" + ratingBar.getRating(), Toast.LENGTH_SHORT).show();
-
-                // freeze ratingbar (disable it)
-                //ratingBar.setIsIndicator(true);
-
-                /*float newRating = (ratingBar.getRating()+Float.parseFloat(oldRating))/(float) 2;
-                studentRating = String.valueOf(newRating);*/
-
-                //Log.i("myRate", String.valueOf(rating));
 
                 updateData = FirebaseDatabase.getInstance().getReference("TutorsRating");
 

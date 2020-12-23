@@ -53,7 +53,6 @@ public class TermsAndConditions extends AppCompatActivity {
                 startActivity(intent3);
                 break;
             case R.id.logoutMenuItem:
-                //Log.d("logout1","accessed");
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Log.d("checkuser","" + user.getEmail());
                 FirebaseAuth.getInstance().signOut();
@@ -83,7 +82,6 @@ public class TermsAndConditions extends AppCompatActivity {
                 break;
         }
         return true;
-        //return super.onOptionsItemSelected(item);
     }
 
 }

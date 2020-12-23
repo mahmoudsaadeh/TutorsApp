@@ -114,40 +114,11 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "clicked on: " + imagesNames.get(position));
-                //Toast.makeText(context, "" + imagesNames.get(position), Toast.LENGTH_SHORT).show();
-                /*
-                final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("TutorsRating");
 
-                reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-                            Log.i("1","1");
-                            if(snapshot.child(ids.get(position)).exists()) {
-                                Log.i("2","2");
-                                if (snapshot.child(ids.get(position)).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
-                                    prevStudentRate = Float.parseFloat(snapshot.child(ids.get(position)).child("ratedBy").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue().toString());
-                                    Log.i("rateFromAdapter1", prevStudentRate + "");
-                                }
-                            }
-                        }
-                        else {
-                            prevStudentRate = 0;
-                        }
-
-                        //reference.removeEventListener(this);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });*/
 
                 Intent intent = new Intent(context, TeacherInfoActivity.class);
                 intent.putExtra("tutorId", ids.get(position));
-                //intent.putExtra("prevStudentRate", prevStudentRate);
-                //Log.i("rateFromAdapter2", prevStudentRate + "");
+
                 context.startActivity(intent);
             }
         });
@@ -157,7 +128,6 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
 
     @Override
     public int getItemCount() {
-        //if left 'return 0', you'll get a blank screen when starting the activity containing the rv
         return imagesNames.size(); //this tells the adapter how many items is in your list
     }
 

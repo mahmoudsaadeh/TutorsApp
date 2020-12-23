@@ -14,9 +14,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        /*SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
-
-        sqLiteDatabase.execSQL("DROP TABLE tutorData");*/
 
         //hide action bar
         getSupportActionBar().hide();

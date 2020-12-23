@@ -74,39 +74,32 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
 
     public void login (View view) {
-        //Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show();
-        /*Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
-        startActivity(intent);*/
+
 
         // hide keyboard if button is pressed
         hideKeyboard();
-
 
         String email = CommonMethods.getEmail(username);
         String pass = CommonMethods.getPassword(password);
 
         if(CommonMethods.checkIfEmpty(email)) {
             //username is the email, didn't rename because it's causing trouble
-            //username.setError("Email is required!");
             CommonMethods.warning(username, getString(R.string.emailError));
             return;
         }
 
         if(CommonMethods.isNotAnEmail(email)) {
-            //username.setError("Please enter a valid email!");
             CommonMethods.warning(username, getString(R.string.emailValid));
             return;
         }
 
         if(CommonMethods.checkIfEmpty(pass)) {
-            //password.setError("Password is required!");
             CommonMethods.warning(password, getString(R.string.passwordError));
             return;
         }
 
         //not necessary
         if(CommonMethods.checkIfPassLengthNotValid(pass)) {
-            //password.setError("Minimum password length is 6 characters!");
             CommonMethods.warning(password, getString(R.string.passwordLength));
             return;
         }
@@ -136,8 +129,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         findViewsById();
-
-        //progressBarLogin = (ProgressBar) findViewById(R.id.progressBarLogin);
 
         username.requestFocus();
 
@@ -226,11 +217,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    //Toast.makeText(MainActivityLogin.this, "login good", Toast.LENGTH_SHORT).show();
-
-                    //returns false
-                    /*boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
-                    Log.d("isnewUser5? ", String.valueOf(isNew));*/
 
                     //email verification
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -263,25 +249,13 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                                            /*intent.putExtra("username", getUserName + "");
-                                            Log.i("username",getUserName+"");*/
+
                                         un = getUserName;
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putInt("RATING", 0).apply();
                                         startActivity(intent);
                                         finish();
                                     } else if (userType.equalsIgnoreCase("tutor")) {
-                                        //here we should check if tutor has filled the info form previously,
-                                        //then redirect her to TeacherEditInfoFrom
-                                        //else, open the main form that is TeacherFormActivity
-                                        //this check can be done by searching if there is any data
-                                        //related to the current tutor id, if not, we should open main form
-                                        //else, open the editing form..
-
-                                        //I will currently redirect tutor to main form until we make
-                                        //a new class to get tutor info and save it to db
-
-
                                         int id = 2;
 
                                         SessionManagement sessionManagement = new SessionManagement(MainActivityLogin.this);
@@ -291,7 +265,7 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
                                         Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                                        //intent.putExtra("username", getUserName + "");
+
                                         un = getUserName;
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("username", getUserName).apply();
                                         startActivity(intent);
@@ -306,7 +280,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-                                //Toast.makeText(MainActivityLogin.this, "Something wrong happened!", Toast.LENGTH_SHORT).show();
                                 CommonMethods.makeToast(MainActivityLogin.this, "Something wrong happened!");
                             }
                         });
@@ -332,7 +305,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
                 }
                 else {
-                    //Toast.makeText(MainActivityLogin.this, "Failed to login! Please check your credentials.", Toast.LENGTH_SHORT).show();
                     CommonMethods.makeToast(MainActivityLogin.this, "Failed to login! Please check your credentials.");
 
                     try {
@@ -364,7 +336,6 @@ public class MainActivityLogin<checkBox> extends AppCompatActivity {
 
     public void goToSingUp(){
         Intent intent = new Intent(getApplicationContext(), MainActivitySignUp.class);
-        //intent.putExtra("username","mahmoud");
         startActivity(intent);
     }
 

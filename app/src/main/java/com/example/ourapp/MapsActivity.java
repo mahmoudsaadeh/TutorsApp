@@ -46,11 +46,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         try {
             List<Address> addresses = geocoder.getFromLocation(selectedLocation.latitude, selectedLocation.longitude, 1);
             addressLine = addresses.get(0).getAddressLine(0);
-            //Log.i("address line: ", addresses.get(0).getAddressLine(0) + "");
-            /*Log.i("Locality: ", addresses.get(0).getLocality() + "");
-            Log.i("country name: ", addresses.get(0).getCountryName() + "");
-            Log.i("Locale: ", addresses.get(0).getLocale() + "");*/
-            //return city;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,13 +56,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public void getLocation(View view){
-        //Log.d("getLoc1","accessed");
         if(chosenLocLatLon == null || chosenLocAddress.isEmpty()) {
-            //Toast.makeText(this, "Please choose a location!", Toast.LENGTH_SHORT).show();
             CommonMethods.makeToast(MapsActivity.this, "Please choose a location!");
         }
         else {
-            //Log.d("getLoc2","accessed");
+
             String imageUri=getIntent().getStringExtra("URI");
             Intent intent = new Intent(getApplicationContext(), TeacherFormActivity.class);
             intent.putExtra("Latitude", "" + chosenLocLatLon.latitude);
@@ -75,8 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             intent.putExtra("AddressLine", "" + chosenLocAddress);
             intent.putExtra("FLAG", "1");
             intent.putExtra("URI",imageUri);
-            //Log.d("lat","" + chosenLocLatLon.latitude);
-            //Log.d("lon","" + chosenLocLatLon.longitude);
+
 
             Log.d("maps", "test1");
 
@@ -88,23 +80,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        /*mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -117,7 +96,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                 mMap.addMarker(markerOptions);
 
-                //getLocation(latLng, getCityName(latLng));
 
                 chosenLocLatLon = latLng;
                 chosenLocAddress = getCityName(latLng);
@@ -128,18 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }// end onMapReady
 
 
-    //hadi
-    /*
-    public void getLocation(View view){
-        double latitude=mMap.getMyLocation().getLatitude();
-        double longitude=mMap.getMyLocation().getLongitude();
-        Intent intent = new Intent(MapsActivity.this, TeacherFormActivity.class);
-        intent.putExtra("lat", latitude);
-        intent.putExtra("longt", longitude);
-        startActivity(intent);
 
-    }
-*/
 
 
     public void supportMapFragment() {

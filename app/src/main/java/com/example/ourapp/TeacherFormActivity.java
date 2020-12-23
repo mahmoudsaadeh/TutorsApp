@@ -96,13 +96,11 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
     double progressPercentage;
-    //deleted TeacherEditInfoForm Activity
-    //will use if else statements to change TextView's texts in OnCreate
+
 
 
     public void openGallery(View view) {
-        //link to try to get images from gallery for api > 24 phones
-        //https://stackoverflow.com/questions/2169649/get-pick-an-image-from-androids-built-in-gallery-app-programmatically
+
 
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
@@ -121,7 +119,6 @@ public class TeacherFormActivity extends AppCompatActivity {
             Log.d("gotomap","1");
 
             if(checkTableExist){
-                //sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS tutorData (id VARCHAR, name VARCHAR, mail VARCHAR, age VARCHAR, address VARCHAR, subjects VARCHAR, salary VARCHAR, experience VARCHAR, phone VARCHAR, imgURI VARCHAR, location VARCHAR, longitude VARCHAR, latitude VARCHAR)");
 
                 Log.d("gotomap","1.5");
 
@@ -165,7 +162,7 @@ public class TeacherFormActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
-        //finish();
+
     }
 
 
@@ -191,15 +188,6 @@ public class TeacherFormActivity extends AppCompatActivity {
         setTitle("Welcome " + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
 
         findViews();
-
-        /*Intent intent = getIntent();
-        lat = intent.getStringExtra("Latitude");
-        lon = intent.getStringExtra("Longitude");
-        addressLine = intent.getStringExtra("AddressLine");
-
-        if(addressLine != null || lat != null || lon != null){
-            chosenLocation.setText(addressLine);
-        }*/
 
         try {
             SQLiteDatabase sqLiteDatabase = this.openOrCreateDatabase("TutorData", MODE_PRIVATE, null);
@@ -403,90 +391,59 @@ public class TeacherFormActivity extends AppCompatActivity {
 
 
         if(CommonMethods.checkIfEmpty(tName)) {
-            //name.setError("Full name is required!");
             CommonMethods.warning(name, getString(R.string.nameError));
-            /*name.setError(getString(R.string.nameError));
-            name.requestFocus();*/
             return;
         }
 
         if(CommonMethods.checkIfEmpty(tEmail)) {
-            //email.setError("Email is required!");
             CommonMethods.warning(email, getString(R.string.emailError));
-            /*email.setError(getString(R.string.emailError));
-            email.requestFocus();*/
             return;
         }
 
         if(CommonMethods.isNotAnEmail(tEmail)) {
-            //email.setError("Please provide a correct email address!");
             CommonMethods.warning(email, getString(R.string.emailValid));
-            /*email.setError(getString(R.string.emailValid));
-            email.requestFocus();*/
             return;
         }
 
         if(CommonMethods.checkIfEmpty(tAge)) {
-            //age.setError("Age is required!");
             CommonMethods.warning(age, getString(R.string.ageError));
-            /*age.setError(getString(R.string.ageError));
-            age.requestFocus();*/
             return;
         }
 
         if(CommonMethods.checkIfEmpty(tAddress)) {
-            //address.setError("Address is required!");
             CommonMethods.warning(address, getString(R.string.addressError));
-            /*address.setError(getString(R.string.addressError));
-            address.requestFocus();*/
             return;
         }
 
         if(CommonMethods.checkIfEmpty(subj)) {
-            //subject.setError("Subject field is required!");
             CommonMethods.warning(subject, getString(R.string.subjectError));
-            /*subject.setError(getString(R.string.subjectError));
-            subject.requestFocus();*/
             return;
         }
 
         if(CommonMethods.checkIfEmpty(tSal)) {
-            //salary.setError("Salary is required!");
             CommonMethods.warning(salary, getString(R.string.salaryError));
-            /*salary.setError(getString(R.string.salaryError));
-            salary.requestFocus();*/
             return;
         }
 
         if(CommonMethods.checkIfEmpty(tExp)) {
-            //experience.setError("Experience is required!");
             CommonMethods.warning(experience, getString(R.string.experienceError));
-            /*experience.setError(getString(R.string.experienceError));
-            experience.requestFocus();*/
             return;
         }
 
         if(CommonMethods.checkIfEmpty(tPhoneNum)) {
-            //phoneNumber.setError("Phone number is required!");
             CommonMethods.warning(phoneNumber, getString(R.string.phoneError));
-            /*phoneNumber.setError(getString(R.string.phoneError));
-            phoneNumber.requestFocus();*/
+
             return;
         }
 
         if(imageToUpload.getDrawable() == null) {
-            //Toast.makeText(this, "You should select a profile photo before you submit!", Toast.LENGTH_SHORT).show();
             CommonMethods.makeToast(TeacherFormActivity.this, "You should select a profile photo before you submit!");
             return;
         }
         else {
             if(addressLine == null || lat == null || lon == null) {
-                //Toast.makeText(this, "Location required", Toast.LENGTH_SHORT).show();
                 CommonMethods.makeToast(TeacherFormActivity.this, "Location required");
-                //chosenLocation.setError("Location is required!");
                 CommonMethods.warning(chosenLocation, getString(R.string.locationError));
-                /*chosenLocation.setError(getString(R.string.locationError));
-                chosenLocation.requestFocus();*/
                 return;
             }
         }
@@ -494,10 +451,6 @@ public class TeacherFormActivity extends AppCompatActivity {
         Log.d("latz", "submitForm: " + lat);
         Log.d("lonz", "submitForm: " + lon);
 
-
-        /*while (imageUrl.isEmpty()){
-            Log.i("waiting for image to upload","waiting");
-        }*/
 
         final TutorClass tutor = new TutorClass(tName, tEmail, tAddress, tExp, lat, lon, addressLine, tAge, subj, tPhoneNum, tSal, imageUrl);
 
@@ -548,13 +501,6 @@ public class TeacherFormActivity extends AppCompatActivity {
                 selectedImage = Uri.parse(imageUrl);
                 Picasso.get().load(selectedImage).into(imageToUpload);
                 progressDialog.dismiss();
-                /*stRef.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, BITMAP_OFFSET, bytes.length);
-                        imageToUpload.setImageBitmap(bm);
-                    }
-                });*/
             }
 
             @Override
@@ -575,7 +521,6 @@ public class TeacherFormActivity extends AppCompatActivity {
         catch(Exception e) {
             e.printStackTrace();
         }
-        //imageUrl=getIntent().getStringExtra("URI");
         return flag == FLAG;
     }
 

@@ -30,19 +30,14 @@ public class ResetPasswordActivity extends AppCompatActivity {
         String email = resetPasswordEmailEt.getText().toString().trim();
 
         if(CommonMethods.checkIfEmpty(email)){
-            //username is the email, didn't rename because it's causing trouble
-            //resetPasswordEmailEt.setError("Email is required!");
             CommonMethods.warning(resetPasswordEmailEt,getString(R.string.emailError));
             return;
         }
 
         if(CommonMethods.isNotAnEmail(email)){
-            //resetPasswordEmailEt.setError("Please enter a valid email!");
             CommonMethods.warning(resetPasswordEmailEt,getString(R.string.emailValid));
             return;
         }
-
-        //progressBarResetPassword.setVisibility(View.VISIBLE);
         CommonMethods.displayLoadingScreen(progressDialog);
 
         resetPassword(email);
@@ -62,7 +57,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         resetPasswordEmailEt = (EditText) findViewById(R.id.resetPassEmailET);
         resetPasswordButton = (Button) findViewById(R.id.resetPasswordButton);
-        //progressBarResetPassword = (ProgressBar) findViewById(R.id.progressBarResetPass);
         progressDialog = new ProgressDialog(ResetPasswordActivity.this);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -76,7 +70,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
                     Toast.makeText(ResetPasswordActivity.this, "Check your email to reset your password.", Toast.LENGTH_SHORT).show();
-                    //progressBarResetPassword.setVisibility(View.INVISIBLE);
                     progressDialog.dismiss();
 
                     Intent intent1 = new Intent(getApplicationContext(), MainActivityLogin.class);
@@ -85,7 +78,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(ResetPasswordActivity.this, "Something went wrong! Please try again.", Toast.LENGTH_LONG).show();
-                    //progressBarResetPassword.setVisibility(View.INVISIBLE);
                     progressDialog.dismiss();
 
                     Intent intent1 = new Intent(getApplicationContext(), MainActivityLogin.class);

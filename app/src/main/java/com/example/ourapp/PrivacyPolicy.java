@@ -85,7 +85,7 @@ public class PrivacyPolicy extends AppCompatActivity {
                 break;
         }
         return true;
-        //return super.onOptionsItemSelected(item);
+
     }
 
 

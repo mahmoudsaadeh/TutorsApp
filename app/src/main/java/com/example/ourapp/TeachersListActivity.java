@@ -78,14 +78,10 @@ public class TeachersListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teachers_list);
         progressDialog = new ProgressDialog(TeachersListActivity.this);
         CommonMethods.displayLoadingScreen(progressDialog);
-        //Intent intent = getIntent();
-        //currentUser = intent.getStringExtra("username");
         String s=MainActivityLogin.un;
         setTitle("Welcome " + PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("username", "NULL"));
 
-        //tutorsIds.clear();
 
-        //Log.i("rate", TeacherInfoActivity.finalTutorRate);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("TutorFormInfo");
 
@@ -102,17 +98,14 @@ public class TeachersListActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
                 CommonMethods.makeToast(TeachersListActivity.this, "" + error.getMessage());
             }
         });
 
 
-        //a delay was added because it's taking time to get tutors' ids from db
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Do something here
                 initializeImageBitmaps();
             }
         }, DELAY);
@@ -122,7 +115,6 @@ public class TeachersListActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //restart this activity to reload data
                 Intent intent = new Intent(getApplicationContext(), TeachersListActivity.class);
                 startActivity(intent);
                 swipeRefreshLayout.setRefreshing(false);
@@ -173,7 +165,6 @@ public class TeachersListActivity extends AppCompatActivity {
                 startActivity(intent3);
                 break;
             case R.id.logoutMenuItem:
-                //Log.d("logout1","accessed");
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Log.d("checkuser","" + user.getEmail());
                 FirebaseAuth.getInstance().signOut();
@@ -205,61 +196,15 @@ public class TeachersListActivity extends AppCompatActivity {
 
     private void initializeImageBitmaps() {
         Log.d("initializeBitmapFunc", "preparing bitmaps");
-/*
-        mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mNames.add("Havasu Falls");
-
-        mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mNames.add("Trondheim");
-
-        mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mNames.add("Portugal");
-
-        mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
-        mNames.add("Rocky Mountain National Park");
-
-
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
-
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mNames.add("Washington");
-*/
 
         Log.d("tutirIdAL size", tutorsIds.size() + "");
-/*
-        databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(0));
-        databaseReference2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.i("childrenCount", "" + snapshot.getChildrenCount());//12
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-*/
 
         for(int k = 0; k < tutorsIds.size(); k++) {
-            //databaseReference2 = FirebaseDatabase.getInstance().getReference().child(tutorsIds.get(0));
+
             databaseReference2 = FirebaseDatabase.getInstance().getReference().child("TutorFormInfo").child(tutorsIds.get(k));
-            //Log.d("loop1", "for loop 1");
             databaseReference2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    //Log.d("outsideLoop2", "outside loop2");
                     int n = 0;
 
                     if(snapshot.hasChildren()){
@@ -268,34 +213,18 @@ public class TeachersListActivity extends AppCompatActivity {
                     if(snapshot.exists()){
                         Log.d("snapshot", "exists");
                     }
-                    //Log.d("childrenCount", "" + snapshot.getChildrenCount());//0
 
 
                     mNames.add(snapshot.child("name").getValue().toString());
                     mImageUrls.add(snapshot.child("imageUrl").getValue().toString());
 
-                    /*Log.i("tname" + n, mNames.get(n));
-                    Log.i("tnamez" + n, snapshot.child("name").getValue().toString());
-                    Log.i("turl" + n, mImageUrls.get(n));
-                    Log.i("turlz" + n, snapshot.child("imageUrl").getValue().toString());*/
 
                     n++;
 
-                    /*for(DataSnapshot postSnapshot : snapshot.getChildren()){
-                        Log.d("loop2", "fot loop 2");
-
-                        mNames.add(postSnapshot.child("name").getValue().toString());
-                        mImageUrls.add(postSnapshot.child("imageUrl").getValue().toString());
-                        Log.i("tname" + n, mNames.get(n));
-                        Log.i("tnamez" + n, postSnapshot.child("name").getValue().toString());
-                        Log.i("turl" + n, mImageUrls.get(n));
-                        Log.i("turlz" + n, postSnapshot.child("imageUrl").getValue().toString());
-                    }*/
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    //Toast.makeText(TeachersListActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
                     CommonMethods.makeToast(TeachersListActivity.this, "" + error.getMessage());
                 }
             });
@@ -310,12 +239,10 @@ public class TeachersListActivity extends AppCompatActivity {
             }
         }, DELAY_2);
 
-        //initRecyclerView();
 
     }
 
     private void initRecyclerView() {
-        //Log.d("initRecView", "initRecyclerView: initializing staggered recyclerview.");
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerViewAdapter = new RecyclerViewAdapter(mNames,mImageUrls,this, tutorsIds);
@@ -333,36 +260,8 @@ public class TeachersListActivity extends AppCompatActivity {
         } finally {
             progressDialog = null;
         }
-        //Log.d("AL size", tutorsIds.size() + "");
+
     }
-
-
-
-
-    //Search method
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-
-        MenuItem SearchItem= menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) SearchItem.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-
-                recyclerViewAdapter.getFilter().filter(s);
-                return false;
-            }
-        });
-        return true;
-    }*/
 
 
 
